@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">		
+    <title>Paper-Scissors-Rock</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+</head>
+<body onload="brython()">
+	<p><a href="./../games.html">&#11013; Back</a></p>
+    <h1>Paper-Scissors-Rock</h1>
+	<div class = "synopsis">
+	<p><strong>Original Creation:</strong> 29th April 2020</p>
+	<p><strong>Uploaded:</strong> 25th Feb 2025</p>
+	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
+	<p><strong>Description:</strong> Every coder has to make this at least once, right? This was early in my coding learning, and my choice of names for variables is... not easy to read. 
+	And for some reason, I thought putting the <strong>import</strong> function in the middle of the while loop was a good idea... that's actually kind of adorable in hindsight.
+	Still, I think this was the first time I used the <strong>def</strong> function to shorten the code and follow the "don't repeat yourself" mantra.</p>
+	</div>
+	
+	<div class="gallery">
+		<div><figure>
+		<figcaption>Who needs Minecraft when you have this?</figcaption>		
+		<img src="images/psr.PNG" alt="Paper-Scissors-Rock gameplay" title="Paper-Scissors-Rock gameplay">
+		</figure></div>
+	</div>	
+	
+	<button onclick="Toggle()">Toggle Original Python Code Display</button>
+	<button onclick="Copy()">Copy the Python Code</button>
+
+	<pre id="pycode">
+bank = ["P", "S", "R", "Q"]
+def fn1(v1, v2, v3, v4):
+	if v1 == v2:
+		print("You" + v4 + " chose " + v3)
+while True:
+	while True:
+		ent = input("Enter P (for paper), S (for scissors), R (for rock) or Q to quit: ")
+		if not ent in bank:
+			print("Please enter a valid letter")
+			continue
+		else:
+			break
+	if ent == "Q":
+		break
+	fn1(ent, "P", "Paper", "")
+	fn1(ent, "S", "Scissors", "")
+	fn1(ent, "R", "Rock", "")
+	import random
+	while True:
+		a = random.choice(bank)
+		if a == "Q":
+			continue
+		else:
+			break
+	fn1(a, "P", "Paper", "r opponent")
+	fn1(a, "S", "Scissors", "r opponent")
+	fn1(a, "R", "Rock", "r opponent")
+	if ent == a:
+		print("Draw\n")
+		continue
+	if (ent == "P" and a == "S") or (ent == "S" and a == "R") or (ent == "R" and a == "P"):
+		print("You lose\n")
+		continue
+	if (a == "P" and ent == "S") or (a == "S" and ent == "R") or (a == "R" and ent == "P"):
+		print("You win\n")
+		continue
+	</pre>
+	
+	<script>
+	function Toggle() {
+		var x = document.getElementById("pycode");
+		if (x.style.display === "none") 
+			{x.style.display = "block";} 
+		else {x.style.display = "none"; }}
+		
+	function Copy() {
+		const copyText = document.getElementById("pycode").innerText; 
+		navigator.clipboard.writeText(copyText);}
+	</script>
+
+</body>
+</html>

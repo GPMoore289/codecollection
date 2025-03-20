@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">	
+    <title>Film Hangman</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+</head>
+<body onload="brython()">
+	<p><a href="./../games.html">&#11013; Back</a></p>
+    <h1>Film Hangman</h1>
+	<div class = "synopsis">
+	<p><strong>Original Creation:</strong> 7th April 2020</p>
+	<p><strong>Uploaded:</strong> 25th Feb 2025</p>
+	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
+	<p><strong>Description:</strong> Early project. This was some of my earliest attempts at error handling and importing data from a csv, which I had to curate quite substantially. Garbage in, garbage out!</p>
+	</div>
+	
+	<div class="gallery">
+		<div><figure>
+		<figcaption>Hangman gameplay</figcaption>		
+		<img src="images/hangman.PNG" alt="Hangman gameplay" title="Hangman gameplay">
+		</figure></div>
+	</div>	
+	
+	<p>CSV file: <a href="films.csv">List of films used for this game.</a></p>
+	
+	<button onclick="Toggle()">Toggle Original Python Code Display</button>
+	<button onclick="Copy()">Copy the Python Code</button>
+
+	<pre id="pycode">
+while True:
+	alpha = ("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z")
+	repopt = ("Y", "y", "N", "n")
+	tries = 6
+	letters = set()
+
+	from random import choice
+	file = open("films.csv", "r")
+	a = choice(list(file))
+	s = a.upper()
+	film = s[:s.find("/")]
+
+	print("\nWelcome to Graham's Film Hangman. Guess the film before you run out of tries. All films are ones that Graham has seen and none contain numerals in their name.\n")
+	name = []
+	for x in film:
+		if x in alpha:
+			name += ("_ ")
+		if x not in alpha:
+			if x == " ":
+				name += "   "
+			else:
+				name += x
+	result = "".join(name)
+	print(result)
+	print("\nYou have " + str(tries) + " tries remaining.")
+
+	while tries > 0:
+		letguess = ' '.join(letters)
+		print("Letters guessed: " + str(letguess))
+		g1 = input("\nPlease type a single letter or 'film' to guess the film: ")
+		if g1 == "film":
+			g2 = input("Please type the name of the film, including all punctuation: ")
+			g3 = g2.upper()
+			if g3 == film:
+				break
+			else:
+				print("That's incorrect.")
+				tries += -1
+				print("You have " + str(tries) + " tries remaining.")
+				continue
+		if len(g1) != 1:
+			print("That's not a valid entry.")
+			continue
+		guess = g1.upper()
+		if guess not in alpha:
+			print("That's not a valid entry.")
+			continue
+		letters.add(guess)
+		name = []
+		for x in film:
+			if x in letters:
+				name += x
+			if x not in letters and x in alpha:
+				name += "_ "
+			if x not in alpha:
+				if x == " ":
+					name += "   "
+				else:
+					name += x
+		result = "".join(name)
+		print(result)
+		if guess in film:
+			print("\nYou have " + str(tries) + " tries remaining.")
+		if guess not in film:
+			tries += -1
+			print("\nYou have " + str(tries) + " tries remaining.")
+		if "_ " not in result:
+			break
+
+	if tries > 0:
+		print("That's correct, you win!")
+		print(film)
+	else:
+		print("You lose.")
+		print(film)
+	while True:
+		replay = input("Would you like to play again? (Y or N): ")
+		if replay not in repopt:
+			print("That's not a valid entry.")
+			continue
+		else:
+			break
+	if replay == "Y" or replay == "y":
+		continue
+	if replay == "N" or replay == "n":
+		break        
+print("Goodbye!")
+	</pre>
+	
+	<script>
+	function Toggle() {
+		var x = document.getElementById("pycode");
+		if (x.style.display === "none") 
+			{x.style.display = "block";} 
+		else {x.style.display = "none"; }}
+		
+	function Copy() {
+		const copyText = document.getElementById("pycode").innerText; 
+		navigator.clipboard.writeText(copyText);}
+	</script>
+
+</body>
+</html>

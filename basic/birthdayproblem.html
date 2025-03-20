@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">		
+    <title>Birthday Problem</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+</head>
+<body onload="brython()">
+	<p><a href="./../basic.html">&#11013; Back</a></p>
+    <h1>Birthday Problem</h1>
+	<div class = "synopsis">
+	<p><strong>Original Creation:</strong> 21st November 2024</p>
+	<p><strong>Uploaded:</strong> 18th Mar 2025</p>
+	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
+	<p><strong>Description:</strong> The probability of (at least) two people in a group sharing a birthday in a group rises surprisingly fast as the number of people in that group increases.
+	As usual, this is a brute force approach rather than a statistical one (I didn't have Statistics class until the following semester - I now know this is trivial to solve with the permutation function). For the first time, I included
+	something akin to a loading progress bar for longer calculations.</p>
+	</div>
+	
+	<div class="gallery">
+		<div><figure>
+		<figcaption>Code in action</figcaption>		
+		<img src="images/birthdayresult.PNG" alt="Output" title="Output">
+		</figure></div>
+	</div>	
+	
+	<button onclick="Toggle()">Toggle Original Python Code Display</button>
+	<button onclick="Copy()">Copy the Python Code</button>
+
+	<pre id="pycode">
+import copy
+import random
+
+dates = []
+months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
+for month in months:
+    if month == "September" or month == "April" or month == "June" or month == "November":
+        for day in range(1, 31):
+            dates.append(f"{month} {day}")
+    elif month == "February":
+        for day in range(1, 29):
+            dates.append(f"{month} {day}")
+    else:
+        for day in range(1, 32):
+            dates.append(f"{month} {day}")
+
+dates = dates * 4
+dates.append("February 29")
+#print(dates)
+
+while True:
+    while True:
+        people = input("Enter number of people (min: 2):")
+        try:
+            int(people)
+        except:
+            print("Please enter an integer.")
+            continue
+        people = int(people)
+        if people &lt;2:
+            print("That's less than 2, you numpty.")
+            continue
+        else:
+            break
+        
+    folks = copy.deepcopy(people)
+    runs = 1000000
+    iterations = copy.deepcopy(runs)
+    repeatcount = 0
+    while runs > 0:
+        if runs %100000 == 0:
+            percent = round((1-(runs/1000000))*100)
+            print(f"{percent}% done")
+        people = folks
+        group = []
+        while people > 0:
+            randomdate = random.choice(dates)
+            group.append(randomdate)
+            people -= 1
+            continue
+        #print(group)
+        for date in group:
+            count = group.count(date)
+            if count > 1:
+                repeatcount += 1
+                break
+        runs -= 1
+
+    chance = round((repeatcount/iterations)*100, 2)
+    print(f"With a group size of {folks}, there is a {chance}% chance of two or more people sharing a birthday.")
+
+	</pre>
+	
+	<script>
+	function Toggle() {
+		var x = document.getElementById("pycode");
+		if (x.style.display === "none") 
+			{x.style.display = "block";} 
+		else {x.style.display = "none"; }}
+		
+	function Copy() {
+		const copyText = document.getElementById("pycode").innerText; 
+		navigator.clipboard.writeText(copyText);}
+	</script>
+
+</body>
+</html>

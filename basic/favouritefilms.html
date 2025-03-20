@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">		
+    <title>Favourite Films</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+</head>
+<body onload="brython()">
+	<p><a href="./../basic.html">&#11013; Back</a></p>
+    <h1>Favourite Films</h1>
+	<div class = "synopsis">
+	<p><strong>Original Creation:</strong> 20th November 2024</p>
+	<p><strong>Uploaded:</strong> 18th Mar 2025</p>
+	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
+	<p><strong>Description:</strong> This program is very simple compared to ones I'd done up to this point. It's simple list manipulation, but the focus here was actually
+	thinking about how to enter commands to perform different functions.</p>
+	</div>
+	
+	<div class="gallery">
+		<div><figure>
+		<figcaption>Favourite Films</figcaption>		
+		<img src="images/favfilms.PNG" alt="Favourite Films" title="Favourite Films">
+		</figure></div>
+	</div>	
+	
+	<button onclick="Toggle()">Toggle Original Python Code Display</button>
+	<button onclick="Copy()">Copy the Python Code</button>
+
+	<pre id="pycode">
+movies = ['Labyrinth', 'Aliens', 'Gremlins 2', 'Hot Fuzz', 'Total Recall', 'Everything Everywhere All at Once', 'Waltz With Bashir', 'Deadpool', 'X-Men 2']
+commandlist = ['add', 'remove', 'print']
+
+while True:
+    command = input("Enter 'add', 'remove' or 'print':").lower()
+    if command not in commandlist:
+        print("Not a valid entry.")
+        continue
+    if command != "print":
+        film = input("Enter name of film:")
+
+    if command == 'add':
+        if film in movies:
+            print("Film is already in list.")
+            continue
+        else:
+            movies.append(film)
+    if command == 'remove':
+        if film not in movies:
+            print("Film is not in list.")
+            continue
+        else:
+            movies.remove(film)
+    if command == 'print':
+        movies.sort()
+        for movie in movies:
+            print(movie)
+
+
+	</pre>
+	
+	<script>
+	function Toggle() {
+		var x = document.getElementById("pycode");
+		if (x.style.display === "none") 
+			{x.style.display = "block";} 
+		else {x.style.display = "none"; }}
+		
+	function Copy() {
+		const copyText = document.getElementById("pycode").innerText; 
+		navigator.clipboard.writeText(copyText);}
+	</script>
+
+</body>
+</html>

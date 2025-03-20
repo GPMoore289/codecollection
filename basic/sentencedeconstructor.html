@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">		
+    <title>Sentence Deconstructor</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+</head>
+<body onload="brython()">
+	<p><a href="./../basic.html">&#11013; Back</a></p>
+    <h1>Sentence Deconstructor</h1>
+	<div class = "synopsis">
+	<p><strong>Original Creation:</strong> 21st November 2024</p>
+	<p><strong>Uploaded:</strong> 19th Mar 2025</p>
+	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
+	<p><strong>Description:</strong> Enter a phrase, letters and spaces only, and the program will count how many of each letter was used. This was a quick in-class creation that
+	used a dictionary to expedite the code, though I wish I had remembered to include a ".lower()" correction in the input.</p>
+	</div>
+	
+	<div class="gallery">
+		<div><figure>
+		<figcaption>Example output</figcaption>		
+		<img src="images/sentenceoutput.PNG" alt="Example output" title="Example output">
+		</figure></div>
+	</div>	
+	
+	<button onclick="Toggle()">Toggle Original Python Code Display</button>
+	<button onclick="Copy()">Copy the Python Code</button>
+
+	<pre id="pycode">
+alphabet = {'a' : 0,'b' : 0, 'c' : 0, 'd' : 0, 'e' : 0, 'f' : 0, 'g' : 0, 'h' : 0, 'i' : 0, 'j' : 0, 'k' : 0, 'l' : 0, 'm' : 0, 'n' : 0, 'o' : 0, 'p' : 0, 'q' : 0, 'r' : 0, 's' : 0, 't' : 0, 'u' : 0, 'v' : 0, 'w' : 0, 'x' : 0, 'y' : 0, 'z' : 0, " " : 0}
+
+while True:
+    sentence = input("Please enter a sentence containing only letters and spaces:")
+
+    for letter in sentence:
+        if letter not in alphabet.keys():
+            print("This sentence contains invalid character.")
+            continue
+        else:
+            value = alphabet[letter]
+            value += 1
+            alphabet[letter] = value
+
+    for key, value in alphabet.items():
+        if key != " ":
+            print(f"{key}: {value}")
+            alphabet[key] = 0
+        else:
+            print(f"spaces: {value}")
+            alphabet[key] = 0
+	</pre>
+	
+	<script>
+	function Toggle() {
+		var x = document.getElementById("pycode");
+		if (x.style.display === "none") 
+			{x.style.display = "block";} 
+		else {x.style.display = "none"; }}
+		
+	function Copy() {
+		const copyText = document.getElementById("pycode").innerText; 
+		navigator.clipboard.writeText(copyText);}
+	</script>
+
+</body>
+</html>

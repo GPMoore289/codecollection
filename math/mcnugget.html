@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">			
+    <title>McNugget Problem</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+</head>
+<body onload="brython()">
+	<p><a href="./../math.html">&#11013; Back</a></p>
+    <h1>McNugget Problem Solver</h1>
+	<div class = "synopsis">
+	<p><strong>Original Creation:</strong> 11th April 2024</p>
+	<p><strong>Uploaded:</strong> 25th Feb 2025</p>
+	<p><strong>Status:</strong> Complete. Non-interactive. Original code was written without AI. </p>
+	<p><strong>Description:</strong> This is a silly one, but a useful exercise in chaining "for" statements. The McNugget problem ponders what is the maximum value of Chicken McNuggets you can't buy from McDonalds, given they are sold in packs of 6, 9 and 20.
+	This is a simple brute force solution that will give the correct answer of 43 (at least for values less than 1000).</p>
+	</div>
+	
+	<div class="gallery">
+		<div><figure>
+		<figcaption>The code output for this one isn't very exciting, so here is a box of McNuggets <br>and their infinitely classier-sounding French name.</figcaption>		
+		<img src="images/mcnuggets.jpg" alt="McNuggets" title="McNuggets">
+		</figure></div>
+	</div>	
+	
+	<button onclick="Toggle()">Toggle Original Python Code Display</button>
+	<button onclick="Copy()">Copy the Python Code</button>
+
+	<pre id="pycode">
+n = 167
+allnums = {6, 9, 20}
+uniquenums = []
+
+while n > 0:
+	n -= 1
+	newnums = set()
+	elems = len(allnums)
+	for i in allnums:
+		for j in allnums:
+			x = i + j
+			if x &lt; 1000:
+				newnums.add(x)
+	for i in newnums:
+		allnums.add(i)
+		
+for i in range(0, 1000):
+	if i not in allnums:
+		uniquenums.append(i)
+		
+print(max(uniquenums))
+
+	</pre>
+	
+	<script>
+	function Toggle() {
+		var x = document.getElementById("pycode");
+		if (x.style.display === "none") 
+			{x.style.display = "block";} 
+		else {x.style.display = "none"; }}
+		
+	function Copy() {
+		const copyText = document.getElementById("pycode").innerText; 
+		navigator.clipboard.writeText(copyText);}
+	</script>
+
+</body>
+</html>

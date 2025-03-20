@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">		
+    <title>Palindrome Finder</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+</head>
+<body onload="brython()">
+	<p><a href="./../basic.html">&#11013; Back</a></p>
+    <h1>Palindrome Finder</h1>
+	<div class = "synopsis">
+	<p><strong>Original Creation:</strong> 3rd October 2024</p>
+	<p><strong>Uploaded:</strong> 19th Mar 2025</p>
+	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
+	<p><strong>Description:</strong> Enter a sentence, program will detect if it is a palindrome or not. For such short code, the backwards string scanning calculation is not
+	immediately intuitive, but what works, works.</p>
+	</div>
+	
+	<div class="gallery">
+		<div><figure>
+		<figcaption>Examples of non-palindrome and palindrome</figcaption>		
+		<img src="images/palindrome.PNG" alt="Examples of non-palindrome and palindrome" title="Examples of non-palindrome and palindrome">
+		</figure></div>
+	</div>	
+	
+	<button onclick="Toggle()">Toggle Original Python Code Display</button>
+	<button onclick="Copy()">Copy the Python Code</button>
+
+	<pre id="pycode">
+while True:
+    actualentry = input("Enter a word or sentence:")
+
+    entry = actualentry.lower()
+    entry = entry.replace(".", "")
+    entry = entry.replace(",", "")
+    entry = entry.replace(" ", "")
+    entry = entry.replace("'", "")
+    
+    palindrome = True
+    length = len(entry)
+    n = 0
+    
+    while n &lt; length:
+        if entry[n] == entry[-1*n -1]:
+            n += 1
+            continue
+        if entry[n] != entry[-1*n -1]:
+            palindrome = False
+            break
+
+    if palindrome == True:
+        print (f"{actualentry} is a palindrome.\n")
+    else:
+        print (f"{actualentry} is not a palindrome.\n")     
+	</pre>
+	
+	<script>
+	function Toggle() {
+		var x = document.getElementById("pycode");
+		if (x.style.display === "none") 
+			{x.style.display = "block";} 
+		else {x.style.display = "none"; }}
+		
+	function Copy() {
+		const copyText = document.getElementById("pycode").innerText; 
+		navigator.clipboard.writeText(copyText);}
+	</script>
+
+</body>
+</html>

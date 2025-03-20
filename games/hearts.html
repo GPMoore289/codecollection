@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+    <title>Hearts</title>
+	<style>
+	</style>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+</head>
+<body onload="brython()">
+	<p><a href="./../games.html">&#11013; Back</a></p>
+    <h1>Hearts</h1>
+	<div class = "synopsis">
+	<p><strong>Original Creation:</strong> 30th August 2024</p>
+	<p><strong>Uploaded:</strong> 4th March 2025</p>
+	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
+	<p><strong>Description:</strong> During summer of 2024, I wanted to prepare for my upcoming programming class and get back into coding with a reasonably beefy project.
+	Hearts is a game that anyone who has used a Windows computer over the last 25 years should be familiar with. The trickiest part was interchanging the names of the 
+	face cards (Jack, Queen, King) with their values (11, 12, 13). In hindsight, this could have been accomplished with a dictionary. Still, it is playable, though the
+    computer only picks legal cards at random. See if you can shoot the moon!</p>
+	</div>
+	
+	<div class="gallery">
+		<div><figure>
+		<figcaption>A trick before hearts are broken</figcaption>		
+		<img src="images/earlytrick.PNG" alt="A trick before hearts are broken" title="A trick before hearts are broken">
+		</figure></div>
+		
+		<div><figure>
+		<figcaption>End of round</figcaption>
+		<img src="images/endround.PNG" alt="End of round" title="End of round">
+		</figure></div>
+	</div>	
+		
+	<button onclick="Toggle()">Toggle Original Python Code Display</button>
+	<button onclick="Copy()">Copy the Python Code</button>
+
+	<pre id="pycode">
+import random
+import time
+
+valuelist = ["14", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13"]
+#allowvaluelist = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
+suitlist = ["C", "H", "D", "S"]
+
+origcards = []
+#allowedcards = []
+
+for i in valuelist:
+    for j in suitlist:
+        origcards.append(j+i)
+        
+#for i in allowvaluelist:
+#    for j in suitlist:
+#        allowedcards.append(i+j)
+        
+def suitid(shortsuit): #converts single letter suit names into full names.
+    if shortsuit == "C":
+        return "Clubs"
+    if shortsuit == "S":
+        return "Spades"
+    if shortsuit == "D":
+        return "Diamonds"   
+    if shortsuit == "H":
+        return "Hearts" 
+    
+def valueid(val): #converts int card values above 10 into single letter card equivalents.
+    if val &lt;= 10:
+        return val
+    if val == 11:
+        return "J"
+    if val == 12:
+        return "Q"
+    if val == 13:
+        return "K"   
+    if val == 14:
+        return "A" 
+    
+def sortidfinder(val): #converts str card values into str number values
+    try:
+        int(val)
+    except:
+        if val == "A":
+            return "14"
+        if val == "J":
+            return "11"
+        if val == "Q":
+            return "12"
+        if val == "K":
+            return "13"
+    else:
+        if int(val) &lt;= 9:
+            return "0" + str(val)
+        if int(val) == 10:
+            return "10"
+    
+def c02finder(): #finds which hand has 2C
+    if "C02" in play1hand:
+        return 1
+    if "C02" in play2hand:
+        return 2   
+    if "C02" in play3hand:
+        return 3  
+    if "C02" in play4hand:
+        return 4  
+    
+def handselector(currentplay): #helps to create a copy of the computer's playing hand to determine its play action
+    if currentplay == 2:
+        return play2hand
+    if currentplay == 3:
+        return play3hand    
+    if currentplay == 4:
+        return play4hand
+    
+def cardremover(currentplay, sortcard): #removes played card from correct computer hand
+    if currentplay == 2:
+        play2hand.remove(sortcard)
+    if currentplay == 3:
+        play3hand.remove(sortcard)
+    if currentplay == 4:
+        play4hand.remove(sortcard)
+
+def scoreselector(player): #returns value of round score for a given player
+    if player == 1:
+        return play1score
+    if player == 2:
+        return play2score
+    if player == 3:
+        return play3score
+    if player == 4:
+        return play4score
+    
+def totalscoreselector(player): #returns value of total score for a given player
+    if player == 1:
+        return play1totalscore
+    if player == 2:
+        return play2totalscore
+    if player == 3:
+        return play3totalscore    
+    if player == 4:
+        return play4totalscore
+
+play1hand, play2hand, play3hand, play4hand = [], [], [], []
+play1totalscore, play2totalscore, play3totalscore, play4totalscore = 0, 0, 0, 0
+
+print("\nWelcome to Hearts.\n")
+
+while True: #new round
+    print("\nNew round.")
+    heartsbroken = False
+    cards = origcards.copy()
+    random.shuffle(cards)
+#    print(cards)
+    play1score, play2score, play3score, play4score = 0, 0, 0, 0
+    scorelists = [play1score, play2score, play3score, play4score]
+    while len(cards) != 0:
+        play1hand.append(cards[0])
+        cards.remove(cards[0])
+        play2hand.append(cards[0])
+        cards.remove(cards[0])
+        play3hand.append(cards[0])
+        cards.remove(cards[0])
+        play4hand.append(cards[0])
+        cards.remove(cards[0])
+        continue
+    
+#    print(play1hand)
+    firstplay = c02finder()
+#    print(f"C02 in player {firstplay}'s hand")
+    
+    while True: #new trick            
+        print(f"\nNew trick. Player {firstplay} goes first.\n")
+        currentplay = firstplay
+#        currentplay = 1 #force human player as player 1, for testing only
+
+        trumpsuit = ["C", "S", "D", "H"]
+        players = [1, 2, 3, 4]
+        trickcards = {}
+        trickpoints = 0
+        
+        while True: #player turns
+            if currentplay == 1: #human player's turn
+                play1hand.sort()  
+                print("\nIt is your turn. Your hand is:")
+                for i in play1hand:
+                    val = int(i[1:])
+                    shortsuit = i[0]
+                    fullsuit = suitid(shortsuit)
+                    if val &lt;= 10:
+                        print(f"{val} of {fullsuit}")
+                    if val == 11:
+                        print(f"Jack of {fullsuit}")
+                    if val == 12:
+                        print(f"Queen of {fullsuit}")
+                    if val == 13:
+                        print(f"King of {fullsuit}")
+                    if val == 14:
+                        print (f"Ace of {fullsuit}")
+                       
+                while True: # human card selection 
+                    time.sleep(1)
+                    cardplayed = input("\nEnter a card from your hand in abbreviated form, e.g. 3H for 3 of Hearts or AS for Ace of Spades: ")
+#                        if cardplayed not in allowedcards:
+#                            print("Not a valid entry.")
+#                            continue  
+                    cardplayed = cardplayed.upper()
+                    inputcards = []
+                    for i in play1hand:
+                        val = int(i[1:])
+                        val = valueid(val)
+                        shortsuit = i[0]
+                        inputcards.append(str(val)+shortsuit)
+                    if cardplayed not in inputcards:
+                        print("That's not a valid entry.")
+                        continue
+                    if "2C" in inputcards and cardplayed != "2C":
+                        print("\nYou must play the 2 of Clubs.")
+                        continue
+                    if cardplayed[-1] not in trumpsuit:
+                        cheat = False
+                        for i in inputcards:
+                            if i[-1] == trumpsuit[0]:
+                                cheat = True
+                                break
+                        if cheat == True:
+                            currenttrumpsuit = suitid(trumpsuit[0])
+                            print(f"\nYou have at least one card of the trump suit ({currenttrumpsuit}). You cannot play another suit.")
+                            continue
+                        if cheat == False and cardplayed[-1] == "H":
+                            heartsbroken = True   
+                    if cardplayed[-1] == "H" and heartsbroken == False:
+                        print("\nHearts have not been broken. Pick another card.")
+                        continue
+                    else:
+                        print(f"You played {cardplayed}")
+                        shortsuit = cardplayed[-1]
+                        val = cardplayed[0:-1]
+                        sortid = sortidfinder(val)
+                        sortcard = shortsuit + sortid
+                        play1hand.remove(sortcard)
+                        trickcards[cardplayed] = 1
+                        if len(trumpsuit) == 4:
+                            trumpsuit.clear()
+                            trumpsuit.append(cardplayed[-1])
+                        players.remove(1)
+                        currentplay = 2
+                        break # human card selection ends
+                        
+            elif currentplay > 1: #computer's turn                       
+                while True: # computer card selection                   
+                    inputcards = []      
+                    comphand = handselector(currentplay)               
+                    for i in comphand:
+                        val = int(i[1:])
+                        val = valueid(val)
+                        shortsuit = i[0]
+                        inputcards.append(str(val)+shortsuit)
+
+                    cardplayed = random.choice(inputcards)
+                    if "2C" in inputcards and cardplayed != "2C":
+                        continue
+                    if cardplayed[-1] not in trumpsuit:
+                        cheat = False
+                        for i in inputcards:
+                            if i[-1] == trumpsuit[0]:
+                                cheat = True
+                                break
+                        if cheat == True:
+                            continue
+                        if cheat == False and cardplayed[-1] == "H":
+                            heartsbroken = True   
+                    if cardplayed[-1] == "H" and heartsbroken == False:
+                        continue
+                    else:
+                        time.sleep(1)
+                        print(f"Player {currentplay} played {cardplayed}")
+                        shortsuit = cardplayed[-1]
+                        val = cardplayed[0:-1]
+                        sortid = sortidfinder(val)
+                        sortcard = shortsuit + sortid                     
+                        cardremover(currentplay, sortcard)                                                
+                        trickcards[cardplayed] = currentplay
+                        if len(trumpsuit) == 4:
+                            trumpsuit.clear()
+                            trumpsuit.append(cardplayed[-1])
+                        players.remove(currentplay)
+                        if currentplay &lt; 4:
+                            currentplay += 1
+                        elif currentplay == 4:
+                            currentplay = 1
+                        break #computer card selection ends
+
+            if len(players) == 0:  #trick end
+                trumpcards = []
+                for i in list(trickcards.keys()):
+                    if i[-1] == "H":
+                        trickpoints += 1
+                    if i == "QS":
+                        trickpoints += 13
+                    if i [-1] == trumpsuit[0]:
+                        trumpcards.append(i)
+                hightrumpval = 0
+                hightrump = ""
+                for i in trumpcards:
+                    if int(sortidfinder(i[:-1])) > hightrumpval:
+                        hightrumpval = int(sortidfinder(i[:-1]))
+                        hightrump = i
+                firstplay = trickcards[hightrump]
+                if firstplay == 1:
+                    play1score += trickpoints
+                if firstplay == 2:
+                    play2score += trickpoints
+                if firstplay == 3:
+                    play3score += trickpoints
+                if firstplay == 4:
+                    play4score += trickpoints
+                time.sleep(1)
+                print(f"Player {firstplay} takes the trick and scores {trickpoints}")
+                for i in range(1,5):
+                    playscore = scoreselector(i)
+                    print(f"Player {i} has a score of {playscore}.")
+                break #exits current trick
+            else:
+                continue #continues player turn loop
+                
+        if len(play1hand) == 0: #if players are out of cards
+            shootthemoon = False
+            for i in range (0, 4): #shoot the moon checker
+                if scorelists[i] == 26:
+                    shootthemoon = True
+                    break
+            if shootthemoon == True:
+                print("Player shot the moon! Player scores zero, everyone else scores 26.")
+                for i in range (0, 4):
+                    if scorelists[i] == 0:
+                        scorelists[i] = 26
+                    elif scorelists[i] == 26:
+                        scorelists[i] = 0
+            play1totalscore += play1score
+            play2totalscore += play2score
+            play3totalscore += play3score
+            play4totalscore += play4score
+            for i in range (1, 5):
+                totalscore = totalscoreselector(i)              
+                playscore = scoreselector(i)
+                print(f"\nPlayer {i} gains {playscore}")
+                print(f"Player {i} has a total of {totalscore}")
+            break # breaks current round loop
+        else:
+            continue #continues with round
+    
+    print("checking for win")
+    win = False
+    for i in range(1, 5):
+        print(totalscoreselector(i))
+        if totalscoreselector(i) >= 100:
+            win = True
+            break
+    if win == True:
+        print("Player has scored more than 100 points. Game now ends.")
+        break # ends the game
+    else:
+        continue
+	</pre>
+	
+	<script>
+	function Toggle() {
+		var x = document.getElementById("pycode");
+		if (x.style.display === "none") 
+			{x.style.display = "block";} 
+		else {x.style.display = "none"; }}
+		
+	function Copy() {
+		const copyText = document.getElementById("pycode").innerText; 
+		navigator.clipboard.writeText(copyText);}
+	</script>
+
+</body>
+</html>

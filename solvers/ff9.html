@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">			
+    <title>Final Fantasy IX Skipping & Running</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+</head>
+<body onload="brython()">
+	<p><a href="./../solvers.html">&#11013; Back</a></p>
+    <h1>Final Fantasy IX Skipping & Running</h1>
+	<div class = "synopsis">
+	<p><strong>Original Creation:</strong> 11th December 2023</p>
+	<p><strong>Uploaded:</strong> 4th March 2025</p>
+	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
+	<p><strong>Description:</strong> On a replay of Final Fantasy IX, I decided it was finally time to get two awards I'd never succeeded at before: 
+	King of Jump Rope and Athlete Queen. Problem is that both of these are very punishing on your thumbs and I'd rather not get carpal tunnel syndrome.
+	Python to the rescue! This was an exercise in getting Python to interface with another program and actually manipulate it, rather than just producing
+	an output in the IDLE shell, plus for these challenges, button presses had to be timed quite accurately.</p>
+	</div>
+	
+	<div class="gallery">
+		<div><figure>
+		<figcaption>Jump rope challenge. Source: finalfantasy.fandom.com</figcaption>		
+		<img src="images/ff9skip.webp" alt="Jump rope challenge" title="Jump rope challenge">
+		</figure></div>
+		
+		<div><figure>
+		<figcaption>Hippaul race challenge. Source: jegged.com</figcaption>		
+		<img src="images/ff9race.webp" alt="Hippaul race challenge" title="Hippaul race challenge">
+		</figure></div>	
+	</div>	
+	
+	<button onclick="Toggle()">Toggle Original Python Code Display</button>
+	<button onclick="Copy()">Copy the Python Code</button>
+
+	<pre id="pycode">
+#SKIPPING
+
+import keyboard
+import time
+
+time.sleep(4)
+
+#ask girls to start
+print("Asking")
+keyboard.press("+")
+time.sleep(0.1)
+keyboard.release("+")
+
+time.sleep(2)
+print("Confirming")
+#confirm
+
+keyboard.press("+")
+time.sleep(0.1)
+keyboard.release("+")
+
+time.sleep(2)
+
+#start jumping
+print("Starting")
+keyboard.press("+")
+time.sleep(0.1)
+keyboard.release("+")
+count = 1
+time.sleep(0.9)
+
+while count &lt; 20:
+        keyboard.press("+")
+        time.sleep(0.1)
+        keyboard.release("+")
+        time.sleep(56/100)
+        count += 1
+while count >= 20 and count &lt; 50:
+        keyboard.press("+")
+        time.sleep(0.1)
+        keyboard.release("+")
+        time.sleep(43/100)
+        count += 1
+while count >= 50 and count &lt; 100:
+        keyboard.press("+")
+        time.sleep(0.1)
+        keyboard.release("+")
+        time.sleep(365/1000)
+        count += 1
+while count >= 100 and count &lt; 200:
+        keyboard.press("+")
+        time.sleep(0.1)
+        keyboard.release("+")
+        time.sleep(333/1000)
+        count += 1
+while count >= 200 and count &lt; 300:
+        keyboard.press("+")
+        time.sleep(0.1)
+        keyboard.release("+")
+        time.sleep(283/1000)
+        count += 1
+while count >= 300:
+        keyboard.press("+")
+        time.sleep(0.1)
+        keyboard.release("+")
+        time.sleep(2993/10000)
+        count += 1
+
+#RUNNING		
+		
+import keyboard
+import time
+
+time.sleep(3)
+
+print("Asking")
+keyboard.press("*")
+time.sleep(0.1)
+keyboard.release("*")
+
+time.sleep(2)
+print("Confirming")
+
+keyboard.press("*")
+time.sleep(0.1)
+keyboard.release("*")
+
+time.sleep(2)
+
+print("Starting")
+keyboard.press("*")
+time.sleep(0.1)
+keyboard.release("*")
+
+time.sleep(2)
+
+print("Go")
+keyboard.press("*")
+time.sleep(0.1)
+keyboard.release("*")
+
+while True:
+        keyboard.press("+")
+        time.sleep(0.05)
+        keyboard.release("+")
+        keyboard.press("-")
+        time.sleep(0.05)
+        keyboard.release("-")
+        
+	</pre>
+	
+	<script>
+	function Toggle() {
+		var x = document.getElementById("pycode");
+		if (x.style.display === "none") 
+			{x.style.display = "block";} 
+		else {x.style.display = "none"; }}
+		
+	function Copy() {
+		const copyText = document.getElementById("pycode").innerText; 
+		navigator.clipboard.writeText(copyText);}
+	</script>
+
+</body>
+</html>

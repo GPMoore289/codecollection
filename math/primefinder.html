@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Prime Finder</title>
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">		
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+</head>
+<body onload="brython()">
+	<p><a href="./../math.html">&#11013; Back</a></p>
+    <h1>Prime Finder</h1>
+	<div class = "synopsis">
+	<p><strong>Original Creation:</strong> 8th August 2024</p>
+	<p><strong>Uploaded:</strong> 25th Feb 2025</p>
+	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
+	<p><strong>Description:</strong> This was a simple exercise in optimising run time. This program determines whether a number is prime, or if it isn't, outputs its divisors. 
+	Realizing that you don't have to search beyond the square root of the number sped up calculation speed by orders of magnitude.</p>
+	</div>
+	
+	<div class="gallery">
+		<div><figure>
+		<figcaption>Example output.</figcaption>		
+		<img src="images/prime.PNG" alt="Example output" title="Example output">
+		</figure></div>
+	</div>	
+	
+	<button onclick="Toggle()">Toggle Original Python Code Display</button>
+	<button onclick="Copy()">Copy the Python Code</button>
+
+	<pre id="pycode">
+import math
+
+while True:
+
+	strquery = input("Enter number: ")
+	try: 
+		int(strquery)
+	except:
+		print("Please enter an integer")
+		continue
+	
+	query = int(strquery)
+	divbank = []
+	limit = int(round(math.sqrt(query)))
+	n = 2
+	
+	while n &lt;= limit:
+		remainder = query%n
+		if remainder == 0:
+			divbank.append(n)
+			divbank.append(int(query/n))
+		n += 1
+			
+	if len(divbank) == 0:
+		print(f"{query} has no divisors. It is prime.")
+	else:
+		print(f"{query} has the following divisors. It is not prime.")
+		divbank.sort()
+		print(divbank)
+
+	</pre>
+	
+	<script>
+	function Toggle() {
+		var x = document.getElementById("pycode");
+		if (x.style.display === "none") 
+			{x.style.display = "block";} 
+		else {x.style.display = "none"; }}
+		
+	function Copy() {
+		const copyText = document.getElementById("pycode").innerText; 
+		navigator.clipboard.writeText(copyText);}
+	</script>
+
+</body>
+</html>

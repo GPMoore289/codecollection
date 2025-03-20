@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+    <title>Chess</title>
+	<style>
+	</style>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+</head>
+<body onload="brython()">
+	<p><a href="./../games.html">&#11013; Back</a></p>
+    <h1>Chess</h1>
+	<div class = "synopsis">
+	<p><strong>Original Creation:</strong> 30th November 2024</p>
+	<p><strong>Uploaded:</strong> 3rd March 2025</p>
+	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
+	<p><strong>Description:</strong> I needed one last bonus project for my Intro to Programming course. I suggested Chess to my professor.
+	He believed it would be too difficult for a first-year student to program. I took this as a challenge. 
+	Once I found that I could use Unicode to represent the pieces, I coded the whole thing in one weekend, even including threefold repetition,
+	en passant, insufficient material and stalemate. I even included loadable states for testing and debugging.</p>
+	</div>
+	
+	<div class="gallery">
+		<div><figure>
+		<figcaption>Starting layout</figcaption>		
+		<img src="images/chessstart.PNG" alt="Starting layout" title="Starting layout">
+		</figure></div>
+		
+		<div><figure>
+		<figcaption>Pinned knight and castled king</figcaption>
+		<img src="images/chessmid.PNG" alt="Pinned knight and castled king" title="Pinned knight and castled king">
+		</figure></div>
+	</div>	
+		
+	<button onclick="Toggle()">Toggle Original Python Code Display</button>
+	<button onclick="Copy()">Copy the Python Code</button>
+
+	<pre id="pycode">
+#Graham Moore, 000957294
+#I usually describe the equine piece as a "night". I know this is not the correct spelling, it just makes the notation easier.
+print("If the game looks bad, set terminal font to Courier, font size to 20 and use a white background.")
+
+wkingimg = chr(9812)#unicode characters for the pieces
+wqueenimg = chr(9813)
+wrookimg = chr(9814)
+wbishopimg = chr(9815)
+wnightimg = chr(9816)
+wpawnimg = chr(9817)
+bkingimg = chr(9818) 
+bqueenimg = chr(9819)
+brookimg = chr(9820)
+bbishopimg = chr(9821)
+bnightimg = chr(9822)
+bpawnimg = chr(9823)
+
+kingmoves = [-9, -8, -7, -1, 1, 7, 8, 9] #every theoretically legal move a piece could make
+queenmoves = [-63, -56, -54, -49, -48, -45, -42, -40, -36, -35, -32, -28, -27, -24, -21, -18, -16, -14, -9, -8, -7, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 7, 8, 9, 14, 16, 18, 21, 24, 27, 28, 32, 35, 36, 40, 42, 45, 48, 49, 54, 56, 63]
+rookmoves = [-56, -48, -40, -32, -24, -16, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 16, 24, 32, 40, 48, 56]
+bishopmoves = [-63, -54, -49, -45, -42, -36, -35, -28, -27, -21, -18, -14, -9, -7, 7, 9, 14, 18, 21, 27, 28, 35, 36, 42, 45, 49, 54, 63]
+nightmoves = [-17, -15, -10, -6, 6, 10, 15, 17]
+wpawnmoves = [-8, -16]
+wpawncaptures = [-9, -7]
+bpawnmoves = [8, 16]
+bpawncaptures = [9, 7]
+
+class Piece:
+    def __init__(self, name, possmoves, posscaptures, image):
+        self.name = name
+        self.possmoves = possmoves
+        self.posscaptures = posscaptures
+        self.image = image
+
+bking = Piece("bking", kingmoves, kingmoves, bkingimg)
+wking = Piece("wking", kingmoves, kingmoves, wkingimg)
+bqueen = Piece("bqueen", queenmoves, queenmoves, bqueenimg)
+wqueen = Piece("wqueen", queenmoves, queenmoves, wqueenimg)
+brook = Piece("brook", rookmoves, rookmoves, brookimg)
+wrook = Piece("wrook", rookmoves, rookmoves, wrookimg)
+bbishop = Piece("bbishop", bishopmoves, bishopmoves, bbishopimg)
+wbishop = Piece("wbishop", bishopmoves, bishopmoves, wbishopimg)
+bnight = Piece("bnight", nightmoves, nightmoves, bnightimg)
+wnight = Piece("wnight", nightmoves, nightmoves, wnightimg)
+bpawn = Piece("bpawn", bpawnmoves, bpawncaptures, bpawnimg)
+wpawn = Piece("wpawn", wpawnmoves, wpawncaptures, wpawnimg)
+
+allpieces = [wking, wqueen, wrook, wbishop, wnight, wpawn, bking, bqueen, brook, bbishop, bnight, bpawn]
+
+grid = {}
+states = []
+turn = 0
+nocaptures = 0
+wkingmoved = False
+bkingmoved = False
+wqueenrookmoved = False
+bqueenrookmoved = False
+wkingrookmoved = False
+bkingrookmoved = False
+pawnmoved2 = []
+
+for j in range(8, 0, -1): #creates the grid, squares are added in order TL to BR as White would see it
+    for i in "ABCDEFGH":
+        grid[i+str(j)] = ""
+
+gridlist = list(grid)
+
+testsituation = "default"
+    
+if testsituation == "default":
+    grid["A8"], grid["H8"] = brook, brook #populating the grid to starting position
+    grid["B8"], grid["G8"] = bnight, bnight
+    grid["C8"], grid["F8"] = bbishop, bbishop
+    grid["D8"], grid["E8"] = bqueen, bking
+    grid["A7"], grid["B7"], grid["C7"], grid["D7"], grid["E7"], grid["F7"], grid["G7"], grid["H7"] = bpawn, bpawn, bpawn, bpawn, bpawn, bpawn, bpawn, bpawn
+    grid["A1"], grid["H1"] = wrook, wrook
+    grid["B1"], grid["G1"] = wnight, wnight
+    grid["C1"], grid["F1"] = wbishop, wbishop
+    grid["D1"], grid["E1"] = wqueen, wking
+    grid["A2"], grid["B2"], grid["C2"], grid["D2"], grid["E2"], grid["F2"], grid["G2"], grid["H2"] = wpawn, wpawn, wpawn, wpawn, wpawn, wpawn, wpawn, wpawn
+
+if testsituation == "castletest":
+    grid["E8"] = bking
+    grid["A8"] = bqueen
+    grid["E1"] = wking
+    grid["A1"] = wrook
+    grid["H1"] = wrook
+    grid["B1"] = wnight
+    grid["G1"] = wnight
+
+if testsituation == "insufficient":
+    grid["H1"] = wking
+    grid["A8"] = bking
+    grid["E5"] = wpawn
+    grid["H2"] = wnight
+    grid["C8"] = bbishop
+
+if testsituation == "stalemate":
+    grid["E8"] = bking
+    grid["A1"] = wking
+    grid["F7"] = wrook
+    grid["D6"] = wrook
+
+if testsituation == "enpassant":
+    grid["H8"] = bking
+    grid["A1"] = wking
+    grid["D2"] = wpawn
+    grid["C4"] = bpawn
+    grid["E4"] = bpawn
+
+if testsituation == "promotest":
+    grid["H7"] = bking
+    grid["B7"] = wking
+    grid["E7"] = wpawn
+    grid["E6"] = bpawn
+    
+#print(grid)
+def printgrid(filelabels, gridarranged, rankmod): #prints the grid 
+    print(filelabels) 
+    print("-------------------------")
+    n = 1 
+    for i in gridarranged:
+        if i in allpieces:
+            x = i.image
+        else:
+            x = "\u2001"
+        if (n-1)%8 == 0:
+            if rankmod == 8:
+                y = int(rankmod-((n-1)/8))
+            if rankmod == 1:
+                y = int(((n-1)/8)+rankmod)
+            print(f"{y} |", end = "")
+        print(f"{x}", end = "")
+        if n%8 != 0:
+            print("|", end = "")
+            n+=1
+            continue
+        else:
+            print("|")
+            print("-------------------------")
+            n+=1
+
+def blockscan(move, lower, upper, shift, scancellindex, scancellrange, currentindex):
+    #creates a list of squares between the target and starting square
+    if lower <= move <= upper: 
+        while True:
+            scancellrange.append(gridlist[scancellindex])
+            if scancellindex == currentindex:
+                break
+            scancellindex += shift
+
+def moveanalyzer(playername, gridname, value, piecename, legalmovesv1, currentindex, movediv1, movediv2, movediv3, movediv4, lower1, upper1, shift1, lower2, upper2, shift2, lower3, upper3, shift3, lower4, upper4, shift4, lower5, upper5, shift5, lower6, upper6, shift6, lower7, upper7, shift7, lower8, upper8, shift8):
+            if value.name[1:] == piecename:
+                for move in value.possmoves: #considers all theoretically possible moves for that piece
+                    targetindex = currentindex+move #gets the index of the target square in the gridlist
+                    if targetindex > 63 or targetindex < 0: #stops it going beyond the top and bottom edges
+                        continue
+                    target = gridlist[targetindex] #gets the value of the target in the gridlist
+                    cell = gridname[target]
+                    if cell != "":
+                        if cell.name[0] == playername[0]: #ignores targets that contain a friendly piece
+                            continue
+                        if value.name[1:] == "pawn": #pawns cannot move (not capture) onto enemy pieces
+                            continue
+                    if value.name[1:] == "pawn": #pawns can only move 2 squares forward if on 2nd rank (white) or 7th rank (black)
+                        if playername == "white" and move == -16 and not gridlist[currentindex][1] == "2":
+                            continue
+                        if playername == "black" and move == 16 and not gridlist[currentindex][1] == "7":
+                            continue
+                    scancellrange = []
+                    scancellindex = targetindex
+                    if abs(move)%movediv1 == 0: #this function adds to scancellrange a list of the target square, current square and all cells in between
+                        blockscan(move, lower1, upper1, shift1, scancellindex, scancellrange, currentindex)
+                        blockscan(move, lower2, upper2, shift2, scancellindex, scancellrange, currentindex)
+                    elif abs(move)%movediv2 == 0:
+                        blockscan(move, lower3, upper3, shift3, scancellindex, scancellrange, currentindex)
+                        blockscan(move, lower4, upper4, shift4, scancellindex, scancellrange, currentindex)
+                    elif abs(move)%movediv3 == 0:
+                        blockscan(move, lower5, upper5, shift5, scancellindex, scancellrange, currentindex)
+                        blockscan(move, lower6, upper6, shift6, scancellindex, scancellrange, currentindex)
+                    elif abs(move)%movediv4 == 0:
+                        blockscan(move, lower7, upper7, shift7, scancellindex, scancellrange, currentindex)
+                        blockscan(move, lower8, upper8, shift8, scancellindex, scancellrange, currentindex)
+                    unblocked = True # looks for obstacles *between* current and target. invalid if any present. needed for queens, rooks and bishops
+                    for scan in scancellrange[1:-1]: #need to skip the first element, or no captures will be possible. Skip the last element as that's the piece itself
+                        cell = gridname[scan]
+                        if cell != "":
+                            unblocked = False
+                            break
+                    edgejump = False #detecting if an edge jump has occurred.
+                    scanlen = len(scancellrange)
+                    #print(scancellrange)
+                    while scanlen >=2:
+                        #print(scancellrange[scanlen-1][0])
+                        #print(scancellrange[scanlen-2][0])
+                        if scancellrange[scanlen-1][0] == "H" and scancellrange[scanlen-2][0] == "A":
+                            edgejump = True
+                            break
+                        if scancellrange[scanlen-1][0] == "A" and scancellrange[scanlen-2][0] == "H":
+                            edgejump = True
+                            break
+                        if value.name[1:] == "night": #section needed as knights cannot be impeded
+                            if scancellrange[scanlen-1][0] == "H" and scancellrange[scanlen-2][0] == "B":
+                                edgejump = True
+                                break
+                            if scancellrange[scanlen-1][0] == "B" and scancellrange[scanlen-2][0] == "H":
+                                edgejump = True
+                                break
+                            if scancellrange[scanlen-1][0] == "G" and scancellrange[scanlen-2][0] == "A":
+                                edgejump = True
+                                break
+                            if scancellrange[scanlen-1][0] == "A" and scancellrange[scanlen-2][0] == "G":
+                                edgejump = True
+                                break    
+                        scanlen -=1
+                    if edgejump == True:
+                        continue
+                    if unblocked == False:
+                        continue
+                    legalmovesv1.append(f"{piecename[0]}{gridlist[currentindex]}{target}") #creates a list of theoretically possible moves, prior to trimming
+
+def pawncaptureanalyzer(playername, gridname, value, legalmovesv1, currentindex): #variant specific for pawn captures
+    if value.name[1:] == "pawn":
+        for move in value.posscaptures:
+            targetindex = currentindex+move
+            if targetindex > 63 or targetindex < 0: #this section is technically unnecessary for pawns, but included to avoid testing bugs
+                continue
+            target = gridlist[targetindex] #gets the value of the target in the gridlist
+            cell = gridname[target]
+            if cell == "": #target cell must contain a piece...
+                continue
+            if cell.name[0] == playername[0]: #... that belongs to the opponent
+                continue
+            scancellrange = []
+            scancellindex = targetindex
+            blockscan(move, -9, -9, 9, scancellindex, scancellrange, currentindex)
+            blockscan(move, 9, 9, -9, scancellindex, scancellrange, currentindex)
+            blockscan(move, -7, -7, 7, scancellindex, scancellrange, currentindex)
+            blockscan(move, 7, 7, -7, scancellindex, scancellrange, currentindex)
+            edgejump = False #detecting if an edge jump has occurred.
+            scanlen = len(scancellrange)
+            #print(scancellrange)
+            while scanlen >=2:
+                #print(scancellrange[scanlen-1][0])
+                #print(scancellrange[scanlen-2][0])
+                if scancellrange[scanlen-1][0] == "H" and scancellrange[scanlen-2][0] == "A":
+                    edgejump = True
+                    break
+                if scancellrange[scanlen-1][0] == "A" and scancellrange[scanlen-2][0] == "H":
+                    edgejump = True
+                    break
+                scanlen -=1
+            if edgejump == True:
+                continue
+            legalmovesv1.append(f"p{gridlist[currentindex]}{target}") #creates a list of theoretically possible moves, prior to trimming
+
+def castlecheck(castleoptions): #determines if a castling moves violates king in check
+    for move in castleoptions:
+        gridcopy = grid.copy()
+        endcell = move[3:5]  #reference for target cell
+        enemymoves = []
+        for key, value in gridcopy.items(): #find all legal moves for opponent
+            if value == "":
+                continue
+            if value.name[0] == player[0]: # ignore current player pieces
+                continue
+            else:
+                currentindex = gridlist.index(key) 
+                moveanalyzer(enemy, gridcopy, value, "rook", enemymoves, currentindex, 8, 1, 100, 100, -56, -8, 8, 8, 56, -8, -7, 0, 1, 0, 7, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+                moveanalyzer(enemy, gridcopy, value, "bishop", enemymoves, currentindex, 9, 7, 100, 100, -63, -9, 9, 9, 63, -9, -49, -7, 7, 7, 49, -7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+                moveanalyzer(enemy, gridcopy, value, "queen", enemymoves, currentindex, 9, 8, 7, 1, -63, -9, 9, 9, 63, -9, -56, -8, 8, 8, 56, -8, -49, -7, 7, 7, 49, -7, -7, 0, 1, 0, 7, -1)
+                moveanalyzer(enemy, gridcopy, value, "king", enemymoves, currentindex, 9, 8, 7, 1, -9, -9, 9, 9, 9, -9, -8, -8, 8, 8, 8, -8, -7, -7, 7, 7, 7, -7, -1, 0, 1, 0, 1, -1)
+                moveanalyzer(enemy, gridcopy, value, "night", enemymoves, currentindex, 17, 15, 10, 6, -17, -17, 17, 17, 17, -17, -15, -15, 15, 15, 15, -15, -10, -10, 10, 10, 10, -10, -6, -6, 6, 6, 6, -6)
+                moveanalyzer(enemy, gridcopy, value, "pawn", enemymoves, currentindex, 8, 100, 100, 100, -16, -8, 8, 8, 16, -8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+                #don't need to consider ep, castling or promotion: these moves cannot take a king
+                pawncaptureanalyzer(enemy, gridcopy, value, enemymoves, currentindex)
+        #print(f"enemymoves: {enemymoves}")
+        #print(f"endcell: {endcell}")
+        #print("")
+        for move in enemymoves:
+            target = move[3:5]
+            if target == endcell:
+                castleoptions.clear()
+                break
+
+while True: #main loop
+    turn += 1
+    
+    if turn%2 == 0:
+        player = "black"
+        enemy = "white"
+        printgrid("\n \u2000|H\u2000|G\u2000|F\u2000|E\u2000|D\u2000|C\u2000|B\u2000|A\u2000|", reversed(grid.values()), 1) #Black's POV
+    else:
+        player = "white"
+        enemy = "black"
+        printgrid("\n \u2000|A\u2000|B\u2000|C\u2000|D\u2000|E\u2000|F\u2000|G\u2000|H\u2000|", grid.values(), 8) #White's POV
+
+    legalmovesv1 = []
+    #player = "black"
+
+    tempstate = ""
+    enemypieceslist = []
+    playerpieceslist = []
+    for key, value in grid.items(): #find all legal moves
+        if value == "":
+            tempstate += "-"
+            continue
+        if value.name[0] != player[0]:
+            tempstate += value.name[1]
+            enemypieceslist.append(value.name)
+            continue
+        else:
+            tempstate += value.name[1]
+            playerpieceslist.append(value.name)
+            #print(value.name)
+            #print(key) #(current square)
+            currentindex = gridlist.index(key) #gets the index of the current square equivalent in the gridlist
+            moveanalyzer(player, grid, value, "rook", legalmovesv1, currentindex, 8, 1, 100, 100, -56, -8, 8, 8, 56, -8, -7, 0, 1, 0, 7, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+            moveanalyzer(player, grid, value, "bishop", legalmovesv1, currentindex, 9, 7, 100, 100, -63, -9, 9, 9, 63, -9, -49, -7, 7, 7, 49, -7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+            moveanalyzer(player, grid, value, "queen", legalmovesv1, currentindex, 9, 8, 7, 1, -63, -9, 9, 9, 63, -9, -56, -8, 8, 8, 56, -8, -49, -7, 7, 7, 49, -7, -7, 0, 1, 0, 7, -1)
+            moveanalyzer(player, grid, value, "king", legalmovesv1, currentindex, 9, 8, 7, 1, -9, -9, 9, 9, 9, -9, -8, -8, 8, 8, 8, -8, -7, -7, 7, 7, 7, -7, -1, 0, 1, 0, 1, -1)
+            moveanalyzer(player, grid, value, "night", legalmovesv1, currentindex, 17, 15, 10, 6, -17, -17, 17, 17, 17, -17, -15, -15, 15, 15, 15, -15, -10, -10, 10, 10, 10, -10, -6, -6, 6, 6, 6, -6)
+            moveanalyzer(player, grid, value, "pawn", legalmovesv1, currentindex, 8, 100, 100, 100, -16, -8, 8, 8, 16, -8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+            pawncaptureanalyzer(player, grid, value, legalmovesv1, currentindex)
+
+    if len(enemypieceslist) <= 2 and len(playerpieceslist) <= 2: # insufficient material check
+        pinsufficient = True #corrected an error which only considered the enemy pieces
+        einsufficient = True
+        for piece in playerpieceslist:
+            if piece[1:] == "queen" or piece[1:] == "rook" or piece[1:] == "pawn":
+                pinsufficient = False
+                break
+        for piece in enemypieceslist:
+            if piece[1:] == "queen" or piece[1:] == "rook" or piece[1:] == "pawn":
+                einsufficient = False
+                break
+        if pinsufficient == True and einsufficient == True:
+            print("Both players have insufficient material to win. The game is a draw.")
+            break
+
+    enemypieces1 = len(enemypieceslist) #needed later to detect if a capture has occurred
+    
+    if len(pawnmoved2) != 0: #en passant detector
+        tempstate += pawnmoved2[0]
+        eppawncell = pawnmoved2[0] #gets the cell reference out of the list
+        #print(eppawncell)
+        eppawnindex = gridlist.index(eppawncell) #gets the index location of the moved pawn
+        #print(eppawnindex)
+        if player == "white":
+            target = gridlist[eppawnindex-8]
+        if player == "black":
+            target = gridlist[eppawnindex+8]
+        bud1 = gridlist[eppawnindex-1] #gets the cell reference of one neighbour of the moved pawn
+        #print(bud1)
+        bud2 = gridlist[eppawnindex+1] #gets the cell reference of the other neighbour of the moved pawn
+        #print(bud2)
+        if grid[bud1] != "" and (eppawncell[0] != "A" or (eppawncell[0] == "A" and bud1[0] != "H")):
+            if grid[bud1].name[0] == player[0] and grid[bud1].name[1:] == "pawn":
+                legalmovesv1.append(f"p{bud1}{target}EP")
+        if grid[bud2] != "" and (eppawncell[0] != "H" or (eppawncell[0] == "H" and bud2[0] != "A")):
+            if grid[bud2].name[0] == player[0] and grid[bud2].name[1:] == "pawn":
+                legalmovesv1.append(f"p{bud2}{target}EP")
+            
+    pawnmoved2.clear() #resets the en passant list
+            
+    legalmovesv2 = list(set(legalmovesv1)) #removes duplicate moves
+    legalmovesv2.sort()
+    #print(f"legalmovesv2: {legalmovesv2}")
+
+    invalidmoves = []                    
+    for testmove in legalmovesv2: #test every legal move so far. If a move allows the king to be captured on the next turn, it's an invalid move.
+        gridcopy = grid.copy()
+        startcell = testmove[1:3] #reference for current cell
+        endcell = testmove[3:5]  #reference for target cell
+        gridcopy[endcell] = gridcopy[startcell]
+        gridcopy[startcell] = ""
+        try:
+            if testmove[5:7] == "EP":
+                if player == "white":
+                    eppawnindex = gridlist[endcell]+8
+                if player == "black":
+                    eppawnindex = gridlist[endcell]-8
+                eppawnlocation = gridlist[eppawnindex]
+                grid[eppawnlocation] = ""
+        except:
+            pass
+        kingcell = ""
+        for key, value in gridcopy.items(): #won't work for test situations where there is more than one king, but should be fine for regular gameplay
+            if value == eval(str(player[0] + "king")):
+                kingcell = key
+                break
+        enemymoves = []
+        for key, value in gridcopy.items(): #find all legal moves for opponent
+            if value == "":
+                continue
+            if value.name[0] == player[0]: # ignore current player pieces
+                continue
+            else:
+                currentindex = gridlist.index(key) 
+                moveanalyzer(enemy, gridcopy, value, "rook", enemymoves, currentindex, 8, 1, 100, 100, -56, -8, 8, 8, 56, -8, -7, 0, 1, 0, 7, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+                moveanalyzer(enemy, gridcopy, value, "bishop", enemymoves, currentindex, 9, 7, 100, 100, -63, -9, 9, 9, 63, -9, -49, -7, 7, 7, 49, -7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+                moveanalyzer(enemy, gridcopy, value, "queen", enemymoves, currentindex, 9, 8, 7, 1, -63, -9, 9, 9, 63, -9, -56, -8, 8, 8, 56, -8, -49, -7, 7, 7, 49, -7, -7, 0, 1, 0, 7, -1)
+                moveanalyzer(enemy, gridcopy, value, "king", enemymoves, currentindex, 9, 8, 7, 1, -9, -9, 9, 9, 9, -9, -8, -8, 8, 8, 8, -8, -7, -7, 7, 7, 7, -7, -1, 0, 1, 0, 1, -1)
+                moveanalyzer(enemy, gridcopy, value, "night", enemymoves, currentindex, 17, 15, 10, 6, -17, -17, 17, 17, 17, -17, -15, -15, 15, 15, 15, -15, -10, -10, 10, 10, 10, -10, -6, -6, 6, 6, 6, -6)
+                moveanalyzer(enemy, gridcopy, value, "pawn", enemymoves, currentindex, 8, 100, 100, 100, -16, -8, 8, 8, 16, -8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+                #don't need to consider ep, castling or promotion: these moves cannot take a king
+                pawncaptureanalyzer(enemy, gridcopy, value, enemymoves, currentindex)
+        #print(testmove)
+        #print(kingcell)
+        #print(enemymoves)
+        #print("")
+        for move in enemymoves:
+            target = move[3:5]
+            if target == kingcell:
+                invalidmoves.append(testmove)
+                break
+
+    #print(f"invalidmoves: {invalidmoves}")
+    legalmovesv3 = list(set(legalmovesv2)-set(invalidmoves))
+    legalmovesv3.sort()
+    legalmovesv4 = [move.upper() for move in legalmovesv3]
+    #print(f"legalmovesv4: {legalmovesv4}")
+
+    kcastleopt = []
+    qcastleopt = []
+    if player == "white" and wkingmoved == False: # determines if castling is available (checks notwithstanding)
+        if wkingrookmoved == False and grid["F1"] == "" and grid["G1"] == "" and grid["H1"] == wrook: #need last condition in case rook gets captured before it moves!
+            kcastleopt.extend(["kE1E1", "kE1F1", "kE1G1"])
+        if wqueenrookmoved == False and grid["D1"] == "" and grid["C1"] == "" and grid["B1"] == "" and grid["A1"] == wrook:
+            qcastleopt.extend(["kE1E1", "kE1D1", "kE1C1"])
+    if player == "black" and bkingmoved == False:
+        if bkingrookmoved == False and grid["F8"] == "" and grid["G8"] == "" and grid["H8"] == brook:
+            kcastleopt.extend(["kE8E8", "kE8F8", "kE8G8"])
+        if bqueenrookmoved == False and grid["D8"] == "" and grid["C8"] == "" and grid["B8"] == "" and grid["A8"] == brook:
+            qcastleopt.extend(["kE8E8", "kE8D8", "kE8C8"])
+            
+    #print(f"kcastleopt: {kcastleopt}")
+    #print(f"qcastleopt: {qcastleopt}")
+    #king cannot be in check, move through check, or end in check
+
+    castlecheck(kcastleopt)
+    castlecheck(qcastleopt)
+
+    #print(f"kcastleopt: {kcastleopt}")
+    #print(f"qcastleopt: {qcastleopt}")
+
+    if len(kcastleopt) != 0: # adds king/queenside castling to legal moves if available
+        legalmovesv4.append("OO")
+        tempstate += "*OO*"
+    if len(qcastleopt) != 0:
+        legalmovesv4.append("OOO")
+        tempstate += "*OOO*"
+
+    tempstate += player[0]
+    states.append(tempstate)
+    print(f"Legal moves: {legalmovesv4}")
+
+    threefold = False # threefold repetition check
+    for state in states:
+        repeats = states.count(state)
+        if repeats >= 3:
+            threefold = True
+            break
+
+    if threefold == True:
+        print("Threefold repetition. The game is a draw.")
+        break    
+
+    checkcheck = False
+    gridcopy = grid.copy()
+    kingcell = ""
+    for key, value in gridcopy.items(): #won't work for test situations where there is more than one king, but should be fine for regular gameplay
+        if value == eval(str(player[0] + "king")):
+            kingcell = key
+            break
+    enemymoves = []
+    for key, value in gridcopy.items(): #find all legal moves for opponent
+        if value == "":
+            continue
+        if value.name[0] == player[0]: # ignore current player pieces
+            continue
+        else:
+            currentindex = gridlist.index(key) 
+            moveanalyzer(enemy, gridcopy, value, "rook", enemymoves, currentindex, 8, 1, 100, 100, -56, -8, 8, 8, 56, -8, -7, 0, 1, 0, 7, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+            moveanalyzer(enemy, gridcopy, value, "bishop", enemymoves, currentindex, 9, 7, 100, 100, -63, -9, 9, 9, 63, -9, -49, -7, 7, 7, 49, -7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+            moveanalyzer(enemy, gridcopy, value, "queen", enemymoves, currentindex, 9, 8, 7, 1, -63, -9, 9, 9, 63, -9, -56, -8, 8, 8, 56, -8, -49, -7, 7, 7, 49, -7, -7, 0, 1, 0, 7, -1)
+            moveanalyzer(enemy, gridcopy, value, "king", enemymoves, currentindex, 9, 8, 7, 1, -9, -9, 9, 9, 9, -9, -8, -8, 8, 8, 8, -8, -7, -7, 7, 7, 7, -7, -1, 0, 1, 0, 1, -1)
+            moveanalyzer(enemy, gridcopy, value, "night", enemymoves, currentindex, 17, 15, 10, 6, -17, -17, 17, 17, 17, -17, -15, -15, 15, 15, 15, -15, -10, -10, 10, 10, 10, -10, -6, -6, 6, 6, 6, -6)
+            moveanalyzer(enemy, gridcopy, value, "pawn", enemymoves, currentindex, 8, 100, 100, 100, -16, -8, 8, 8, 16, -8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+            #don't need to consider ep, castling or promotion: these moves cannot take a king
+            pawncaptureanalyzer(enemy, gridcopy, value, enemymoves, currentindex)
+    for move in enemymoves:
+        target = move[3:5]
+        if target == kingcell:
+            checkcheck = True
+            break
+
+    if checkcheck == True:
+        print(f"{player.capitalize()}: your king is in check.")
+
+    if len(legalmovesv4) == 0:
+        if checkcheck == True:
+            print(f"Checkmate! {enemy.capitalize()} wins!")
+            break
+        if checkcheck == False:
+            print("Stalemate! The game ends in a draw!")
+            break      
+
+    print(f"\nIt is {player}'s turn")
+    while True: # player input begins
+        playermove = input("\nPlease enter your move, or type 'help':").upper()
+
+        if playermove == "HELP":
+            print("Write your move in the format:")
+            print("First letter of piece, current square of piece, target square (no spaces or commas).")
+            print("For example, moving the pawn on E2 to E4 is written as 'PE2E4'.")
+            print("To avoid confusion with kings, knights use the letter N.")
+            print("If performing en passant, add 'EP' to the end, e.g. 'PE5F6EP'")
+            print("Castle kingside with 'OO' and queenside with 'OOO'.")
+            print("If a pawn reaches the end rank, a second input will ask for promotion.")
+            continue
+
+        if playermove == "POUR WHISKEY" or playermove == "POUR WHISKY":
+            print("You're a sore loser MacReady.")
+            continue
+
+        if playermove not in legalmovesv4:
+            print("That's not a legal move.")
+            continue
+        else:
+            break
+
+    if playermove == "OO": #castling
+        if player == "white":
+            grid["G1"] = wking
+            grid["E1"] = ""
+            grid["F1"] = wrook
+            grid["H1"] = ""
+        if player == "black":
+            grid["G8"] = bking
+            grid["E8"] = ""
+            grid["F8"] = brook
+            grid["H8"] = ""
+    elif playermove == "OOO":
+        if player == "white":
+            grid["C1"] = wking
+            grid["E1"] = ""
+            grid["D1"] = wrook
+            grid["A1"] = ""
+        if player == "black":
+            grid["C8"] = bking
+            grid["E8"] = ""
+            grid["D8"] = brook
+            grid["A8"] = ""
+    else:
+        startcell = playermove[1:3] #reference for current cell
+        endcell = playermove[3:5]  #reference for target cell
+        grid[endcell] = grid[startcell]
+        grid[startcell] = ""
+        try:
+            #print(playermove[5:])
+            if playermove[5:] == "EP": #en passant
+                if player == "white":
+                    #print(f"{gridlist.index(endcell)}")
+                    eppawnindex = gridlist.index(endcell)+8
+                    #print(f"eppawnindex: {eppawnindex}")
+                if player == "black":
+                    eppawnindex = gridlist.index(endcell)-8
+                eppawnlocation = gridlist[eppawnindex]
+                #print(f"eppawnlocation:{eppawnlocation}")
+                grid[eppawnlocation] = ""
+        except:
+            pass
+        
+    firstthree = playermove[0:3] #recording if a king or rook has moved
+    #print(firstthree)
+    #print(wkingmoved)
+    if firstthree == "KE1":
+        wkingmoved = True
+    if firstthree == "KE8":
+        bkingmoved = True
+    if firstthree == "RA1":
+        wqueenrookmoved = True
+    if firstthree == "RA8":
+        bqueenrookmoved = True
+    if firstthree == "RH1":
+        wkingrookmoved = True
+    if firstthree == "RH8":
+        bkingrookmoved = True
+
+    if playermove[0] == "P" and (abs(int(playermove[2]) - int(playermove[4])) == 2): # if a pawn moved 2 squares, for next player's ep options
+        pawnmoved2.append(playermove[3:5])
+
+    if playermove[0] == "P" and (playermove[4] == "8" or playermove[4] == "1"): #promotion
+        promotions = ["queen", "knight", "rook", "bishop"]
+        while True:
+            promo = input("You must promote the pawn, enter name of new piece:").lower()
+            if promo not in promotions:
+                print("That's not a valid option.")
+                continue
+            else:
+                break
+        if promo == "knight":
+            promo = "night"
+        promocell = playermove[3:] #target cell
+        grid[promocell] = eval(player[0]+promo) #replaces target cell with new piece
+
+    enemypieces2 = 0
+    for key, value in grid.items(): 
+        if value == "":
+            continue
+        if value.name[0] != player[0]:
+            enemypieces2 += 1
+            continue
+    #print(nocaptures)
+    if enemypieces1 > enemypieces2: #see if capture has occurred
+        nocaptures = 0
+    else:
+        nocaptures += 1
+
+    if nocaptures >= 50:
+        print("No captures for last 50 moves. The game is a draw.")
+        break
+
+	</pre>
+	
+	<script>
+	function Toggle() {
+		var x = document.getElementById("pycode");
+		if (x.style.display === "none") 
+			{x.style.display = "block";} 
+		else {x.style.display = "none"; }}
+		
+	function Copy() {
+		const copyText = document.getElementById("pycode").innerText; 
+		navigator.clipboard.writeText(copyText);}
+	</script>
+
+</body>
+</html>

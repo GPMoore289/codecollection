@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">			
+    <title>Frog Jump Problem</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+</head>
+<body onload="brython()">
+	<p><a href="./../math.html">&#11013; Back</a></p>
+    <h1>Frog Jump Problem</h1>
+	<div class = "synopsis">
+	<p><strong>Original Creation:</strong> 6th April 2020</p>
+	<p><strong>Uploaded:</strong> 25th Feb 2025</p>
+	<p><strong>Status:</strong> Complete. Non-interactive. Original code was written without AI.</p>
+	<p><strong>Description:</strong> Inspired by a Matt Parker video. Imagine a frog on a riverbank with a line of 10 lilypads in front of it. The frog can jump any number of lilypads forward, but only forward. 
+	What is the average number of jumps it will take for the frog to reach the 10th lilypad? This can be solved through statistical calculation (it's about 3), 
+	but this was my first exercise in using brute force computation to solve a problem.</p>
+	</div>
+	
+	<div class="gallery">
+		<div><figure>
+		<figcaption>Example output</figcaption>		
+		<img src="images/frog.PNG" alt="Example output" title="Example output">
+		</figure></div>
+	</div>	
+	
+	<button onclick="Toggle()">Toggle Original Python Code Display</button>
+	<button onclick="Copy()">Copy the Python Code</button>
+
+	<pre id="pycode">
+import random
+
+j1 = 0
+j2 = 0
+j3 = 0
+j4 = 0
+j5 = 0
+j6 = 0
+j7 = 0
+j8 = 0
+j9 = 0
+j10 = 0
+x = 0
+while x &lt; 1000000:
+    lilypad = 0
+    jlen = 0
+    while lilypad &lt; 10:
+        jump = random.randint(1,(10-lilypad))
+        jlen += 1
+        lilypad += jump
+    x += 1
+    if jlen == 1:
+        j1 += 1
+    if jlen == 2:
+        j2 += 1
+    if jlen == 3:
+        j3 += 1
+    if jlen == 4:
+        j4 += 1
+    if jlen == 5:
+        j5 += 1
+    if jlen == 6:
+        j6 += 1
+    if jlen == 7:
+        j7 += 1
+    if jlen == 8:
+        j8 += 1
+    if jlen == 9:
+        j9 += 1
+    if jlen == 10:
+        j10 += 1
+    continue
+print("No. of 1 jumps: " + str(j1))
+print("No. of 2 jumps: " + str(j2))
+print("No. of 3 jumps: " + str(j3))
+print("No. of 4 jumps: " + str(j4))
+print("No. of 5 jumps: " + str(j5))
+print("No. of 6 jumps: " + str(j6))
+print("No. of 7 jumps: " + str(j7))
+print("No. of 8 jumps: " + str(j8))
+print("No. of 9 jumps: " + str(j9))
+print("No. of 10 jumps: " + str(j10))
+	</pre>
+	
+	<script>
+	function Toggle() {
+		var x = document.getElementById("pycode");
+		if (x.style.display === "none") 
+			{x.style.display = "block";} 
+		else {x.style.display = "none"; }}
+		
+	function Copy() {
+		const copyText = document.getElementById("pycode").innerText; 
+		navigator.clipboard.writeText(copyText);}
+	</script>
+
+</body>
+</html>

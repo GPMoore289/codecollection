@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">		
+    <title>Mastermind</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+</head>
+<body onload="brython()">
+	<p><a href="./../games.html">&#11013; Back</a></p>
+    <h1>Mastermind</h1>
+	<div class = "synopsis">
+	<p><strong>Original Creation:</strong> First version: 4th March 2020, Last version: 8th December 2022</p>
+	<p><strong>Uploaded:</strong> 25th Feb 2025</p>
+	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
+	<p><strong>Description:</strong> This was the first coding project I attempted, ever! I first tried it in 2018 but had no clue what I was doing. I revisited it in 2020 and got a working version.
+	Then I neatened up the code with <strong>def</strong> functions in 2022 and this is the version you see here. Beyond a few sandbox experiments, I was doing everything for the first time here:
+	variables, while loops, lists, the <strong>random</strong> module, printing strings. It's not well written but I do hold a bit of pride for attempting something so complicated (by absolute beginner standards)
+	for my first project.</p>
+	</div>
+	
+	<div class="gallery">
+		<div><figure>
+		<figcaption>Mastermind gameplay</figcaption>		
+		<img src="images/mastermind.PNG" alt="Mastermind gameplay" title="Mastermind gameplay">
+		</figure></div>
+	</div>	
+	
+	<button onclick="Toggle()">Toggle Original Python Code Display</button>
+	<button onclick="Copy()">Copy the Python Code</button>
+
+	<pre id="pycode">
+import random
+code = list.copy([random.randint(1,6) for x in range(1, 5)])
+allowed = ["1", "2", "3", "4", "5", "6"]
+guess = 12
+
+print("Welcome to MASTERMIND. \nEnter code four-digit number, each digit from 1-6. \nA digit will either be Correct, Present (but in the wrong position), or Not Correct.\nEnter 'quit' to quit.\n")
+
+def dgtchk(numA, numB, numC, numD, cod1, cod2, cod3, cod4):
+	if numA == cod1:
+		ans.append("Correct")
+		cod1 = " "
+	elif numA == cod2 and numB != cod2:
+		ans.append("Present")
+		cod2 = " "
+	elif numA == cod3 and numC != cod3:
+		ans.append("Present")
+		cod3 = " "
+	elif numA == cod4 and numD != cod4:
+		ans.append("Present")
+		cod4 = " "
+	else:
+		ans.append("Not Present")
+		
+while guess > 0:
+	nums = input("Enter a four-digit number: ")
+	if nums == "quit":
+		break
+	if nums == "give":
+		print(code)
+	if len(nums) != 4:
+		print("Must have four digits")
+		continue
+	if not (nums[0] and nums[1] and nums[2] and nums[3]) in allowed:
+		print("All digits entered must be an integer from 1-6")
+		continue
+	num1 = int(nums[0])
+	num2 = int(nums[1])
+	num3 = int(nums[2])
+	num4 = int(nums[3])
+
+	ans = []
+	
+	dgtchk(num1, num2, num3, num4, code[0], code[1], code[2], code[3])
+	dgtchk(num2, num1, num3, num4, code[1], code[0], code[2], code[3])
+	dgtchk(num3, num1, num2, num4, code[2], code[0], code[1], code[3])
+	dgtchk(num4, num1, num2, num3, code[3], code[0], code[1], code[2])
+	
+	if ans.count("Correct") >= 4:
+		print("You win!")
+		break
+	print("Digits Correct: " + str(ans.count("Correct")))
+	print("Digits Present: " + str(ans.count("Present")))
+	print("Digits Not Correct: " + str(ans.count("Not Present")))
+	guess += -1
+	print("Guesses remaining: " + str(guess) + "\n")
+	if guess &lt; 1:
+		print("You lose!\nAnswer was " + str(code))
+	</pre>
+	
+	<script>
+	function Toggle() {
+		var x = document.getElementById("pycode");
+		if (x.style.display === "none") 
+			{x.style.display = "block";} 
+		else {x.style.display = "none"; }}
+		
+	function Copy() {
+		const copyText = document.getElementById("pycode").innerText; 
+		navigator.clipboard.writeText(copyText);}
+	</script>
+
+</body>
+</html>

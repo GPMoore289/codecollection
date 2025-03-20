@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">		
+    <title>Noughts and Crosses</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+</head>
+<body onload="brython()">
+	<p><a href="./../games.html">&#11013; Back</a></p>
+    <h1>Noughts and Crosses</h1>
+	<div class = "synopsis">
+	<p><strong>Original Creation:</strong> 6th April 2022</p>
+	<p><strong>Uploaded:</strong> 3rd March 2025</p>
+	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
+	<p><strong>Description:</strong> This may be the first project I created that contains output that isn't just text - now I have a grid! 
+	Inadvertently, I also realized this could be my absolute basic introduction to artificial intelligence, 
+	and you have the option of selecting difficulties in which the opponent plays more efficiently. </p>
+	</div>
+	
+	<div class="gallery">
+		<div><figure>
+		<figcaption>Noughts and Crosses gameplay</figcaption>		
+		<img src="images/xsandos.PNG" alt="Noughts and Crosses gameplay" title="Noughts and Crosses gameplay">
+		</figure></div>
+	</div>	
+	
+	<button onclick="Toggle()">Toggle Original Python Code Display</button>
+	<button onclick="Copy()">Copy the Python Code</button>
+
+	<pre id="pycode">
+import random
+import time
+
+while True:
+        pturn = random.randint(0, 1)
+        bank = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+        print("\nYou are Crosses. Your opponent is Noughts.")
+
+        while True:
+                diffent = input("Please select difficulty, B for Beginner, E for Easy, M for Medium, H for Hard or I for Impossible:")
+                diff = diffent.upper()
+                if diff == "B" or diff == "E" or diff == "M" or diff == "H" or diff == "I":
+                        break
+                else:
+                        continue           
+
+        while True:
+
+                def onumcalcdef(lineno):
+                        left = list(filter(lambda x: x != "X", lineno))
+                        return left[0]
+
+                def onumcalcatt(lineno):
+                        left = list(filter(lambda x: x != "O", lineno))
+                        return random.choice(left)
+
+                line1 = [bank[0], bank[1], bank[2]]
+                line2 = [bank[3], bank[4], bank[5]]
+                line3 = [bank[6], bank[7], bank[8]]
+                line4 = [bank[0], bank[3], bank[6]]
+                line5 = [bank[1], bank[4], bank[7]]
+                line6 = [bank[2], bank[5], bank[8]]
+                line7 = [bank[0], bank[4], bank[8]]
+                line8 = [bank[2], bank[4], bank[6]]
+
+                print("""
+                     #     #    
+                  {0}  #  {1}  #  {2}
+                     #     # 
+                #################
+                     #     #
+                  {3}  #  {4}  #  {5}
+                     #     #   
+                #################
+                     #     #
+                  {6}  #  {7}  #  {8}
+                     #     #   
+                """.format(bank[0], bank[1], bank[2], bank[3], bank[4], bank[5], bank[6], bank[7], bank[8]))
+
+                if (line1.count("X") == 3 or line2.count("X") == 3 or line3.count("X") == 3 or line4.count("X") == 3 or
+                    line5.count("X") == 3 or line6.count("X") == 3 or line7.count("X") == 3 or line8.count("X") == 3):
+                        print("You win!")
+                        break
+
+                elif (line1.count("O") == 3 or line2.count("O") == 3 or line3.count("O") == 3 or line4.count("O") == 3 or
+                      line5.count("O") == 3 or line6.count("O") == 3 or line7.count("O") == 3 or line8.count("O") == 3):
+                        print("You lose!")
+                        break
+
+                elif bank.count("X") >= 5 or bank.count("O") >= 5:
+                        print("It's a draw!")
+                        break
+
+                if pturn == 0:
+                        try:
+                                pnum = int(input("Enter a number shown in the grid:"))
+                        except ValueError:
+                                print("That's not a valid entry.")
+                                continue                        
+                        if pnum not in bank:
+                                 print("That's not a valid entry.")
+                                 continue
+                        bank[pnum-1] = "X"
+                        pturn += 1
+                        continue
+
+                if pturn == 1:
+                        print("Opponent is deciding...")
+                        time.sleep(1)
+                        if diff == "B":
+                                while True:
+                                        onum = random.choice(bank)
+                                        if onum == "X" or onum == "O":
+                                                continue
+                                        else:
+                                                break
+ 
+                        if diff == "M" or diff == "H" or diff == "I":
+                                 if line1.count("O") == 1 and line1.count("X") == 0:
+                                        onum = onumcalcatt(line1)
+                                 elif line2.count("O") == 1 and line2.count("X") == 0:
+                                        onum = onumcalcatt(line2)
+                                 elif line3.count("O") == 1 and line3.count("X") == 0:
+                                        onum = onumcalcatt(line3)
+                                 elif line4.count("O") == 1 and line4.count("X") == 0:
+                                        onum = onumcalcatt(line4)
+                                 elif line5.count("O") == 1 and line5.count("X") == 0:
+                                        onum = onumcalcatt(line5)
+                                 elif line6.count("O") == 1 and line6.count("X") == 0:
+                                        onum = onumcalcatt(line6)
+                                 elif line7.count("O") == 1 and line7.count("X") == 0:
+                                        onum = onumcalcatt(line7)
+                                 elif line8.count("O") == 1 and line8.count("X") == 0:
+                                        onum = onumcalcatt(line8)
+                                 else:
+                                         while True:
+                                                onum = random.choice(bank)
+                                                if onum == "X" or onum == "O":
+                                                        continue
+                                                else:
+                                                        break
+
+                        if diff == "E" or diff == "M" or diff == "H" or diff == "I":
+                                 if line1.count("O") == 2 and line1.count("X") == 0:
+                                        onum = onumcalcatt(line1)
+                                 elif line2.count("O") == 2 and line2.count("X") == 0:
+                                        onum = onumcalcatt(line2)
+                                 elif line3.count("O") == 2 and line3.count("X") == 0:
+                                        onum = onumcalcatt(line3)
+                                 elif line4.count("O") == 2 and line4.count("X") == 0:
+                                        onum = onumcalcatt(line4)
+                                 elif line5.count("O") == 2 and line5.count("X") == 0:
+                                        onum = onumcalcatt(line5)
+                                 elif line6.count("O") == 2 and line6.count("X") == 0:
+                                        onum = onumcalcatt(line6)
+                                 elif line7.count("O") == 2 and line7.count("X") == 0:
+                                        onum = onumcalcatt(line7)
+                                 elif line8.count("O") == 2 and line8.count("X") == 0:
+                                        onum = onumcalcatt(line8)
+                                 else:
+                                         while True:
+                                                onum = random.choice(bank)
+                                                if onum == "X" or onum == "O":
+                                                        continue
+                                                else:
+                                                        break
+                                        
+                        if diff == "H" or diff == "I":
+                                 if line1.count("X") == 2 and line1.count("O") == 0:
+                                        onum = onumcalcdef(line1)
+                                 elif line2.count("X") == 2 and line2.count("O") == 0:
+                                        onum = onumcalcdef(line2)
+                                 elif line3.count("X") == 2 and line3.count("O") == 0:
+                                        onum = onumcalcdef(line3)
+                                 elif line4.count("X") == 2 and line4.count("O") == 0:
+                                        onum = onumcalcdef(line4)
+                                 elif line5.count("X") == 2 and line5.count("O") == 0:
+                                        onum = onumcalcdef(line5)
+                                 elif line6.count("X") == 2 and line6.count("O") == 0:
+                                        onum = onumcalcdef(line6)
+                                 elif line7.count("X") == 2 and line7.count("O") == 0:
+                                        onum = onumcalcdef(line7)
+                                 elif line8.count("X") == 2 and line8.count("O") == 0:
+                                        onum = onumcalcdef(line8)
+                                 else:
+                                         while True:
+                                                onum = random.choice(bank)
+                                                if onum == "X" or onum == "O":
+                                                        continue
+                                                else:
+                                                        break
+
+                        if diff == "I":
+                                if bank[4] == 5:
+                                        onum = 5
+                                elif bank[4] == "X" and bank[0] == 1 and bank[2] ==3 and bank[6] ==7 and bank[8] == 9:
+                                        
+                                        ran = random.choice([bank[0], bank[2], bank[6], bank[8]])
+                                        onum = ran
+                        print(onum)
+                        bank[onum-1] = "O"
+                        pturn -=1
+                        continue        
+        continue
+
+
+	</pre>
+	
+	<script>
+	function Toggle() {
+		var x = document.getElementById("pycode");
+		if (x.style.display === "none") 
+			{x.style.display = "block";} 
+		else {x.style.display = "none"; }}
+		
+	function Copy() {
+		const copyText = document.getElementById("pycode").innerText; 
+		navigator.clipboard.writeText(copyText);}
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+    <title>Conway's Game of Life</title>
+	<style>
+	</style>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+</head>
+<body onload="brython()">
+	<p><a href="./../games.html">&#11013; Back</a></p>
+    <h1>Conway's Game of Life</h1>
+	<div class = "synopsis">
+	<p><strong>Original Creation:</strong> 4th October 2024</p>
+	<p><strong>Uploaded:</strong> 3rd March 2025</p>
+	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
+	<p><strong>Description:</strong> Not to be confused with <a href="https://en.wikipedia.org/wiki/The_Game_of_Life">the board game with a similar name</a>, 
+	Conway's Game of Life is a zero player game that starts with a few simple rules about whether a cell will live or die depending on its neighbours, 
+	and each cycle produces an evolving display of elaborate shapes that spread, collapse, move, collide and eventually create static structures. 
+	This version randomizes the initial layout, and will abort if the game reaches an all still lifes state, or if there is a 2 period oscillator. 
+	It will continue running if it reaches a 3-or-higher period oscillator.
+	This was the first extracurricular programming project given to me by my Intro to Programming professor, when it was clear I already had some 
+	programming experience, and was my first project that successfully utilized a grid (unless you count <a href="noughtsandcrosses.html">noughts and crosses</a>).
+	You may have to adjust the colours and window size on your Python shell to get the best effect.</p>
+	</div>
+	
+	<div class="gallery">
+		<div><figure>
+		<figcaption>Explosion-like pattern</figcaption>		
+		<img src="images/starburst.PNG" alt="Explosion-like pattern" title="Explosion-like pattern">
+		</figure></div>
+		
+		<div><figure>
+		<figcaption>Game end state with a single still life</figcaption>
+		<img src="images/endstate.PNG" alt="Game end state with a single still life" title="Game end state with a single still life">
+		</figure></div>
+	</div>	
+		
+	<button onclick="Toggle()">Toggle Original Python Code Display</button>
+	<button onclick="Copy()">Copy the Python Code</button>
+
+	<pre id="pycode">
+import random
+import time
+
+firstgrid = {}
+lastgrid = {}
+livechar = "#"
+deadchar = "."
+gen = 0
+
+def endstatecheck (grid1, grid2, state): #detects if the game is all still lifes or in a 2 period oscillator state
+	a = 1
+	same = True
+	while a &lt; 401 and len(grid2) != 0: #second condition not actually needed for 1st vs 2nd grid, but is needed for 2nd vs last
+		if grid1[a] != grid2[a]: 
+			same = False
+			break
+		a += 1        
+	if same == True and len(grid2) != 0:
+		print(f"The game has reached a {state} state. It lasted {gen} generations.")
+		return same
+	
+for i in range(1, 401): #creates the grid
+	x = random.randrange(1, 7) #game has a 1 in 6 chance of creating a live cell
+	if x == 1:
+		firstgrid[i] = livechar
+	else:
+		firstgrid[i] = deadchar
+
+while True: #main loop
+	gen += 1
+	n = 1
+	while n &lt; 400: #prints a visual representation of the grid
+		print(f"{firstgrid[n]} {firstgrid[n+1]} {firstgrid[n+2]} {firstgrid[n+3]} {firstgrid[n+4]} {firstgrid[n+5]} {firstgrid[n+6]} {firstgrid[n+7]} {firstgrid[n+8]} {firstgrid[n+9]} {firstgrid[n+10]} {firstgrid[n+11]} {firstgrid[n+12]} {firstgrid[n+13]} {firstgrid[n+14]} {firstgrid[n+15]} {firstgrid[n+16]} {firstgrid[n+17]} {firstgrid[n+18]} {firstgrid[n+19]}")
+		n += 20
+		
+	print("")
+		
+	if livechar not in firstgrid.values(): #Checks if there are any live cells left
+		print(f"Everything is dead! It lasted {gen} generations.")
+		break      
+		
+	secondgrid = {}
+	
+	for i in firstgrid.keys(): #applies Conway's rules and creates a second grid
+		livepals = 0
+		cellstatus = firstgrid[i]
+		if i+1 &lt; 401 and firstgrid[i+1] == livechar and i%20 != 0:              #if east neighbour is alive, not above 400, and the current number is not divisible by 20
+			livepals += 1
+		if i-1 > 0 and firstgrid[i-1] == livechar and (i-1)%20 != 0:            #if west neighbour is alive, not zero or lower, and the current number-1 is not divisible by 20
+			livepals += 1
+		if i+19 &lt; 401 and firstgrid[i+19] == livechar and (i-1)%20 != 0:        #if southwest neighbour is alive, not above 400, and the current number-1 is not divisible by 20
+			livepals += 1
+		if i-19 > 0 and firstgrid[i-19] == livechar and i%20 != 0:              #if northeast neighbour is alive, not zero or lower, and the current number is not divisible by 20
+			livepals += 1
+		if i+20 &lt; 401 and firstgrid[i+20] == livechar:                          #if south neighbour is alive and not above 400.
+			livepals += 1
+		if i-20 > 0 and firstgrid[i-20] == livechar:                            #if north neighbour is alive and not below 0.
+			livepals += 1
+		if i+21 &lt; 401 and firstgrid[i+21] == livechar and i%20 != 0:            #if southeast neighbour is alive, not above 400 and current number is not divisible by 20.
+			livepals += 1
+		if i-21 > 0 and firstgrid[i-21] == livechar and (i-1)%20 != 0:          #if northwest neighbour is alive, not below 0 and current number-1 is not divisible by 20.
+			livepals += 1
+		if cellstatus == livechar and (livepals &lt; 2 or livepals > 3):           #living cell with less than 2 neighbours, or greater than 3 neighbours, dies
+			secondgrid[i] = deadchar
+		elif cellstatus == livechar and 2&lt;= livepals &lt;= 3 :                     #living cell with 2-3 neighbours lives
+			secondgrid[i] = livechar
+		elif cellstatus == deadchar and livepals == 3 :                         #dead cell with exactly 3 neighbours comes to life
+			secondgrid[i] = livechar
+		else:
+			secondgrid[i] = deadchar
+					  
+	x = endstatecheck (firstgrid, secondgrid, "static") #ends game if it has reached a static state
+	if x == True:
+		break
+	
+	y = endstatecheck (secondgrid, lastgrid, "2 period oscillator") #ends game if it has reached a 2 period oscillator state
+	if y == True:
+		break
+	
+	lastgrid = firstgrid.copy()
+	firstgrid = secondgrid.copy()
+	time.sleep(0.25) # stops it from running so fast!
+	</pre>
+	
+	<script>
+	function Toggle() {
+		var x = document.getElementById("pycode");
+		if (x.style.display === "none") 
+			{x.style.display = "block";} 
+		else {x.style.display = "none"; }}
+		
+	function Copy() {
+		const copyText = document.getElementById("pycode").innerText; 
+		navigator.clipboard.writeText(copyText);}
+	</script>
+
+</body>
+</html>
