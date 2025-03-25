@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">		
+    <title>Word Filter</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+</head>
+<body onload="brython()">
+	<p><a href="./../basic.html">&#11013; Back</a></p>
+    <h1>Word Filter</h1>
+	<div class = "synopsis">
+	<p><strong>Original Creation:</strong> 21st November 2024</p>
+	<p><strong>Uploaded:</strong> 20th Mar 2025</p>
+	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
+	<p><strong>Description:</strong>Simple project: you start with a list of words that you can add extra words to. Once done, type an integer, and the word list will be filtered
+	to only include words of that length or shorter. While mostly straightforward, this did alert me of the dangers of removing items from a list what is currently being iterated, 
+	and it's generally way safer to make a copy list first.</p>
+	</div>
+	
+	<div class="gallery">
+		<div><figure>
+		<figcaption>Entries, full list and filtered list</figcaption>		
+		<img src="images/wordfilter.PNG" alt="Entries, full list and filtered list" title="Entries, full list and filtered list">
+		</figure></div>
+	</div>	
+	
+	<button onclick="Toggle()">Toggle Original Python Code Display</button>
+	<button onclick="Copy()">Copy the Python Code</button>
+
+	<pre id="pycode">
+wordlist = ["apple", "banana", "avocado", "peach", "coconut", "persimmon", "plum", "orange", "melon", "guava", "cherry"]
+
+while True:
+    word = input("Please enter a word, or type 'done':").lower()
+
+    if word == "done":
+        break
+    else:
+        wordlist.append(word)
+
+while True:
+    length = input("Please enter the word character limit:")
+
+    try:
+        int(length)
+    except:
+        print("Please enter an integer.")
+        continue
+    else:
+        break
+
+length = int(length)
+
+removelist = []
+for word in wordlist:
+    print(word)
+    if len(word) > length:
+        removelist.append(word)
+
+for word in removelist:
+    wordlist.remove(word)
+
+print("")
+for word in wordlist:
+    print(word)
+
+	</pre>
+	
+	<script>
+	function Toggle() {
+		var x = document.getElementById("pycode");
+		if (x.style.display === "none") 
+			{x.style.display = "block";} 
+		else {x.style.display = "none"; }}
+		
+	function Copy() {
+		const copyText = document.getElementById("pycode").innerText; 
+		navigator.clipboard.writeText(copyText);}
+	</script>
+
+</body>
+</html>
