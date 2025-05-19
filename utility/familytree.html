@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+    <title>Family Tree</title>
+	<style>
+	</style>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+</head>
+<body onload="brython()">
+	<p><a href="../index.html">&#11013; Back</a></p>
+    <h1>Family Tree</h1>
+	<div class = "synopsis">
+	<p><strong>Original Creation:</strong> 1st August 2024</p>
+	<p><strong>Uploaded:</strong> 25th March 2025</p>
+	<p><strong>Status:</strong> Incomplete, somewhat functional.</p>
+	<p><strong>Description:</strong> At my girlfriend's family reunion, her cousin's daughter asked me how I was related to her. 
+	As someone with a small family, I never paid much attention to the naming system for distant family members, and I couldn't answer her question.
+	Coupled with the fact that I find my girlfriend's family tree hard to navigate, it prompted me to create a family tree program.
+	This was the first time I really utilized <strong>classes</strong> in a program, which made the inter-generational navigation much easier to manage.
+	I paused this project as there were <em>a lot</em> of edge cases I hadn't accounted for, plus I had to get ready for college in a few weeks.
+	Names have been changed for privacy reasons.
+	</p>
+	</div>
+	
+	<div class="gallery">
+		<div><figure>
+		<figcaption>Example 1</figcaption>		
+		<img src="images/ft1.PNG" alt="Example 1" title="Example 1">
+		</figure></div>
+		
+		<div><figure>
+		<figcaption>Example 2</figcaption>		
+		<img src="images/ft2.PNG" alt="Example 2" title="Example 2">
+		</figure></div>
+		
+		<div><figure>
+		<figcaption>Family Tree</figcaption>		
+		<img src="images/familytree.PNG" alt="Family Tree" title="Family Tree">
+		</figure></div>		
+
+	</div>	
+			
+	<button onclick="Toggle()">Toggle Original Python Code Display</button>
+	<button onclick="Copy()">Copy the Python Code</button>
+	
+
+	<pre id="pycode">
+class Person:
+    def __init__(self, name, level, partner, parent, gender, wed):
+        self.name = name
+        self.level = level
+        self.partner = partner
+        self.parent = parent
+        self.gender = gender
+        self.wed = wed
+
+Edgar = Person("Edgar", 1, "Rachel", "None", "M", "W")
+Rachel = Person("Rachel", 1, "Edgar", "None", "F", "W")
+Ben = Person("Ben", 2, "Deirdre", "Edgar", "M", "W")
+Deirdre = Person("Deirdre", 2, "Ben", "None", "F", "W")
+Dom = Person("Dom", 2, "Grace", "Edgar", "M", "W")
+Grace = Person("Grace", 2, "Dom", "None", "F", "W")
+Adam = Person("Adam", 2, "Roxanne", "Edgar", "M", "W")
+Roxanne = Person("Roxanne", 2, "Adam", "None", "F", "W")
+Sandy = Person("Sandy", 2, "Mike", "Edgar", "F", "W")
+Mike = Person("Mike", 2, "Sandy", "None", "M", "W")
+Leslie = Person("Leslie", 3, "Graham", "Ben", "F", "U")
+Graham = Person("Graham", 3, "Leslie", "None", "M", "U")
+Dave = Person("Dave", 3, "None", "Ben", "M", "U")
+Anne = Person("Anne", 3, "John", "Dom", "F", "U")
+John = Person("John", 3, "Anne", "None", "M", "U")
+Adrian = Person("Adrian", 3, "Penny", "Adam", "M", "W")
+Penny = Person("Penny", 3, "Adrian", "None", "F", "W")
+Albert = Person("Albert", 3, "Jenny", "Adam", "M", "W")
+Jenny = Person("Jenny", 3, "Albert", "None", "F", "W")
+Gordon = Person("Gordon", 3, "Tina", "Sandy", "M", "W")
+Tina = Person("Tina", 3, "Gordon", "None", "F", "W")
+Connor = Person("Connor", 3, "Camilla", "Sandy", "M", "W")
+Camilla = Person("Camilla", 3, "Connor", "None", "F", "W")
+Ashley = Person("Ashley", 4, "None", "Anne", "F", "U")
+Allie = Person("Allie", 4, "None", "Adrian", "F", "U")
+Amanda = Person("Amanda", 4, "None", "Adrian", "F", "U")
+Elle = Person("Elle", 4, "None", "Albert", "F", "U")
+Velma = Person("Velma", 4, "None", "Albert", "F", "U")
+Robert = Person("Robert", 4, "None", "Gordon", "M", "U")
+Elizabeth = Person("Elizabeth", 4, "James", "Gordon", "F", "U")
+James = Person("James", 4, "Elizabeth", "None", "M", "U")
+Alex = Person("Alex", 4, "None", "Connor", "F", "U")
+Jeremy = Person("Jeremy", 4, "None", "Connor", "M", "U")
+
+
+people = [Edgar, Rachel, Leslie, Graham, Ben, Deirdre, Dom, Grace, Adam, Roxanne, Sandy, Mike, Anne, Dave, John, Adrian, Penny, Albert, Jenny, Gordon, Tina, Connor, Camilla, Ashley, Allie, Amanda, Elle, Velma, Robert, Elizabeth, James, Jeremy, Alex]
+
+while True:
+    print("\nThis program will show Person 2's relation to Person 1. Please enter first name only, with capital. For list of available names, type List.\n")
+    while True:
+        p1 = input("Enter the first person's name: \n")
+        if p1 == "List":
+            for i in people:
+                print(i.name)
+                continue
+        for i in people:
+            if i.name == p1:
+                p1 = i
+                break
+        else:
+            print("Please enter a valid name. For list of available names, type List.")
+            continue
+        break
+    while True:
+        p2 = input("Enter the second person's name: \n")
+        if p2 == "List":
+            for i in people:
+                print(i.name)
+                continue
+        for i in people:
+            if i.name == p2:
+                p2 = i
+                break
+        else:
+            print("Please enter a valid name. For list of available names, type List.")
+            continue
+        break
+
+    leveldiff = p2.level-p1.level
+    p1part = eval(p1.partner)
+    p2part = eval(p2.partner)
+    p1parent = eval(p1.parent)
+    p2parent = eval(p2.parent)
+    
+    try:
+        p1partparent = eval(p1part.parent)
+    except:
+        pass
+    else:
+        p1partparent = eval(p1part.parent)
+        
+    try:
+        p2partparent = eval(p2part.parent)
+    except:
+        pass
+    else:
+        p2partparent = eval(p2part.parent)
+
+    try:
+        p1gparent = eval(p1parent.parent)
+    except:
+        pass
+    else:
+        p1gparent = eval(p1parent.parent)
+
+    try:
+        p2gparent = eval(p2parent.parent)
+    except:
+        pass
+    else:
+        p2gparent = eval(p2parent.parent)
+
+    try:
+        p1partgparent = eval(p1partparent.parent)
+    except:
+        pass
+    else:
+        p1partgparent = eval(p1partparent.parent)
+
+    try:
+        p2partgparent = eval(p2partparent.parent)
+    except:
+        pass
+    else:
+        p2partgparent = eval(p2partparent.parent)
+    
+
+    if p1.name == p2.name:
+        print(str(p1.name) + " and " + str(p2.name) + " are the same person!")
+
+    if leveldiff == 0:
+        if p1.partner == p2.name:
+            if p2.gender == "M" and p2.wed == "W":
+                print(p2.name + " is " + p1.name + "'s husband.")
+            elif p2.gender == "F" and p2.wed == "W":
+                print(p2.name + " is " + p1.name + "'s wife.")
+            elif p2.gender == "M" and p2.wed == "U":
+                print(p2.name + " is " + p1.name + "'s boyfriend.")
+            elif p2.gender == "F" and p2.wed == "U":
+                print(p2.name + " is " + p1.name + "'s girlfriend.")
+            continue
+        if p1.parent == p2.parent and p1.parent != "None":
+            print("is it getting here")
+            if p2.gender == "M":
+                print(p2.name + " is " + p1.name + "'s brother.")    
+            if p2.gender == "F":
+                print(p2.name + " is " + p1.name + "'s sister.")
+            continue
+        if p2.partner != "None" and p1.parent == "None" and (p1part.parent == p2.parent or p1part.parent == p2part.parent):
+                if p2.gender == "M":
+                    if p1.wed == "W":
+                        print(p2.name + " is " + p1.name + "'s brother-in-law.")
+                    if p1.wed == "U":
+                        print(p2.name + " is " + p1.name + "'s partner's brother.")
+                if p2.gender == "F":
+                    if p1.wed == "W":
+                        print(p2.name + " is " + p1.name + "'s sister-in-law.")
+                    if p1.wed == "U":
+                        print(p2.name + " is " + p1.name + "'s partner's sister.")
+                continue
+        if p1.partner != "None" and p2.parent == "None" and (p2part.parent == p1.parent or p1part.parent == p2part.parent):
+                if p1.gender == "M":
+                    if p2.wed == "W":
+                        print(p2.name + " is " + p1.name + "'s brother-in-law.")
+                    if p2.wed == "U":
+                        print(p2.name + " is " + p1.name + "'s partner's brother.")
+                if p1.gender == "F":
+                    if p2.wed == "W":
+                        print(p2.name + " is " + p1.name + "'s sister-in-law.")
+                    if p2.wed == "U":
+                        print(p2.name + " is " + p1.name + "'s partner's sister.")
+                continue
+        if p1.parent != "None" and p2.parent != "None":
+            if p1parent.parent == p2parent.parent and p1parent.parent != "None":
+                print(p2.name + " is " + p1.name + "'s first cousin.")
+                continue
+        if p2.parent != "None" and p1.parent == "None" and p1partparent.parent == p2parent.parent:
+                if p1part.gender == "F" and p1.wed == "U":
+                    print(p2.name + " is " + p1.name + "'s girlfriend's first cousin.")
+                if p1part.gender == "M" and p1.wed == "U":
+                    print(p2.name + " is " + p1.name + "'s boyfriend's first cousin.")
+                if p1part.gender == "F" and p1.wed == "W":
+                    print(p2.name + " is " + p1.name + "'s wife's first cousin.")
+                if p1part.gender == "M" and p1.wed == "W":
+                    print(p2.name + " is " + p1.name + "'s husbands's first cousin.")
+                continue
+        if p1.parent != "None" and p2.parent == "None":
+            if p2partparent.parent == p1parent.parent:
+                if p2.gender == "F" and p2.wed == "U":
+                    print(p2.name + " is " + p1.name + "'s first cousin's girlfriend.")
+                if p2.gender == "M" and p2.wed == "U":
+                    print(p2.name + " is " + p1.name + "'s first cousin's boyfriend.")
+                if p2.gender == "F" and p2.wed == "W":
+                    print(p2.name + " is " + p1.name + "'s first cousin's wife.")
+                if p2.gender == "M" and p2.wed == "W":
+                    print(p2.name + " is " + p1.name + "'s first cousin's husband.")
+            continue
+        if p1.parent == "None" and p2.parent == "None":
+            if p2partparent.parent == p1partparent.parent:
+                print(p2.name + " is " + p1.name + "'s partner's first cousin's partner.")
+                continue
+        try:
+            (p1gparent.parent == "Edgar" and p2gparent.parent == "Edgar")
+        except:
+            try:
+                p1partgparent.parent == "Edgar"
+            except:
+                try:
+                    p2partgparent == "Edgar"
+                except:
+                    print("You've found an error.")
+                else:
+                    if p2.gender == "M":
+                        print(p2.name + " is " + p1.name + "'s second cousin's boyfriend.")
+            else:
+                if p1part.gender == "F":
+                    print(p2.name + " is " + p1.name + "'s girlfriend's second cousin.")
+                continue
+        else:
+            print(p2.name + " is " + p1.name + "'s second cousin.")
+            continue
+
+    if leveldiff == -1:
+        if p2.name == p1.parent or p2.partner == p1.parent:
+            if p2.gender == "M":
+                print(p2.name + " is " + p1.name + "'s father.")
+            if p2.gender == "F":
+                print(p2.name + " is " + p1.name + "'s mother.")
+            continue
+        if p2.parent != "None" and p1.parent != "None" and (p2.parent == p1parent.parent or p2part.parent == p1parent.parent):
+                if p2.gender == "M":
+                    print(p2.name + " is " + p1.name + "'s uncle.")
+                if p2.gender == "F":
+                    print(p2.name + " is " + p1.name + "'s aunt.")
+                continue
+        if p1.parent == "None":
+            if p1part.parent == p2.name or p1part.parent == p2.partner:
+                if p1.wed == "W" and p2.gender == "M":
+                    print(p2.name + " is " + p1.name + "'s father-in-law.")
+                if p1.wed == "W" and p2.gender == "F":
+                    print(p2.name + " is " + p1.name + "'s mother-in-law.")
+                if p1.wed == "U":
+                    if p1part.gender == "M" and p2.gender == "M":
+                        print(p2.name + " is " + p1.name + "'s boyfriend's father.")
+                    if p1part.gender == "M" and p2.gender == "F":
+                        print(p2.name + " is " + p1.name + "'s boyfriend's mother.")
+                    if p1part.gender == "F" and p2.gender == "M":
+                        print(p2.name + " is " + p1.name + "'s girlfriend's father.")
+                    if p1part.gender == "F" and p2.gender == "F":
+                        print(p2.name + " is " + p1.name + "'s girlfriend's mother.")
+                continue
+            if p1partparent.parent == p2.parent or p1partparent.parent == p2part.parent:
+                if p1.wed == "W":
+                    if p1part.gender == "M" and p2.gender == "M":
+                        print(p2.name + " is " + p1.name + "'s husband's uncle.")
+                    if p1part.gender == "M" and p2.gender == "F":
+                        print(p2.name + " is " + p1.name + "'s husband's aunt.")
+                    if p1part.gender == "F" and p2.gender == "M":
+                        print(p2.name + " is " + p1.name + "'s wife's uncle.")
+                    if p1part.gender == "F" and p2.gender == "F":
+                        print(p2.name + " is " + p1.name + "'s wife's aunt.")
+                if p1.wed == "U":
+                    if p1part.gender == "M" and p2.gender == "M":
+                        print(p2.name + " is " + p1.name + "'s boyfriend's uncle.")
+                    if p1part.gender == "M" and p2.gender == "F":
+                        print(p2.name + " is " + p1.name + "'s boyfriend's aunt.")
+                    if p1part.gender == "F" and p2.gender == "M":
+                        print(p2.name + " is " + p1.name + "'s girlfriend's uncle.")
+                    if p1part.gender == "F" and p2.gender == "F":
+                        print(p2.name + " is " + p1.name + "'s girlfriend's aunt.")
+                continue
+        if p2.parent != "None" and p1.parent != "None":
+            if p1gparent.parent == p2parent.parent and p1.parent != p2.name and p1parent.parent != p2.parent:
+                print(p2.name + " is " + p1.name + "'s first cousin once removed.")
+                continue
+        if p1.parent != "None" and p2.parent == "None":
+            if p1gparent.parent == p2partparent.parent and p1.parent != p2.name and p1parent.parent != p2.parent:
+                if p2.gender == "M" and p2.wed == "W":
+                    print(p2.name + " is " + p1.name + "'s first cousin once removed's husband.")
+                if p2.gender == "F" and p2.wed == "W":
+                    print(p2.name + " is " + p1.name + "'s first cousin once removed's wife.")
+                if p2.gender == "M" and p2.wed == "U":
+                    print(p2.name + " is " + p1.name + "'s first cousin once removed's boyfriend.")
+                if p2.gender == "F" and p2.wed == "U":
+                    print(p2.name + " is " + p1.name + "'s first cousin once removed's girlfriend.")
+                continue
+        if p1.parent == "None" and p2.parent != "None":
+            if p2parent.parent == p1partgparent.parent and p2.parent != p1.name and p2parent.parent != p1.parent:
+                if p1part.gender == "M" and p2.wed == "W":
+                    print(p2.name + " is " + p1.name + "'s husband's first cousin once removed.")
+                if p1part.gender == "F" and p2.wed == "W":
+                    print(p2.name + " is " + p1.name + "'s wife's first cousin once removed.")
+                if p1part.gender == "M" and p2.wed == "U":
+                    print(p2.name + " is " + p1.name + "'s boyfriend's first cousin once removed.")
+                if p1part.gender == "F" and p2.wed == "U":
+                    print(p2.name + " is " + p1.name + "'s girlfriend first cousin once removed.")
+                continue
+        if p1.parent == "None" and p2.parent == "None":
+            if p2partparent.parent == p1partgparent.parent and p2part.parent != p1part.name and p2partparent.parent != p1part.parent:
+                print(p2.name + " is " + p1.name + "'s partner's first cousin once removed's partner.")
+
+    if leveldiff == -2:
+        if p1.parent != "None":
+            if p2.name == p1parent.parent or p2.partner == p1parent.parent:
+                if p2.gender == "M":
+                    print(p2.name + " is " + p1.name + "'s grandfather.")
+                if p2.gender == "F":
+                    print(p2.name + " is " + p1.name + "'s grandmother.")
+                continue
+        if p1.partner != "None":
+            if p2.name == p1partparent.parent or p2.partner == p1partparent.parent:
+                if p2.gender == "M":
+                    if p1part.gender == "M" and p1.wed == "W":
+                        print(p2.name + " is " + p1.name + "'s husband's grandfather.")
+                    if p1part.gender == "F" and p1.wed == "W":
+                        print(p2.name + " is " + p1.name + "'s wife's grandfather.")
+                    if p1part.gender == "M" and p1.wed == "U":
+                        print(p2.name + " is " + p1.name + "'s boyfriend's grandfather.")
+                    if p1part.gender == "F" and p1.wed == "U":
+                        print(p2.name + " is " + p1.name + "'s girlfriend's grandfather.")
+                    continue
+                if p2.gender == "F":
+                    if p1part.gender == "M" and p1.wed == "W":
+                        print(p2.name + " is " + p1.name + "'s husband's grandmother.")
+                    if p1part.gender == "F" and p1.wed == "W":
+                        print(p2.name + " is " + p1.name + "'s wife's grandmother.")
+                    if p1part.gender == "M" and p1.wed == "U":
+                        print(p2.name + " is " + p1.name + "'s boyfriend's grandmother.")
+                    if p1part.gender == "F" and p1.wed == "U":
+                        print(p2.name + " is " + p1.name + "'s girlfriend's grandmother.")
+                    continue
+        if p1gparent.parent == p2.parent and p2.name != p1parent.parent:
+            if p2.gender == "F":
+                print(p2.name + " is " + p1.name + "'s great aunt.")
+            if p2.gender == "M":
+                print(p2.name + " is " + p1.name + "'s great uncle.")
+
+    if leveldiff == -3:
+        try:
+            p1gparent.parent == "Edgar"
+        except:
+            try:
+                p1partgparent.parent == "Edgar"
+            except:
+                print("Somehow, this has caused an error.")
+                break
+            else:
+                if p2.name == "Edgar" and p1part.gender == "F":
+                    print("Edgar is " + p1.name + "'s girlfriend's great-grandfather.")
+                if p2.name == "Rachel" and p1part.gender == "F":
+                    print("Rachel is " + p1.name + "'s girlfriend's great-grandmother.")
+                continue
+        else:
+            if p2.name == "Edgar":
+                print("Edgar is " + p1.name + "'s great-grandfather.")
+            if p2.name == "Rachel":
+                print("Rachel is " + p1.name + "'s great-grandmother.")
+            continue
+
+    if leveldiff == 3:
+        try:
+            p2gparent.parent == "Edgar"
+        except:
+            try:
+                p2partgparent.parent == "Edgar"
+            except:
+                print("Somehow, this has caused an error.")
+                break
+            else:
+                if p1.name == "Edgar" and p2.gender == "M":
+                    print(p2.name + " is Edgar's great-granddaughter's boyfriend.")
+                if p1.name == "Rachel" and p2.gender == "F":
+                    print(p2.name + " is Rachel's great-granddaughter's boyfriend.")
+                continue
+        else:
+            if p1.name == "Edgar" and p2.gender == "M":
+                print(p2.name + " is Edgar's great-grandson.")
+            if p2.name == "Rachel" and p2.gender == "M":
+                print(p2.name + " is Rachel's great-grandson.")
+            if p1.name == "Edgar" and p2.gender == "F":
+                print(p2.name + " is Edgar's great-granddaughter.")
+            if p2.name == "Rachel" and p2.gender == "F":
+                print(p2.name + " is Rachel's great-granddaughter.")
+            continue
+        
+
+	</pre>
+	
+	<script>
+	function Toggle() {
+		var x = document.getElementById("pycode");
+		if (x.style.display === "none") 
+			{x.style.display = "block";} 
+		else {x.style.display = "none"; }}
+		
+	function Copy() {
+		const copyText = document.getElementById("pycode").innerText; 
+		navigator.clipboard.writeText(copyText);}
+	</script>
+
+</body>
+</html>

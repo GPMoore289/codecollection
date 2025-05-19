@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+    <title>Film Rankings</title>
+	<style>
+	</style>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+</head>
+<body onload="brython()">
+	<p><a href="../index.html">&#11013; Back</a></p>
+    <h1>Film Rankings</h1>
+	<div class = "synopsis">
+	<p><strong>Original Creation:</strong> 29th November 2022</p>
+	<p><strong>Uploaded:</strong> 25th March 2025</p>
+	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
+	<p><strong>Description:</strong> Throughout the year, I keep a journal of new films and rank them at the end of the year from lowest to highest, then post them to social media. 
+	I deliberately do not number them, as inserting a new film in the middle would then require renumbering all films ranked lower than it. 
+	Instead, I order the films with a unique combination of characters (*#*) at the start of the line, and let this program automatically count and number them.
+	Below, you can see an example from 2022. Hopefully, you approve of my ratings!
+	</p>
+	</div>
+	
+	<div class="gallery">
+		<div><figure>
+		<figcaption>Film list before running the program</figcaption>		
+		<img src="images/filminput.PNG" alt="Film list before running the program" title="Film list before running the program">
+		</figure></div>
+		
+		<div><figure>
+		<figcaption>Film list after running the program</figcaption>		
+		<img src="images/filmoutput.PNG" alt="Film list after running the program" title="Film list after running the program">
+		</figure></div>
+
+	</div>	
+	
+	<p>Text file:<a href="./film.txt">example film list.</a></p>
+		
+	<button onclick="Toggle()">Toggle Original Python Code Display</button>
+	<button onclick="Copy()">Copy the Python Code</button>
+	
+
+	<pre id="pycode">
+text = open("film.txt", "r")
+reviews = text.read()
+text.close()
+
+inum = reviews.count("*#*")
+
+while inum > 0:
+    reviews = reviews.replace("*#*", str(inum), 1)
+    inum -=1
+    continue
+
+new = open("reviews.txt", "w")
+new.write(reviews)
+new.close()
+
+	</pre>
+	
+	<script>
+	function Toggle() {
+		var x = document.getElementById("pycode");
+		if (x.style.display === "none") 
+			{x.style.display = "block";} 
+		else {x.style.display = "none"; }}
+		
+	function Copy() {
+		const copyText = document.getElementById("pycode").innerText; 
+		navigator.clipboard.writeText(copyText);}
+	</script>
+
+</body>
+</html>
