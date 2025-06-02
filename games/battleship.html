@@ -3,28 +3,36 @@
 <head>
     <meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+	<link rel="icon" type="image/x-icon" href="./images/battleship.png">
     <title>Battleship</title>
 	<style>
+	.container			{display: grid;  grid-template-areas: "description description description description description description description" 
+															"origin origin uploaded status status status supplemental"
+															"code code code code code code code"; 
+															border: black solid 2px; border-radius: 10px 10px; background-color: LavenderBlush;}
 	</style>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
 </head>
-<body onload="brython()">
-	<p><a href="../index.html">&#11013; Back</a></p>
-    <h1>Battleship</h1>
-	<div class = "synopsis">
-	<p><strong>Original Creation:</strong> 5th January 2023</p>
-	<p><strong>Uploaded:</strong> 3rd March 2025</p>
-	<p><strong>Status:</strong> Incomplete & non-functional. Original code was written without AI.</p>
-	<p><strong>Description:</strong> Sometimes failed projects can provide valuable learning lessons. 
+<body onload="brython()" class="codepage">
+	<header>
+		<div><a href="../index.html"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
+		<div><h1>Battleship</h1></div>
+	</header>
+	<main class="container">
+		<div class="description"><p><strong>Description:</strong> Sometimes failed projects can provide valuable learning lessons. 
 	This was my first attempt at making a grid-based game other than <a href="noughtsandcrosses.html">Noughts and Crosses</a>
 	and as I had recently studied the <strong>numpy</strong> module on arrays, I thought they would be the best approach to this problem.
 	In hindsight, I should have just used lists. I also started new work shortly after starting this and put it on hold.
-	Maybe I'll remake it in the future, but I'd probably start from scratch, as this version is non-functional.</p>
-	</div>	
-		
-	<button onclick="Toggle()">Toggle Original Python Code Display</button>
-	<button onclick="Copy()">Copy the Python Code</button>
-
+	Maybe I'll remake it in the future, but I'd probably start from scratch, as this version is non-functional.
+		</p></div>
+		<div class="origin"><p><strong>Original Creation:</strong> 5th January 2023</p></div>
+		<div class="uploaded"><p><strong>Uploaded:</strong> 3rd March 2025</p></div>
+		<div class="status"><p><strong>Status:</strong> Incomplete & non-functional. Original code was written without AI.</p></div>
+		<div class="supplemental"><p><strong>Supplemental:</strong> N/A</p></div>
+		<div class="code">		
+		<!-- <button onclick="Toggle()">Toggle Original Python Code Display</button> -->
+		<button onclick="Copy()">Copy the Python Code</button>
+	
 	<pre id="pycode">
 import numpy as np
 import random
@@ -66,9 +74,9 @@ def playgrid(): #creates a function allowing the player to visualise their own g
 Player Grid
 """)
     print("  | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  | 10 ")
-    while v <10:
+    while v &lt;10:
         r = [str(rows[v])+" "]
-        while w < 10:
+        while w &lt; 10:
             r.append(" " + arrayb[v][w] + " ")
             w += 1
             continue
@@ -86,9 +94,9 @@ def engrid(): #creates a function to display known details about opponent's grid
 Opponent's Grid
 """)
     print("  | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  | 10 ")
-    while v <10:
+    while v &lt;10:
         r = [str(rows[v])+" "]
-        while w < 10:
+        while w &lt; 10:
             r.append(" " + arrayen[v][w] + " ")
             w += 1
             continue
@@ -106,9 +114,9 @@ def oppgrid(): #creates a function to display opponent's grid. Should never actu
 Opponent's Grid
 """)
     print("  | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  | 10 ")
-    while v <10:
+    while v &lt;10:
         r = [str(rows[v])+" "]
-        while w < 10:
+        while w &lt; 10:
             r.append(" " + arrayopp[v][w] + " ")
             w += 1
             continue
@@ -369,20 +377,21 @@ while True: #attack loop
     if not psurvive:
         print("You lose!")
         break
-
 	</pre>
 	
 	<script>
-	function Toggle() {
+	/* function Toggle() {
 		var x = document.getElementById("pycode");
 		if (x.style.display === "none") 
 			{x.style.display = "block";} 
-		else {x.style.display = "none"; }}
+		else {x.style.display = "none"; }} 
+		*/
 		
 	function Copy() {
 		const copyText = document.getElementById("pycode").innerText; 
 		navigator.clipboard.writeText(copyText);}
 	</script>
-
+</div>
+</main>
 </body>
 </html>
