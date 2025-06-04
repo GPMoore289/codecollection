@@ -2,78 +2,62 @@
 <html>
 <head>
     <meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">				
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+	<link rel="icon" type="image/x-icon" href="./images/goldenratio.png">	
     <title>Golden Ratio Selection</title>
+	<style>
+		@media screen and (max-width: 1149px)		
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery gallery gallery gallery" "code code code code code code";}} 								
+		@media screen and (min-width: 1150px)
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery code code code";} 	}													
+	</style>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
 </head>
-<body onload="brython()">
-	<p><a href="../index.html">&#11013; Back</a></p>
-    <h1>Golden Ratio Selection</h1>
-	<div class = "synopsis">
-	<p><strong>Original Creation:</strong> 15th April 2023</p>
-	<p><strong>Uploaded:</strong> 25th Feb 2025</p>
-	<p><strong>Status:</strong> Complete. Non-interactive. Original code was written without AI.</p>
-	<p><strong>Description:</strong> You're presented with 100 boxes, each containing a random amount of money. 
+<body onload="brython()" class="codepage">
+	<header>
+		<div><a href="../index.html#math"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
+		<div><h1>Golden Ratio Selection</h1></div>
+	</header>
+	<main class="container">
+		<div class="description"><p><strong>Description:</strong> You're presented with 100 boxes, each containing a random amount of money. 
 	You may take the contents of one box only and you don't know what the upper limit of money is. 
 	You can examine the contents of as many boxes as you like, but you can't go back to a previous box. How many boxes should you inspect before making a decision? 
 	The maximum probability of taking home the largest winnings occurs if you inspect ~37 boxes, then take the next amount that is larger than any amount you have encountered previously. 
 	This only gives you a 37% chance of taking home the largest amount, but that's still your best chance, and this program demonstrates it. 
 	This has real-world applications, where there may be a time limit on making a decision with limited information, such as buying a house. 
-	This is another example of brute force computation and it takes a long time to run.</p>
-	</div>
-	
-	<div class="gallery">
+	This is another example of brute force computation and it takes a long time to run.
+		</p></div>
+		<div class="origin"><p><strong>Original Creation:</strong> 15th April 2023</p></div>
+		<div class="uploaded"><p><strong>Uploaded:</strong> 25th Feb 2025</p></div>
+		<div class="status"><p><strong>Status:</strong> Complete. Non-interactive. Original code was written without AI.</p></div>
+		<div class="supplemental"><p><strong>Supplemental</strong>: N/A</p></div>
+		<div class="gallery">
 		<div><figure>
 		<figcaption>Example output. Probability peaks around the 37 mark.</figcaption>		
 		<img src="images/golden.PNG" alt="Example output" title="Example output">
 		</figure></div>
-	</div>	
+		</div>
+	<div class="code">		
+		<!-- <button onclick="Toggle()">Toggle Original Python Code Display</button> -->
+		<button onclick="Copy()">Copy the Python Code</button>
 	
-	<button onclick="Toggle()">Toggle Original Python Code Display</button>
-	<button onclick="Copy()">Copy the Python Code</button>
-
-	<pre id="pycode">
-import random
-
-cutoff = 0
-while cutoff &lt; 99:
-	iterations = 0
-	correct = 0
-	while iterations &lt; 100000:
-		bank = list(random.randint(1, 1000000) for i in range(0, 100))
-		highest = 0
-		bnkidx = 0
-		take = 0
-		while bnkidx &lt; 99:
-			bnkidx +=1
-			if bnkidx > cutoff and bank[bnkidx] > highest:
-				take = bank[bnkidx]
-				break
-			elif bank[bnkidx] > highest:
-				highest = bank[bnkidx]
-				continue
-			else:
-				continue
-		if take == max(bank):
-			correct +=1
-		iterations += 1
-		continue
-	print("Take after looking at " + str(cutoff +1) + " numbers: " + str(correct*100/iterations) + "%")
-	cutoff += 1
-	continue
-	</pre>
+	<p id="pycode">
+import random<br><br>cutoff = 0<br>while cutoff &lt; 99:<br>&nbsp;&nbsp;&nbsp;&nbsp;iterations = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;correct = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;while iterations &lt; 100000:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bank = list(random.randint(1, 1000000) for i in range(0, 100))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;highest = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bnkidx = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;take = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while bnkidx &lt; 99:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bnkidx +=1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if bnkidx > cutoff and bank[bnkidx] > highest:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;take = bank[bnkidx]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif bank[bnkidx] > highest:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;highest = bank[bnkidx]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if take == max(bank):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;correct +=1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;iterations += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Take after looking at " + str(cutoff +1) + " numbers: " + str(correct*100/iterations) + "%")<br>&nbsp;&nbsp;&nbsp;&nbsp;cutoff += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;continue
+	</p>
 	
 	<script>
-	function Toggle() {
+	/* function Toggle() {
 		var x = document.getElementById("pycode");
 		if (x.style.display === "none") 
 			{x.style.display = "block";} 
-		else {x.style.display = "none"; }}
+		else {x.style.display = "none"; }} 
+		*/
 		
 	function Copy() {
 		const copyText = document.getElementById("pycode").innerText; 
 		navigator.clipboard.writeText(copyText);}
 	</script>
-
+</div>
+</main>
 </body>
 </html>

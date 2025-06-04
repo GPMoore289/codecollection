@@ -6,16 +6,16 @@
 	<link rel="icon" type="image/x-icon" href="./images/tmscraper.png">	
     <title>Terraforming Mars (Board Game Arena) Web Scraper</title>
 	<style>
-		.container			{display: grid; grid-template-areas: 	"description description description description description description" 
-															"origin uploaded status status supplemental supplemental"
-															"gallery gallery gallery code code code"; 							
-															border: black solid 2px; border-radius: 10px 10px; background-color: LavenderBlush;}
+		@media screen and (max-width: 1149px)		
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery gallery gallery gallery" "code code code code code code";}} 								
+		@media screen and (min-width: 1150px)
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery code code code";} 	}													
 	</style>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
 </head>
 <body onload="brython()" class="codepage">
 	<header>
-		<div><a href="../index.html"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
+		<div><a href="../index.html#solvers"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
 		<div><h1>Terraforming Mars (Board Game Arena) Web Scraper</h1></div>
 	</header>
 	<main class="container">
@@ -33,7 +33,8 @@
 		<div class="gallery">
 			<figure>
 			<figcaption>Terraforming Mars (Jacob Fryxelius, Fryx Games) gameplay hosted on <a href="www.boardgamearena.com">Board Game Arena</a></figcaption>		
-			<img src="images/TMgameplay.png" alt="Terraforming Mars gameplay" title="Terraforming Mars gameplay">
+			<img src="images/TMgameplay1.png" alt="Terraforming Mars gameplay" title="Terraforming Mars gameplay">
+			<img src="images/TMgameplay2.png" alt="Terraforming Mars gameplay" title="Terraforming Mars gameplay">
 			</figure>
 			
 			<figure>
@@ -49,129 +50,9 @@
 		<!-- <button onclick="Toggle()">Toggle Original Python Code Display</button> -->
 		<button onclick="Copy()">Copy the Python Code</button>
 	
-	<pre id="pycode">
-import signal #needed for keyboard interrupt
-import time
-
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium import webdriver
-
-options = webdriver.ChromeOptions()
-options.add_argument('--headless=new') 
-#prevents the actual browser window from opening. Disable this to see what the driver is actually doing.
-user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'
-options.add_argument(f'user-agent={user_agent}')
-service = Service(executable_path='./chromedriver.exe')
-
-def ManualInterrupt(): #stops the driver from running upon keyboard interrupt
-	print("Manual Interruption")
-	driver.quit()
-	myfile.close()
-
-def keyboardInterruptHandler(signal, frame):
-	ManualInterrupt()
-	
-signal.signal(signal.SIGINT, keyboardInterruptHandler)
-
-with open ('gamenumbers.txt', mode='r') as gamenos: #imports semi-colon separated game numbers
-	gamenotext = gamenos.read()
-	gamenolist = gamenotext.split(";")
-	gamenos.close()
-
-playername = #censored
-email = #this is so censored
-pword = #oh you better believe this is censored
-loginflag = False
-
-with open('tmresults.txt', mode='a') as myfile:
-	driver = webdriver.Chrome(options=options)
-	for number in gamenolist:
-		#all of this section scrapes information that is publically viewable
-		driver.get("https://boardgamearena.com/table?table=" + str(number)) #loads webpage with game number
-		text = driver.page_source
-		rankidx = text.find(f"° {playername}") #finds the index for my position
-		rank = text[rankidx-1:rankidx] #finds my position using above
-		trimtext = text[rankidx:] #removes preceding text
-		bracketidx = trimtext.find("(") #finds first open bracket
-		pointsidx = trimtext.find(" pts") #finds first occurrence of pts
-		score = trimtext[bracketidx+1:pointsidx] #finds how many points I scored, located between the two indices
-		playernosidx = [i for i in range(len(text)) if text.startswith('°', i)] 
-		#finds every occurrence of the degree sign, which follows a player position
-		playernumbers = []
-		for idxs in playernosidx:
-			playernumbers.append(int(text[idxs-1:idxs])) #finds number before degree symbol
-		players = max(playernumbers) #maximum number in list is therefore number of players
-		#The following 5 lines each wait for the relevant element to appear, 
-		#scrape it, then isolate the relevant attribute: the text content
-		corpera = (WebDriverWait(driver, 10).until(EC.presence_of_element_located
-		((By.ID, "gameoption_101_displayed_value"))).get_attribute("textContent"))
-		draft = (WebDriverWait(driver, 10).until(EC.presence_of_element_located
-		((By.ID, "gameoption_103_displayed_value"))).get_attribute("textContent"))
-		prelude = (WebDriverWait(driver, 10).until(EC.presence_of_element_located
-		((By.ID, "gameoption_104_displayed_value"))).get_attribute("textContent"))
-		realtime = (WebDriverWait(driver, 10).until(EC.presence_of_element_located
-		((By.ID, "gameoption_105_displayed_value"))).get_attribute("textContent"))
-		mapname = (WebDriverWait(driver, 10).until(EC.presence_of_element_located
-		((By.ID, "gameoption_107_displayed_value"))).get_attribute("textContent"))
-	   
-		print(number) #used as visual feedback to ensure program is running
-
-		#This section scrapes information that is only visible to the user, hence the need to log in first
-		if loginflag == False: #login only needs to run once
-			driver.get("https://boardgamearena.com/gamereview?table=" + str(number))
-			email_inputs = driver.find_elements(By.NAME, "email") #creates a list of all elements that have email as a name
-			emailelem = email_inputs[3] #0 didn't work. 1 maybe worked? 2 didn't work. 3 definitely works. Didn't try 4.
-			emailelem.send_keys(email) #sends my email to the element
-
-			buttonlist = driver.find_elements(By.CLASS_NAME, "bga-button") 
-			#creates a list of all of this class, which includes the Next button. It might have been easier to search by XPATH.
-			for buttonclass in buttonlist:
-				textcontent = buttonclass.get_attribute("textContent")
-				if textcontent == " Next": #this is not an error. there is a space before Next
-					nextbutton = buttonclass
-					break
-
-			nextbutton.click() #clicks the Next button
-			time.sleep(0.5)
-
-			inputlist = driver.find_elements(By.CLASS_NAME, "flex-1") #same as above but for password element
-			for buttonclass in inputlist:
-				textcontent = buttonclass.get_attribute("type")
-				if textcontent == "password": 
-					passelem = buttonclass
-					break
-			passelem.send_keys(pword) #sends my password to the element
-
-			buttonlist2 = driver.find_elements(By.CLASS_NAME, "bga-button") #same as above but for login button
-			for buttonclass in buttonlist2:
-				textcontent = buttonclass.get_attribute("textContent")
-				if textcontent == " Login": #this is not an error. there is a space before Login
-					loginbutton = buttonclass
-					break
-			loginbutton.click() #clicks the login button
-			time.sleep(0.5)
-			loginflag = True #stops this section from rerunning
-			#myfile.write("Game Number, Corporation, Corporate Era, Draft, Prelude, Realtime, Map Name, Players, Rank, Score\n") 
-			#only needs to run the very first time
-
-		#the entire login section was just for this one part: to access the number of the corporation I used
-		driver.get("https://boardgamearena.com/gamereview?table=" + str(number))
-		corpname = (WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, f"//div[contains(text(), 
-		'{playername} chooses corporation')]"))).get_attribute("textContent"))
-		usidx = corpname.rfind("_")
-		corpno = corpname[usidx+1:]
-
-		myfile.write(f"{number},{corpno},{corpera},{draft},{prelude},{realtime},{mapname},{players},{rank},{score}\n")
-		time.sleep(30) #To make sure BGA doesn't think this is a DoS attack
-
-print("Done!")       
-driver.close()
-driver.quit()
-myfile.close()
-	</pre>
+	<p id="pycode">
+import signal #needed for keyboard interrupt<br>import time<br><br>from selenium.webdriver.chrome.service import Service<br>from selenium.webdriver.common.by import By<br>from selenium.webdriver.support.ui import WebDriverWait<br>from selenium.webdriver.support import expected_conditions as EC<br>from selenium import webdriver<br><br>options = webdriver.ChromeOptions()<br>options.add_argument('--headless=new') <br>#prevents the actual browser window from opening. Disable this to see what the driver is actually doing.<br>user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'options.add_argument(f'user-agent={user_agent}')<br>service = Service(executable_path='./chromedriver.exe')<br><br>def ManualInterrupt(): #stops the driver from running upon keyboard interrupt<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Manual Interruption")<br>&nbsp;&nbsp;&nbsp;&nbsp;driver.quit()<br>&nbsp;&nbsp;&nbsp;&nbsp;myfile.close()<br><br>def keyboardInterruptHandler(signal, frame):<br>&nbsp;&nbsp;&nbsp;&nbsp;ManualInterrupt()<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>signal.signal(signal.SIGINT, keyboardInterruptHandler)<br><br>with open ('gamenumbers.txt', mode='r') as gamenos: #imports semi-colon separated game numbers<br>&nbsp;&nbsp;&nbsp;&nbsp;gamenotext = gamenos.read()<br>&nbsp;&nbsp;&nbsp;&nbsp;gamenolist = gamenotext.split(";")<br>&nbsp;&nbsp;&nbsp;&nbsp;gamenos.close()<br><br>playername = #censored<br>email = #this is so censored<br>pword = #oh you better believe this is censored<br>loginflag = False<br><br>with open('tmresults.txt', mode='a') as myfile:<br>&nbsp;&nbsp;&nbsp;&nbsp;driver = webdriver.Chrome(options=options)<br>&nbsp;&nbsp;&nbsp;&nbsp;for number in gamenolist: #all of this section scrapes information that is publically viewable<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;driver.get("https://boardgamearena.com/table?table=" + str(number)) #loads webpage with game number<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text = driver.page_source<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rankidx = text.find(f"° {playername}") #finds the index for my position<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rank = text[rankidx-1:rankidx] #finds my position using above<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trimtext = text[rankidx:] #removes preceding text<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bracketidx = trimtext.find("(") #finds first open bracket<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pointsidx = trimtext.find(" pts") #finds first occurrence of pts<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;score = trimtext[bracketidx+1:pointsidx] #finds how many points I scored, located between the two indices<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;playernosidx = [i for i in range(len(text)) if text.startswith('°', i)] #finds every occurrence of the degree sign, which follows a player position<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;playernumbers = []<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for idxs in playernosidx:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;playernumbers.append(int(text[idxs-1:idxs])) #finds number before degree symbol<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;players = max(playernumbers) #maximum number in list is therefore number of players<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#The following 5 lines each wait for the relevant element to appear, scrape it, then isolate the relevant attribute: the text content<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;corpera = (WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "gameoption_101_displayed_value"))).get_attribute("textContent"))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;draft = (WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "gameoption_103_displayed_value"))).get_attribute("textContent"))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prelude = (WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "gameoption_104_displayed_value"))).get_attribute("textContent"))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;realtime = (WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "gameoption_105_displayed_value"))).get_attribute("textContent"))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mapname = (WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "gameoption_107_displayed_value"))).get_attribute("textContent"))<br>&nbsp;&nbsp;&nbsp;&nbsp;   <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(number) #used as visual feedback to ensure program is running<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#This section scrapes information that is only visible to the user, hence the need to log in first<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if loginflag == False: #login only needs to run once<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;driver.get("https://boardgamearena.com/gamereview?table=" + str(number))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;email_inputs = driver.find_elements(By.NAME, "email") #creates a list of all elements that have email as a name<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;emailelem = email_inputs[3] #0 didn't work. 1 maybe worked? 2 didn't work. 3 definitely works. Didn't try 4.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;emailelem.send_keys(email) #sends my email to the element<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buttonlist = driver.find_elements(By.CLASS_NAME, "bga-button")#creates a list of all of this class, which includes the Next button. It might have been easier to search by XPATH.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for buttonclass in buttonlist:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;textcontent = buttonclass.get_attribute("textContent")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if textcontent == " Next": #this is not an error. there is a space before Next<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nextbutton = buttonclass<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nextbutton.click() #clicks the Next button<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(0.5)<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inputlist = driver.find_elements(By.CLASS_NAME, "flex-1") #same as above but for password element<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for buttonclass in inputlist:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;textcontent = buttonclass.get_attribute("type")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if textcontent == "password": <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passelem = buttonclass<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passelem.send_keys(pword) #sends my password to the element<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buttonlist2 = driver.find_elements(By.CLASS_NAME, "bga-button") #same as above but for login button<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for buttonclass in buttonlist2:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;textcontent = buttonclass.get_attribute("textContent")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if textcontent == " Login": #this is not an error. there is a space before Login<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loginbutton = buttonclass<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loginbutton.click() #clicks the login button<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(0.5)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loginflag = True #stops this section from rerunning<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#myfile.write("Game Number, Corporation, Corporate Era, Draft, Prelude, Realtime, Map Name, Players, Rank, Score\n") <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#only needs to run the very first time<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#the entire login section was just for this one part: to access the number of the corporation I used driver.get("https://boardgamearena.com/gamereview?table=" + str(number))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;corpname = (WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, f"//div[contains(text(),'{playername} chooses corporation')]"))).get_attribute("textContent"))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;usidx = corpname.rfind("_")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;corpno = corpname[usidx+1:]<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;myfile.write(f"{number},{corpno},{corpera},{draft},{prelude},{realtime},{mapname},{players},{rank},{score}\n")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(30) #To make sure BGA doesn't think this is a DoS attack<br><br>print("Done!")       <br>driver.close()<br>driver.quit()<br>myfile.close()
+	</p>
 	
 	<script>
 	/* function Toggle() {

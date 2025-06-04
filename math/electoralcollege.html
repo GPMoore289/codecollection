@@ -2,120 +2,58 @@
 <html>
 <head>
     <meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+	<link rel="icon" type="image/x-icon" href="./images/electoralcollege.png">	
     <title>US Electoral College Calculator</title>
-	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">		
+	<style>
+		@media screen and (max-width: 1149px)		
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery gallery gallery gallery" "code code code code code code";}} 								
+		@media screen and (min-width: 1150px)
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery code code code";} 	}													
+	</style>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
 </head>
-<body onload="brython()">
-	<p><a href="../index.html">&#11013; Back</a></p>
-    <h1>US Electoral College Calculator</h1>
-	<div class = "synopsis">
-	<p><strong>Original Creation:</strong> 27th December 2024</p>
-	<p><strong>Uploaded:</strong> 25th Feb 2025</p>
-	<p><strong>Status:</strong> Complete. Non-interactive. Original code was written without AI.</p>
-	<p><strong>Description:</strong> This was partly an excuse to find out how the Electoral College Votes are calculated for the United States, but also an opportunity to incorporate file reading into code.
-	In a controversial move, I wanted to see the effect on the 2024 election that incorporating Canada would bring [I personally do not support this!], 
-	given that if it was, Canada would doubtlessly become the US's most populous blue state, so I included this as an option.</p>
-	</div>
-	
-	<p>Text file: <a href="./pops.txt">Populations of US States in 2024</a></p>
-	
-	<div class="gallery">
+<body onload="brython()" class="codepage">
+	<header>
+		<div><a href="../index.html#math"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
+		<div><h1>US Electoral College Calculator</h1></div>
+	</header>
+	<main class="container">
+		<div class="description"><p><strong>Description:</strong> This was partly an excuse to find out how the Electoral College Votes are calculated for the United States, but also an opportunity to incorporate file reading into code.
+	In a controversial move, I wanted to see the effect on the 2024 election that incorporating Canada would bring <em>[I personally do not support this!]</em>, 
+	given that if it was, Canada would doubtlessly become the US's most populous blue state, so I included this as an option.
+		</p></div>
+		<div class="origin"><p><strong>Original Creation:</strong> 27th December 2024</p></div>
+		<div class="uploaded"><p><strong>Uploaded:</strong> 25th Feb 2025</p></div>
+		<div class="status"><p><strong>Status:</strong> Complete. Non-interactive. Original code was written without AI.</p></div>
+		<div class="supplemental"><p><strong>Supplemental</strong>: Text file: <a href="./pops.txt">US States Population 2024</a></p></div>
+		<div class="gallery">
 		<div><figure>
 		<figcaption>Example output.</figcaption>		
 		<img src="images/election.PNG" alt="Example output" title="Example output">
-		</figure></div>
-	</div>	
+		</figure></div>	
+		</div>
+	<div class="code">		
+		<!-- <button onclick="Toggle()">Toggle Original Python Code Display</button> -->
+		<button onclick="Copy()">Copy the Python Code</button>
 	
-	<button onclick="Toggle()">Toggle Original Python Code Display</button>
-	<button onclick="Copy()">Copy the Python Code</button>
-
-	<pre id="pycode">
-pops = dict()
-reps = dict()
-prior = dict()
-
-text = open("pops.txt", "r")
-for line in text:
-	line = line.replace("\t", "")
-	pops[line[:2]] = int(line[2:-1])
-text.close()
-
-while True:
-	options = ["y", "n"]
-	entry = input("Assimilate Canada? (Y/N):").lower()
-	if entry not in options:
-		print("Enter a valid input.")
-		continue
-	else:
-		break
-
-if entry == "y":
-	pops["CD"] = 41465298
-	remainrep = 384
-else:
-	remainrep = 385    
-	
-for state in pops.keys(): #minimum one representative per state
-	if state == "DC":
-		continue
-	else:
-		reps[state] = 1
-
-while remainrep > 0: #allocating remaining seats
-	maxprior = 0
-	maxstate = ""
-	minprior = 9999999999999999999
-	minstate = ""
-	for state in reps.keys():
-		prior[state] = pops[state]/((reps[state]*(reps[state]+1))**0.5)
-		if prior[state] > maxprior:
-			maxprior = prior[state]
-			maxstate = state
-		if prior[state] &gt; minprior:
-			minprior = prior[state]
-			minstate = state
-	reps[maxstate] += 1
-	remainrep -= 1
-
-#print(f"Representative numbers for each state:{reps}")
-
-for state in reps.keys(): #adding senate seats for each state
-	reps[state] += 2
-
-reps["DC"] = 3
-
-print(f"Electoral college numbers for each state:{reps}")
-
-Demvotes = 0
-Repvotes = 0
-
-#based on the 2024 election
-bluestates = ["CA", "CO", "CT", "DE", "HI", "IL", "ME", "MD", "MA", "MN", "NH", "NJ", "NM", "NY", "OR", "RI", "VT", "VA", "WA", "DC", "CD"]
-redstates = ["AL", "AK", "AZ", "AR", "FL", "GA", "ID", "IN", "IA", "KS", "KY", "LA", "MI", "MS", "MO", "MT", "NE", "NV", "NC", "ND", "OH", "OK", "PA", "SC", "SD", "TN", "TX", "UT", "WV", "WI", "WY"]
-
-for state in reps.keys():
-	if state in bluestates:
-		Demvotes += reps[state]
-	if state in redstates:
-		Repvotes += reps[state]
-
-print(f"Democratic votes: {Demvotes}")
-print(f"Republican votes: {Repvotes}")
-
-	</pre>
+	<p id="pycode">
+pops = dict()<br>reps = dict()<br>prior = dict()<br><br>text = open("pops.txt", "r")<br>for line in text:<br>&nbsp;&nbsp;&nbsp;&nbsp;line = line.replace("\t", "")<br>&nbsp;&nbsp;&nbsp;&nbsp;pops[line[:2]] = int(line[2:-1])<br>text.close()<br><br>while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;options = ["y", "n"]<br>&nbsp;&nbsp;&nbsp;&nbsp;entry = input("Assimilate Canada? (Y/N):").lower()<br>&nbsp;&nbsp;&nbsp;&nbsp;if entry not in options:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Enter a valid input.")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br><br>if entry == "y":<br>&nbsp;&nbsp;&nbsp;&nbsp;pops["CD"] = 41465298<br>&nbsp;&nbsp;&nbsp;&nbsp;remainrep = 384<br>else:<br>&nbsp;&nbsp;&nbsp;&nbsp;remainrep = 385&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>for state in pops.keys(): #minimum one representative per state<br>&nbsp;&nbsp;&nbsp;&nbsp;if state == "DC":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reps[state] = 1<br><br>while remainrep > 0: #allocating remaining seats<br>&nbsp;&nbsp;&nbsp;&nbsp;maxprior = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;maxstate = ""<br>&nbsp;&nbsp;&nbsp;&nbsp;minprior = 9999999999999999999<br>&nbsp;&nbsp;&nbsp;&nbsp;minstate = ""<br>&nbsp;&nbsp;&nbsp;&nbsp;for state in reps.keys():<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prior[state] = pops[state]/((reps[state]*(reps[state]+1))**0.5)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if prior[state] > maxprior:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maxprior = prior[state]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maxstate = state<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if prior[state] &gt; minprior:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minprior = prior[state]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minstate = state<br>&nbsp;&nbsp;&nbsp;&nbsp;reps[maxstate] += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;remainrep -= 1<br><br>#print(f"Representative numbers for each state:{reps}")<br><br>for state in reps.keys(): #adding senate seats for each state<br>&nbsp;&nbsp;&nbsp;&nbsp;reps[state] += 2<br><br>reps["DC"] = 3<br><br>print(f"Electoral college numbers for each state:{reps}")<br><br>Demvotes = 0<br>Repvotes = 0<br><br>#based on the 2024 election<br>bluestates = ["CA", "CO", "CT", "DE", "HI", "IL", "ME", "MD", "MA", "MN", "NH", "NJ", "NM", "NY", "OR", "RI", "VT", "VA", "WA", "DC", "CD"]<br>redstates = ["AL", "AK", "AZ", "AR", "FL", "GA", "ID", "IN", "IA", "KS", "KY", "LA", "MI", "MS", "MO", "MT", "NE", "NV", "NC", "ND", "OH", "OK", "PA", "SC", "SD", "TN", "TX", "UT", "WV", "WI", "WY"]<br><br>for state in reps.keys():<br>&nbsp;&nbsp;&nbsp;&nbsp;if state in bluestates:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Demvotes += reps[state]<br>&nbsp;&nbsp;&nbsp;&nbsp;if state in redstates:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Repvotes += reps[state]<br><br>print(f"Democratic votes: {Demvotes}")<br>print(f"Republican votes: {Repvotes}")
+	</p>
 	
 	<script>
-	function Toggle() {
+	/* function Toggle() {
 		var x = document.getElementById("pycode");
 		if (x.style.display === "none") 
 			{x.style.display = "block";} 
-		else {x.style.display = "none"; }}
+		else {x.style.display = "none"; }} 
+		*/
 		
 	function Copy() {
 		const copyText = document.getElementById("pycode").innerText; 
 		navigator.clipboard.writeText(copyText);}
 	</script>
-
+</div>
+</main>
 </body>
 </html>

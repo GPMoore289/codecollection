@@ -2,139 +2,58 @@
 <html>
 <head>
     <meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">		
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+	<link rel="icon" type="image/x-icon" href="./images/ff7.png">
     <title>Final Fantasy VII Top Trumps</title>
+	<style>
+@media screen and (max-width: 1199px)		
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery gallery gallery gallery" "code code code code code code";}} 								
+		@media screen and (min-width: 1200px)
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery code code code";} 	}																												
+	</style>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
 </head>
-<body onload="brython()">
-	<p><a href="../index.html">&#11013; Back</a></p>
-    <h1>Final Fantasy VII Top Trumps</h1>
-	<div class = "synopsis">
-	<p><strong>Original Creation:</strong> 21st March 2020</p>
-	<p><strong>Uploaded:</strong> 3rd March 2025</p>
-	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
-	<p><strong>Description:</strong> I was looking for a coding project which would incorporate file reading. 
+<body onload="brython()" class="codepage">
+	<header>
+		<div><a href="../index.html#games"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
+		<div><h1>Final Fantasy VII Top Trumps</h1></div>
+	</header>
+	<main class="container">
+		<div class="description"><p><strong>Description:</strong> I was looking for a coding project which would incorporate file reading. 
 	I remembered Top Trumps from my childhood and figured it would be a perfect choice. And as for Final Fantasy VII... 
-	I was replaying it at the time and I had the characters on the brain. Definitely could have picked better variables for the <strong>def</strong> function though.</p>
-	</div>
-	
-	<div class="gallery">
+	I was replaying it at the time and I had the characters on the brain. Definitely could have picked better variables for the <strong>def</strong> function though.
+		</p></div>
+		<div class="origin"><p><strong>Original Creation:</strong> 21st March 2020</p></div>
+		<div class="uploaded"><p><strong>Uploaded:</strong> 3rd March 2025</p></div>
+		<div class="status"><p><strong>Status:</strong> Complete. Original code was written without AI.</p></div>
+		<div class="supplemental"><p><strong>Supplemental:</strong> Text file: <a href="ff7.txt">FF7 characters and their stats</a></p></div>
+		<div class="gallery">
 		<div><figure>
 		<figcaption>Final Fantasy VII Top Trumps gameplay</figcaption>		
-		<img src="images/ff7tt.PNG" alt="Noughts and Crosses gameplay" title="Noughts and Crosses gameplay">
+		<img src="images/ff7tt.PNG" alt="Final Fantasy VII Top Trumps gameplay" title="Final Fantasy VII Top Trumps gameplay">
 		</figure></div>
-	</div>	
+		</div>	
+	<div class="code">		
+		<!-- <button onclick="Toggle()">Toggle Original Python Code Display</button> -->
+		<button onclick="Copy()">Copy the Python Code</button>
 	
-	<p>Text file: <a href="ff7.txt">Final Fantasy VII characters and their stats</a></p>
-	
-	<button onclick="Toggle()">Toggle Original Python Code Display</button>
-	<button onclick="Copy()">Copy the Python Code</button>
-
-	<pre id="pycode">
-bank = ["S", "M", "H", "C", "A"]
-bank2 = ["Yes", "No"]
-played = []
-pscore = 0
-oscore = 0
-    
-def battle(v1, v2, v3, v4, v5, v6, v7, v8, v9):
-    if v1 == v2:
-        if v3 > v4:
-            print(v5 + v9 + v6 + " beat " + v7 + v9 + v8 + "!\nYou won!\n")
-            global pscore
-            pscore += 1
-        else:
-            print(v7 + v9 + v8 + " beat " + v5 + v9 + v6 + "!\nYou lost!\n")
-            global oscore
-            oscore += 1
-            
-print("Welcome to Final Fantasy VII Top Trumps! You and your opponent will each draw a character card. Choose a stat and beat your opponent!")
-while True:
-    if len(played) >= 30:
-        if pscore > oscore:
-            print("You win the game!")
-        else:
-            print("Sorry, you lost the game!")
-        go = input("Game over. Would you like to play again (Yes or No)? ")
-        if go not in bank2:
-            print("Please enter a valid response")
-        if go == "Yes":
-            del played[0:30]
-            pscore = 0
-            oscore = 0
-            continue
-        if go == "No":
-            break
-    from random import choice
-    file = open("ff7.txt", "r")
-    a = choice(list(file))
-    file = open("ff7.txt", "r")
-    c = choice(list(file))
-    if a == c:
-        continue
-    if a in played:
-        continue
-    if c in played:
-        continue
-    played.append(a)
-    played.append(c)
-    while True:
-        b = a.split(',')
-        d = c.split(',')
-        ps = int(b[1])
-        pm = int(b[2])
-        ph = int(b[3])
-        pc = int(b[4])
-        pa = int(b[5])
-        os = int(d[1])
-        om = int(d[2])
-        oh = int(d[3])
-        oc = int(d[4])
-        oa = int(d[5])
-        if len(played)%4 == 0:
-            import random
-            ostat = random.choice(bank)
-            print("\nYour opponent is deciding...")
-            import time
-            time.sleep(3)            
-            print("\nYour opponent used " + d[0])
-            battle(ostat, "S", ps, os, b[0], b[1], d[0], d[1], "'s Strength of ")
-            battle(ostat, "M", pm, om, b[0], b[2], d[0], d[2], "'s Magic of ")
-            battle(ostat, "H", ph, oh, b[0], b[3], d[0], d[3], "'s Honour of ")
-            battle(ostat, "C", pc, oc, b[0], b[4], d[0], d[4], "'s Control of ")
-            battle(ostat, "A", pa, oa, b[0], b[5], d[0], d[5], "'s Age of ")
-        else:
-            print("\nName:     " + b[0] + "\n" + "Strength: " + b[1] + "\n" + "Magic:    " + b[2] + "\n" + "Honour:   " + b[3] + "\n" + "Control:  " + b[4] + "\n" + "Age:      " + b[5])
-            stat = input("Please choose a stat. S for Strength, M for Magic, H for Honour, C for Control or A for Age: ")
-            if stat == "quit":
-                break
-            if not (stat) in bank:
-                print("\nThat's not one of the five stats\n")
-                continue
-            print("\nYour opponent used " + d[0])
-            battle(stat, "S", ps, os, b[0], b[1], d[0], d[1], "'s Strength of ")
-            battle(stat, "M", pm, om, b[0], b[2], d[0], d[2], "'s Magic of ")
-            battle(stat, "H", ph, oh, b[0], b[3], d[0], d[3], "'s Honour of ")
-            battle(stat, "C", pc, oc, b[0], b[4], d[0], d[4], "'s Control of ")
-            battle(stat, "A", pa, oa, b[0], b[5], d[0], d[5], "'s Age of ")
-        print("Your score is " + str(pscore) + "\nYour opponent's score is " + str(oscore) + "\n")
-        import time
-        time.sleep(3)
-        break
-
-	</pre>
+	<p id="pycode">
+bank = ["S", "M", "H", "C", "A"]<br>bank2 = ["Yes", "No"]<br>played = []<br>pscore = 0<br>oscore = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>def battle(v1, v2, v3, v4, v5, v6, v7, v8, v9):<br>&nbsp;&nbsp;&nbsp;&nbsp;if v1 == v2:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if v3 > v4:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(v5 + v9 + v6 + " beat " + v7 + v9 + v8 + "!\nYou won!\n")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;global pscore<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pscore += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(v7 + v9 + v8 + " beat " + v5 + v9 + v6 + "!\nYou lost!\n")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;global oscore<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oscore += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>print("Welcome to Final Fantasy VII Top Trumps! You and your opponent will each draw a character card. Choose a stat and beat your opponent!")<br>while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;if len(played) >= 30:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if pscore > oscore:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("You win the game!")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Sorry, you lost the game!")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;go = input("Game over. Would you like to play again (Yes or No)? ")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if go not in bank2:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Please enter a valid response")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if go == "Yes":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;del played[0:30]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pscore = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oscore = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if go == "No":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br>&nbsp;&nbsp;&nbsp;&nbsp;from random import choice<br>&nbsp;&nbsp;&nbsp;&nbsp;file = open("ff7.txt", "r")<br>&nbsp;&nbsp;&nbsp;&nbsp;a = choice(list(file))<br>&nbsp;&nbsp;&nbsp;&nbsp;file = open("ff7.txt", "r")<br>&nbsp;&nbsp;&nbsp;&nbsp;c = choice(list(file))<br>&nbsp;&nbsp;&nbsp;&nbsp;if a == c:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;if a in played:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;if c in played:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;played.append(a)<br>&nbsp;&nbsp;&nbsp;&nbsp;played.append(c)<br>&nbsp;&nbsp;&nbsp;&nbsp;while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b = a.split(',')<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d = c.split(',')<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ps = int(b[1])<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pm = int(b[2])<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ph = int(b[3])<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pc = int(b[4])<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pa = int(b[5])<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;os = int(d[1])<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;om = int(d[2])<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oh = int(d[3])<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oc = int(d[4])<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oa = int(d[5])<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if len(played)%4 == 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;import random<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ostat = random.choice(bank)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("\nYour opponent is deciding...")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;import time<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(3)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("\nYour opponent used " + d[0])<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;battle(ostat, "S", ps, os, b[0], b[1], d[0], d[1], "'s Strength of ")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;battle(ostat, "M", pm, om, b[0], b[2], d[0], d[2], "'s Magic of ")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;battle(ostat, "H", ph, oh, b[0], b[3], d[0], d[3], "'s Honour of ")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;battle(ostat, "C", pc, oc, b[0], b[4], d[0], d[4], "'s Control of ")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;battle(ostat, "A", pa, oa, b[0], b[5], d[0], d[5], "'s Age of ")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("\nName:&nbsp;&nbsp;&nbsp;&nbsp; " + b[0] + "\n" + "Strength: " + b[1] + "\n" + "Magic:&nbsp;&nbsp;&nbsp;&nbsp;" + b[2] + "\n" + "Honour:   " + b[3] + "\n" + "Control:  " + b[4] + "\n" + "Age:&nbsp;&nbsp;&nbsp;&nbsp;  " + b[5])<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stat = input("Please choose a stat. S for Strength, M for Magic, H for Honour, C for Control or A for Age: ")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if stat == "quit":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if not (stat) in bank:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("\nThat's not one of the five stats\n")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("\nYour opponent used " + d[0])<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;battle(stat, "S", ps, os, b[0], b[1], d[0], d[1], "'s Strength of ")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;battle(stat, "M", pm, om, b[0], b[2], d[0], d[2], "'s Magic of ")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;battle(stat, "H", ph, oh, b[0], b[3], d[0], d[3], "'s Honour of ")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;battle(stat, "C", pc, oc, b[0], b[4], d[0], d[4], "'s Control of ")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;battle(stat, "A", pa, oa, b[0], b[5], d[0], d[5], "'s Age of ")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Your score is " + str(pscore) + "\nYour opponent's score is " + str(oscore) + "\n")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;import time<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(3)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break
+	</p>
 	
 	<script>
-	function Toggle() {
+	/* function Toggle() {
 		var x = document.getElementById("pycode");
 		if (x.style.display === "none") 
 			{x.style.display = "block";} 
-		else {x.style.display = "none"; }}
+		else {x.style.display = "none"; }} 
+		*/
 		
 	function Copy() {
 		const copyText = document.getElementById("pycode").innerText; 
 		navigator.clipboard.writeText(copyText);}
 	</script>
-
+</div>
+</main>
 </body>
 </html>

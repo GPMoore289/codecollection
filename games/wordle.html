@@ -2,187 +2,57 @@
 <html>
 <head>
     <meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">	
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+	<link rel="icon" type="image/x-icon" href="./images/wordleicon.png">
     <title>Wordle</title>
+	<style>
+@media screen and (max-width: 999px)		
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery gallery gallery gallery" "code code code code code code";}} 								
+		@media screen and (min-width: 1000px)
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery code code code";} 	}																												
+	</style>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
 </head>
-<body onload="brython()">
-	<p><a href="../index.html">&#11013; Back</a></p>
-    <h1>Wordle</h1>
-	<div class = "synopsis">
-	<p><strong>Original Creation:</strong> 20th March 2022</p>
-	<p><strong>Uploaded:</strong> 25th Feb 2025</p>
-	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
-	<p><strong>Description:</strong> Remember how people couldn't get enough of Wordle back in 2022, but were limited to one puzzle a day? Well, I found a solution: reverse-engineer it!
-	This is based on my old version of <a href="./mastermind.html">Mastermind</a> (this was before I knew how to use the <strong>def</strong> function) and while messy, it does work.</p>
-	</div>
-	
-	<div class="gallery">
+<body onload="brython()" class="codepage">
+	<header>
+		<div><a href="../index.html#games"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
+		<div><h1>Wordle</h1></div>
+	</header>
+	<main class="container">
+		<div class="description"><p><strong>Description:</strong> Remember how people couldn't get enough of Wordle back in 2022, but were limited to one puzzle a day? Well, I found a solution: reverse-engineer it!
+	This is based on my old version of <a href="./mastermind.html">Mastermind</a> (this was before I knew how to use the <strong>def</strong> function) and while messy, it does work.
+		</p></div>
+		<div class="origin"><p><strong>Original Creation:</strong> 20th March 2022</p></div>
+		<div class="uploaded"><p><strong>Uploaded:</strong> 25th Feb 2025</p></div>
+		<div class="status"><p><strong>Status:</strong> Complete. Original code was written without AI.</p></div>
+		<div class="supplemental"><p><strong>Supplemental:</strong> Text file: <a href="wordlist.txt">list of every five-letter word</a></p></div>
+		<div class="gallery">
 		<div><figure>
 		<figcaption>Wordle gamplay</figcaption>		
 		<img src="images/wordle.PNG" alt="Wordle gamplay" title="Wordle gamplay">
 		</figure></div>
-	</div>	
+		</div>	
+	<div class="code">		
+		<!-- <button onclick="Toggle()">Toggle Original Python Code Display</button> -->
+		<button onclick="Copy()">Copy the Python Code</button>
 	
-	<p>Text file: <a href="wordlist.txt">list of every five-letter word</a></p>
-	
-	<button onclick="Toggle()">Toggle Original Python Code Display</button>
-	<button onclick="Copy()">Copy the Python Code</button>
-
-	<pre id="pycode">
-import copy
-from random import choice
-file = open("wordlist.txt", "r")
-enter = choice(list(file))
-code = str.strip(enter)
-bank = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
-guess = 6
-word = ["_", "_", "_", "_", "_"]
-ntprst = []
-
-print("Welcome to MOOREDLE. \nA letter will either be correct (displayed normally), present but in the wrong position (displayed with asterisks), or absent.\nEnter 'quit' to quit.\n",word[0], word[1], word[2], word[3], word[4], "\n")
-		
-while guess > 0:
-	lett = input("Enter a five-letter word: ")
-	if lett == "quit":
-		break
-	if lett == "give":
-		print(code)
-	if len(lett) != 5:
-		print("Must have five letters")
-		continue
-	lett.split(" ")
-	if not (lett[0] and lett[1] and lett[2] and lett[3] and lett[4]) in bank:
-		print("All letters entered must be part of the English alphabet")
-		continue
-
-	ans = copy.copy(word)
-	ncode = list(code.strip(" "))
-
-#What to do with first guessed letter
-	if lett[0] == ncode[0]:
-		ans[0] = lett[0]
-		ncode[0] = " "
-#If the 1st guessed letter is equal to the 2nd actual letter and the 2nd guessed letter is not equal to the 2nd actual letter
-#then the 1st letter in the displayed answer becomes the 1st guessed letter
-	elif lett[0] == ncode[1] and lett[1] != ncode[1]:
-		ans[0] = "*" + str(lett[0]) + "*"
-		ncode[1] = " "
-	elif lett[0] == ncode[2] and lett[2] != ncode[2]:
-		ans[0] = "*" + str(lett[0]) + "*"
-		ncode[2] = " "
-	elif lett[0] == ncode[3] and lett[3] != ncode[3]:
-		ans[0] = "*" + str(lett[0]) + "*"
-		ncode[3] = " "
-	elif lett[0] == ncode[4] and lett[4] != ncode[4]:
-		ans[0] = "*" + str(lett[0]) + "*"
-		ncode[4] = " "
-	else:
-		if lett[0] not in ntprst and lett[0] not in ncode:
-			ntprst.append(lett[0])
-
-	if lett[1] == ncode[1]:
-		ans[1] = lett[1]
-		ncode[1] = " "
-	elif lett[1] == ncode[0] and lett[0] != ncode[0]:
-		ans[1] = "*" + str(lett[1]) + "*"
-		ncode[0] = " "
-	elif lett[1] == ncode[2] and lett[2] != ncode[2]:
-		ans[1] = "*" + str(lett[1]) + "*"
-		ncode[2] = " "
-	elif lett[1] == ncode[3] and lett[3] != ncode[3]:
-		ans[1] = "*" + str(lett[1]) + "*"
-		ncode[3] = " "
-	elif lett[1] == ncode[4] and lett[4] != ncode[4]:
-		ans[1] = "*" + str(lett[1]) + "*"
-		ncode[4] = " "
-	else:
-		if lett[1] not in ntprst and lett[1] not in ncode:
-			ntprst.append(lett[1])
-
-	if lett[2] == ncode[2]:
-		ans[2] = lett[2]
-		ncode[2] = " "
-	elif lett[2] == ncode[0] and lett[0] != ncode[0]:
-		ans[2] = "*" + str(lett[2]) + "*"
-		ncode[0] = " "
-	elif lett[2] == ncode[1] and lett[1] != ncode[1]:
-		ans[2] = "*" + str(lett[2]) + "*"
-		ncode[1] = " "
-	elif lett[2] == ncode[3] and lett[3] != ncode[3]:
-		ans[2] = "*" + str(lett[2]) + "*"
-		ncode[3] = " "
-	elif lett[2] == ncode[4] and lett[4] != ncode[4]:
-		ans[2] = "*" + str(lett[2]) + "*"
-		ncode[4] = " "
-	else:
-		if lett[2] not in ntprst and lett[2] not in ncode:
-			ntprst.append(lett[2])  
-
-	if lett[3] == ncode[3]:
-		ans[3] = lett[3]
-		ncode[3] = " "
-	elif lett[3] == ncode[0] and lett[0] != ncode[0]:
-		ans[3] = "*" + str(lett[3]) + "*"
-		ncode[0] = " "
-	elif lett[3] == ncode[1] and lett[1] != ncode[1]:
-		ans[3] = "*" + str(lett[3]) + "*"
-		ncode[1] = " "
-	elif lett[3] == ncode[2] and lett[2] != ncode[2]:
-		ans[3] = "*" + str(lett[3]) + "*"
-		ncode[2] = " "
-	elif lett[3] == ncode[4] and lett[4] != ncode[4]:
-		ans[3] = "*" + str(lett[3]) + "*"
-		ncode[4] = " "
-	else:
-		if lett[3] not in ntprst and lett[3] not in ncode:
-			ntprst.append(lett[3])
-
-	if lett[4] == ncode[4]:
-		ans[4] = lett[4]
-		ncode[4] = " "
-	elif lett[4] == ncode[0] and lett[0] != ncode[0]:
-		ans[4] = "*" + str(lett[4]) + "*"
-		ncode[0] = " "
-	elif lett[4] == ncode[1] and lett[1] != ncode[1]:
-		ans[4] = "*" + str(lett[4]) + "*"
-		ncode[1] = " "
-	elif lett[4] == ncode[2] and lett[2] != ncode[2]:
-		ans[4] = "*" + str(lett[4]) + "*"
-		ncode[2] = " "
-	elif lett[4] == ncode[3] and lett[3] != ncode[3]:
-		ans[4] = "*" + str(lett[4]) + "*"
-		ncode[3] = " "
-	else:
-		if lett[4] not in ntprst and lett[4] not in ncode:
-			ntprst.append(lett[4])
-	   
-	print(" ".join(ans))
-	ntprst.sort()
-	print("Letters not in word: " + str(" ".join(ntprst)))
-	if lett == code:
-		print("You won!")
-		break
-	else:
-		guess += -1
-		print("Guesses remaining: " + str(guess) + "\n")
-		if guess &lt; 1:
-			print("You lose!\nAnswer was " + str(code))
-			break
-		continue
-	</pre>
+	<p id="pycode">
+import copy<br>from random import choice<br>file = open("wordlist.txt", "r")<br>enter = choice(list(file))<br>code = str.strip(enter)<br>bank = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]<br>guess = 6<br>word = ["_", "_", "_", "_", "_"]<br>ntprst = []<br><br>print("Welcome to MOOREDLE. \nA letter will either be correct (displayed normally), present but in the wrong position (displayed with asterisks), or absent.\nEnter 'quit' to quit.\n",word[0], word[1], word[2], word[3], word[4], "\n")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>while guess > 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;lett = input("Enter a five-letter word: ")<br>&nbsp;&nbsp;&nbsp;&nbsp;if lett == "quit":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br>&nbsp;&nbsp;&nbsp;&nbsp;if lett == "give":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(code)<br>&nbsp;&nbsp;&nbsp;&nbsp;if len(lett) != 5:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Must have five letters")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;lett.split(" ")<br>&nbsp;&nbsp;&nbsp;&nbsp;if not (lett[0] and lett[1] and lett[2] and lett[3] and lett[4]) in bank:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("All letters entered must be part of the English alphabet")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br><br>&nbsp;&nbsp;&nbsp;&nbsp;ans = copy.copy(word)<br>&nbsp;&nbsp;&nbsp;&nbsp;ncode = list(code.strip(" "))<br><br>#What to do with first guessed letter<br>&nbsp;&nbsp;&nbsp;&nbsp;if lett[0] == ncode[0]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans[0] = lett[0]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ncode[0] = " "<br>#If the 1st guessed letter is equal to the 2nd actual letter and the 2nd guessed letter is not equal to the 2nd actual letter<br>#then the 1st letter in the displayed answer becomes the 1st guessed letter<br>&nbsp;&nbsp;&nbsp;&nbsp;elif lett[0] == ncode[1] and lett[1] != ncode[1]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans[0] = "*" + str(lett[0]) + "*"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ncode[1] = " "<br>&nbsp;&nbsp;&nbsp;&nbsp;elif lett[0] == ncode[2] and lett[2] != ncode[2]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans[0] = "*" + str(lett[0]) + "*"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ncode[2] = " "<br>&nbsp;&nbsp;&nbsp;&nbsp;elif lett[0] == ncode[3] and lett[3] != ncode[3]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans[0] = "*" + str(lett[0]) + "*"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ncode[3] = " "<br>&nbsp;&nbsp;&nbsp;&nbsp;elif lett[0] == ncode[4] and lett[4] != ncode[4]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans[0] = "*" + str(lett[0]) + "*"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ncode[4] = " "<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if lett[0] not in ntprst and lett[0] not in ncode:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ntprst.append(lett[0])<br><br>&nbsp;&nbsp;&nbsp;&nbsp;if lett[1] == ncode[1]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans[1] = lett[1]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ncode[1] = " "<br>&nbsp;&nbsp;&nbsp;&nbsp;elif lett[1] == ncode[0] and lett[0] != ncode[0]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans[1] = "*" + str(lett[1]) + "*"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ncode[0] = " "<br>&nbsp;&nbsp;&nbsp;&nbsp;elif lett[1] == ncode[2] and lett[2] != ncode[2]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans[1] = "*" + str(lett[1]) + "*"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ncode[2] = " "<br>&nbsp;&nbsp;&nbsp;&nbsp;elif lett[1] == ncode[3] and lett[3] != ncode[3]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans[1] = "*" + str(lett[1]) + "*"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ncode[3] = " "<br>&nbsp;&nbsp;&nbsp;&nbsp;elif lett[1] == ncode[4] and lett[4] != ncode[4]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans[1] = "*" + str(lett[1]) + "*"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ncode[4] = " "<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if lett[1] not in ntprst and lett[1] not in ncode:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ntprst.append(lett[1])<br><br>&nbsp;&nbsp;&nbsp;&nbsp;if lett[2] == ncode[2]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans[2] = lett[2]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ncode[2] = " "<br>&nbsp;&nbsp;&nbsp;&nbsp;elif lett[2] == ncode[0] and lett[0] != ncode[0]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans[2] = "*" + str(lett[2]) + "*"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ncode[0] = " "<br>&nbsp;&nbsp;&nbsp;&nbsp;elif lett[2] == ncode[1] and lett[1] != ncode[1]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans[2] = "*" + str(lett[2]) + "*"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ncode[1] = " "<br>&nbsp;&nbsp;&nbsp;&nbsp;elif lett[2] == ncode[3] and lett[3] != ncode[3]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans[2] = "*" + str(lett[2]) + "*"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ncode[3] = " "<br>&nbsp;&nbsp;&nbsp;&nbsp;elif lett[2] == ncode[4] and lett[4] != ncode[4]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans[2] = "*" + str(lett[2]) + "*"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ncode[4] = " "<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if lett[2] not in ntprst and lett[2] not in ncode:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ntprst.append(lett[2])  <br><br>&nbsp;&nbsp;&nbsp;&nbsp;if lett[3] == ncode[3]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans[3] = lett[3]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ncode[3] = " "<br>&nbsp;&nbsp;&nbsp;&nbsp;elif lett[3] == ncode[0] and lett[0] != ncode[0]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans[3] = "*" + str(lett[3]) + "*"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ncode[0] = " "<br>&nbsp;&nbsp;&nbsp;&nbsp;elif lett[3] == ncode[1] and lett[1] != ncode[1]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans[3] = "*" + str(lett[3]) + "*"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ncode[1] = " "<br>&nbsp;&nbsp;&nbsp;&nbsp;elif lett[3] == ncode[2] and lett[2] != ncode[2]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans[3] = "*" + str(lett[3]) + "*"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ncode[2] = " "<br>&nbsp;&nbsp;&nbsp;&nbsp;elif lett[3] == ncode[4] and lett[4] != ncode[4]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans[3] = "*" + str(lett[3]) + "*"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ncode[4] = " "<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if lett[3] not in ntprst and lett[3] not in ncode:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ntprst.append(lett[3])<br><br>&nbsp;&nbsp;&nbsp;&nbsp;if lett[4] == ncode[4]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans[4] = lett[4]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ncode[4] = " "<br>&nbsp;&nbsp;&nbsp;&nbsp;elif lett[4] == ncode[0] and lett[0] != ncode[0]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans[4] = "*" + str(lett[4]) + "*"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ncode[0] = " "<br>&nbsp;&nbsp;&nbsp;&nbsp;elif lett[4] == ncode[1] and lett[1] != ncode[1]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans[4] = "*" + str(lett[4]) + "*"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ncode[1] = " "<br>&nbsp;&nbsp;&nbsp;&nbsp;elif lett[4] == ncode[2] and lett[2] != ncode[2]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans[4] = "*" + str(lett[4]) + "*"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ncode[2] = " "<br>&nbsp;&nbsp;&nbsp;&nbsp;elif lett[4] == ncode[3] and lett[3] != ncode[3]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans[4] = "*" + str(lett[4]) + "*"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ncode[3] = " "<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if lett[4] not in ntprst and lett[4] not in ncode:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ntprst.append(lett[4])<br>&nbsp;&nbsp;&nbsp;&nbsp;   <br>&nbsp;&nbsp;&nbsp;&nbsp;print(" ".join(ans))<br>&nbsp;&nbsp;&nbsp;&nbsp;ntprst.sort()<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Letters not in word: " + str(" ".join(ntprst)))<br>&nbsp;&nbsp;&nbsp;&nbsp;if lett == code:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("You won!")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;guess += -1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Guesses remaining: " + str(guess) + "\n")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if guess &lt; 1:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("You lose!\nAnswer was " + str(code))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue
+	</p>
 	
 	<script>
-	function Toggle() {
+	/* function Toggle() {
 		var x = document.getElementById("pycode");
 		if (x.style.display === "none") 
 			{x.style.display = "block";} 
-		else {x.style.display = "none"; }}
+		else {x.style.display = "none"; }} 
+		*/
 		
 	function Copy() {
 		const copyText = document.getElementById("pycode").innerText; 
 		navigator.clipboard.writeText(copyText);}
 	</script>
-
+</div>
+</main>
 </body>
 </html>

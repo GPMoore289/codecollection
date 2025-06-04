@@ -2,261 +2,60 @@
 <html>
 <head>
     <meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">		
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+	<link rel="icon" type="image/x-icon" href="./images/reversiicon.png">
     <title>Reversi</title>
+	<style>
+@media screen and (max-width: 999px)		
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery gallery gallery gallery" "code code code code code code";}} 								
+		@media screen and (min-width: 1000px)
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery code code code";} 	}																												
+	</style>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
 </head>
-<body onload="brython()">
-	<p><a href="../index.html">&#11013; Back</a></p>
-    <h1>Reversi</h1>
-	<div class = "synopsis">
-	<p><strong>Original Creation:</strong> 11th November 2024</p>
-	<p><strong>Uploaded:</strong> 3rd March 2025</p>
-	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
-	<p><strong>Description:</strong> The second bonus project presented to me by my Intro to Programming professor: 2-player Reversi
+<body onload="brython()" class="codepage">
+	<header>
+		<div><a href="../index.html#games"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
+		<div><h1>Reversi</h1></div>
+	</header>
+	<main class="container">
+		<div class="description"><p><strong>Description:</strong> The second bonus project presented to me by my Intro to Programming professor: 2-player Reversi
 	I'd actually never played Reversi/Othello before, but just because I'm not good at the game, doesn't meet I can't code it.
 	This took the lessons on making a grid-based game I'd learned from <a href="gameoflife.html">Conway's Game of Life</a> and made
 	something that I'm actually quite proud of. You've really got to make sure that the game recognises the edge of the grid and
-	doesn't wrap around to the other side. After all, I was having to present it to someone other than myself for once...</p>
-	</div>
-	
-	<div class="gallery">
+	doesn't wrap around to the other side. After all, I was having to present it to someone other than myself for once...
+		</p></div>
+		<div class="origin"><p><strong>Original Creation:</strong> 11th November 2024</p></div>
+		<div class="uploaded"><p><strong>Uploaded:</strong> 3rd March 2025</p></div>
+		<div class="status"><p><strong>Status:</strong> Complete. Original code was written without AI.</p></div>
+		<div class="supplemental"><p><strong>Supplemental:</strong> N/A</p></div>
+		<div class="gallery">
 		<div><figure>
 		<figcaption>Reversi gameplay</figcaption>		
 		<img src="images/reversi.PNG" alt="Reversi gameplay" title="Reversi gameplay">
 		</figure></div>
-	</div>	
+		</div>	
+	<div class="code">		
+		<!-- <button onclick="Toggle()">Toggle Original Python Code Display</button> -->
+		<button onclick="Copy()">Copy the Python Code</button>
 	
-	<button onclick="Toggle()">Toggle Original Python Code Display</button>
-	<button onclick="Copy()">Copy the Python Code</button>
-
-	<pre id="pycode">
-#import random #use this to speed up testing
-#import time
-
-grid = []
-turn = 0
-p1char = "X"
-p2char = "O"
-nomovecounter = 0
-
-#function that searches in each direction based on the modifier 
-    
-def directionsearch(squareindex, modifier): #squareindex = numerical (not grid) value of the cell being examined. modifier determines the direction it will search in.
-    n = 0
-    if modifier == -8 and squareindex &lt;= 7: #stops it searching north if in top row
-        return False
-    if modifier == 8 and squareindex >= 56: #stops it searching south if in bottom row
-        return False
-    if modifier == 1 and (squareindex + 1) %8 == 0: #stops it searching east if in rightmost column
-        return False
-    if modifier == -1 and squareindex %8 == 0: #stops it searching west if in leftmost column
-        return False
-    if modifier == -7 and ((squareindex + 1) %8 == 0 or squareindex &lt;= 7): #stops it searching northeast if in rightmost column, or top row
-        return False
-    if modifier == -9 and (squareindex %8 == 0 or squareindex &lt;= 7): #stops it searching northwest if in leftmost column, or top row
-        return False
-    if modifier == 9 and ((squareindex + 1) %8 == 0 or squareindex >= 56): #stops it searching southeast if in rightmost column, or bottom row
-        return False
-    if modifier == 7 and (squareindex %8 == 0 or squareindex >= 56): #stops it searching southwest if in leftmost column, or bottom row
-        return False
-    n = modifier
-    if grid[squareindex+n] == opptoken: #check if the adjacent token is an opponent's
-        while True: #checks if the next cell along is within the grid, depending on direction. This is the bit that required the most debugging!
-            ncheck = modifier == -8 and squareindex+n >= 0
-            scheck = modifier == 8 and squareindex+n &lt;= 63
-            echeck = modifier == 1 and (squareindex + n) %8 != 0
-            wcheck = modifier == -1 and squareindex+n %8 != 0
-            necheck = modifier == -7 and squareindex+n >= 0 and (squareindex + n) %8 != 0
-            nwcheck = modifier == -9 and squareindex+n >= 0 and squareindex+n %8 != 0
-            secheck = modifier == 9 and squareindex+n &lt;= 63 and (squareindex + n) %8 != 0
-            swcheck =  modifier == 7 and squareindex+n &lt;= 63 and squareindex+n %8 != 0
-            if any([ncheck, scheck, echeck, wcheck, necheck, nwcheck, secheck, swcheck]): #checks if the next cell is a player token, if not, increase the modifier, and check next one
-                if grid[squareindex+n] == playtoken:
-                    return True
-                if grid[squareindex+n] != playtoken and grid[squareindex+n] != opptoken: #prevents niche scenario where a gap followed by a playtoken results in a false positive
-                    return False
-                else:
-                    n += modifier
-                    continue
-            else:
-                return False            
-    else:
-        return False
-       
-def directionflip(direction): #changes opponent's pieces into current player's pieces
-    if direction == "N":
-        modifier = -8
-    if direction == "S":
-        modifier = 8
-    if direction == "E":
-        modifier = 1
-    if direction == "W":
-        modifier = -1
-    if direction == "NE":
-        modifier = -7
-    if direction == "NW":
-        modifier = -9
-    if direction == "SE":
-        modifier = 9
-    if direction == "SW":
-        modifier = 7
-    step = modifier
-    while True:
-        if grid[squareindex+step] == opptoken:
-            grid[squareindex+step] = playtoken
-            step += modifier
-            continue
-        else:
-            break
-
-#creates the grid
-for i in "ABCDEFGH":
-    for j in range(1, 9):
-        grid.append(i+str(j))
-
-#sets the initial token placements
-grid[27] = p1char
-grid[28] = p2char
-grid[35] = p2char
-grid[36] = p1char
-
-print(f"\nWelcome to Reversi. Player 1 is {p1char} and Player 2 is {p2char}.")
-
-while True: #main loop
-    turn += 1
-    
-    if nomovecounter >= 2:
-        break
-    
-    print("\n  | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |")
-    print("-----------------------------------")
-    n = 1 #prints the grid
-    while n &lt; 65:
-        if grid[n-1] == p1char or grid[n-1] == p2char:
-            x = grid[n-1]
-        else:
-            x = " "
-        if (n-1)%8 == 0:
-            y = chr(int(((n-1)/8)+65))
-            print(f"{y} |", end = " ")
-        print(f"{x}", end = " ")
-        if n%8 != 0:
-            print("|", end = " ")
-            n+=1
-            continue
-        else:
-            print("|")
-            print("-----------------------------------")
-            n+=1
-
-    #determines player turn and which token is the player's and which is the opponent's
-    if turn%2 == 0:
-        playtoken = p2char
-        opptoken = p1char
-        print("\nIt is Player 2's turn.")
-    else:
-        playtoken = p1char
-        opptoken = p2char
-        print("\nIt is Player 1's turn.")
-        
-    searchdict = {"N" : False, "S" : False, "E" : False, "W" : False, "NE" : False, "NW" : False, "SE" : False, "SW" : False}
-    
-    #legalmoves=[]
-        
-    for square in grid: #checks for legal moves
-        if square == p2char or square == p1char:
-            continue
-        else:
-            squareindex = grid.index(square)
-            searchdict["N"] = directionsearch(squareindex, -8)
-            searchdict["S"] = directionsearch(squareindex, 8)
-            searchdict["E"] = directionsearch(squareindex, 1)
-            searchdict["W"] = directionsearch(squareindex, -1)
-            searchdict["NE"] = directionsearch(squareindex, -7)
-            searchdict["NW"] = directionsearch(squareindex, -9)
-            searchdict["SE"] = directionsearch(squareindex, 9)
-            searchdict["SW"] = directionsearch(squareindex, 7)
-            if any(searchdict.values()):
-                #legalmoves.append(square) #cannot use legal moves list in combination with the nomovecounter below
-                break
-    
-    if not any(searchdict.values()):
-        nomovecounter += 1
-        print("Player has no legal moves, skipping turn.")
-        continue
-    
-    #print(f"Legal moves: {legalmoves}")
-        
-    nomovecounter = 0
-    
-    #time.sleep(0.5) #use this to speed up testing
-
-    #input loop
-    while True:       
-        #location = random.choice(grid) #use this to speed up testing, and comment out the line below
-        location = input("Enter the grid reference (e.g. F4) where you wish to place your token:").upper()
-        if location not in grid or location == p1char or location == p2char:
-            print("That's not a valid entry.\n")
-            continue
-
-        #list index of the player's entry
-        squareindex = grid.index(location)
-        
-        #print(location)
-        #print(squareindex)
-        
-        searchdict = {"N" : False, "S" : False, "E" : False, "W" : False, "NE" : False, "NW" : False, "SE" : False, "SW" : False}
-
-        #searches in each direction to check that the entry is valid
-        searchdict["N"] = directionsearch(squareindex, -8)
-        searchdict["S"] = directionsearch(squareindex, 8)
-        searchdict["E"] = directionsearch(squareindex, 1)
-        searchdict["W"] = directionsearch(squareindex, -1)
-        searchdict["NE"] = directionsearch(squareindex, -7)
-        searchdict["NW"] = directionsearch(squareindex, -9)
-        searchdict["SE"] = directionsearch(squareindex, 9)
-        searchdict["SW"] = directionsearch(squareindex, 7)
-        
-        if not any(searchdict.values()):
-            print("This is not a valid location.\n")
-            continue
-        else:
-            break
-        
-    grid[squareindex] = playtoken #places player's token
-    
-    #print(searchdict)
-        
-    for direction in searchdict.keys():
-        if searchdict[direction] == True:
-            directionflip(direction)
-            
-p1count = grid.count(p1char)
-p2count = grid.count(p2char)
-
-print(f"Player 1 has {p1count} points and Player 2 has {p2count} points.\n")
-
-if p1count > p2count:
-    print("Player 1 wins!")
-if p2count > p1count:
-    print("Player 2 wins!")
-if p1count == p2count:
-    print("It's a draw!")
-
-	</pre>
+	<p id="pycode">
+#import random #use this to speed up testing<br>#import time<br><br>grid = []<br>turn = 0<br>p1char = "X"<br>p2char = "O"<br>nomovecounter = 0<br><br>#function that searches in each direction based on the modifier <br>&nbsp;&nbsp;&nbsp;&nbsp;<br>def directionsearch(squareindex, modifier): #squareindex = numerical (not grid) value of the cell being examined. modifier determines the direction it will search in.<br>&nbsp;&nbsp;&nbsp;&nbsp;n = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;if modifier == -8 and squareindex &lt;= 7: #stops it searching north if in top row<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return False<br>&nbsp;&nbsp;&nbsp;&nbsp;if modifier == 8 and squareindex >= 56: #stops it searching south if in bottom row<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return False<br>&nbsp;&nbsp;&nbsp;&nbsp;if modifier == 1 and (squareindex + 1) %8 == 0: #stops it searching east if in rightmost column<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return False<br>&nbsp;&nbsp;&nbsp;&nbsp;if modifier == -1 and squareindex %8 == 0: #stops it searching west if in leftmost column<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return False<br>&nbsp;&nbsp;&nbsp;&nbsp;if modifier == -7 and ((squareindex + 1) %8 == 0 or squareindex &lt;= 7): #stops it searching northeast if in rightmost column, or top row<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return False<br>&nbsp;&nbsp;&nbsp;&nbsp;if modifier == -9 and (squareindex %8 == 0 or squareindex &lt;= 7): #stops it searching northwest if in leftmost column, or top row<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return False<br>&nbsp;&nbsp;&nbsp;&nbsp;if modifier == 9 and ((squareindex + 1) %8 == 0 or squareindex >= 56): #stops it searching southeast if in rightmost column, or bottom row<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return False<br>&nbsp;&nbsp;&nbsp;&nbsp;if modifier == 7 and (squareindex %8 == 0 or squareindex >= 56): #stops it searching southwest if in leftmost column, or bottom row<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return False<br>&nbsp;&nbsp;&nbsp;&nbsp;n = modifier<br>&nbsp;&nbsp;&nbsp;&nbsp;if grid[squareindex+n] == opptoken: #check if the adjacent token is an opponent's<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while True: #checks if the next cell along is within the grid, depending on direction. This is the bit that required the most debugging!<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ncheck = modifier == -8 and squareindex+n >= 0<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scheck = modifier == 8 and squareindex+n &lt;= 63<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echeck = modifier == 1 and (squareindex + n) %8 != 0<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wcheck = modifier == -1 and squareindex+n %8 != 0<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;necheck = modifier == -7 and squareindex+n >= 0 and (squareindex + n) %8 != 0<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nwcheck = modifier == -9 and squareindex+n >= 0 and squareindex+n %8 != 0<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secheck = modifier == 9 and squareindex+n &lt;= 63 and (squareindex + n) %8 != 0<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;swcheck =  modifier == 7 and squareindex+n &lt;= 63 and squareindex+n %8 != 0<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if any([ncheck, scheck, echeck, wcheck, necheck, nwcheck, secheck, swcheck]): #checks if the next cell is a player token, if not, increase the modifier, and check next one<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if grid[squareindex+n] == playtoken:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return True<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if grid[squareindex+n] != playtoken and grid[squareindex+n] != opptoken: #prevents niche scenario where a gap followed by a playtoken results in a false positive<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return False<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n += modifier<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return False&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return False<br>&nbsp;&nbsp;&nbsp;&nbsp;   <br>def directionflip(direction): #changes opponent's pieces into current player's pieces<br>&nbsp;&nbsp;&nbsp;&nbsp;if direction == "N":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;modifier = -8<br>&nbsp;&nbsp;&nbsp;&nbsp;if direction == "S":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;modifier = 8<br>&nbsp;&nbsp;&nbsp;&nbsp;if direction == "E":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;modifier = 1<br>&nbsp;&nbsp;&nbsp;&nbsp;if direction == "W":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;modifier = -1<br>&nbsp;&nbsp;&nbsp;&nbsp;if direction == "NE":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;modifier = -7<br>&nbsp;&nbsp;&nbsp;&nbsp;if direction == "NW":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;modifier = -9<br>&nbsp;&nbsp;&nbsp;&nbsp;if direction == "SE":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;modifier = 9<br>&nbsp;&nbsp;&nbsp;&nbsp;if direction == "SW":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;modifier = 7<br>&nbsp;&nbsp;&nbsp;&nbsp;step = modifier<br>&nbsp;&nbsp;&nbsp;&nbsp;while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if grid[squareindex+step] == opptoken:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grid[squareindex+step] = playtoken<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;step += modifier<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br><br>#creates the grid<br>for i in "ABCDEFGH":<br>&nbsp;&nbsp;&nbsp;&nbsp;for j in range(1, 9):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grid.append(i+str(j))<br><br>#sets the initial token placements<br>grid[27] = p1char<br>grid[28] = p2char<br>grid[35] = p2char<br>grid[36] = p1char<br><br>print(f"\nWelcome to Reversi. Player 1 is {p1char} and Player 2 is {p2char}.")<br><br>while True: #main loop<br>&nbsp;&nbsp;&nbsp;&nbsp;turn += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;if nomovecounter >= 2:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;print("\n  | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |")<br>&nbsp;&nbsp;&nbsp;&nbsp;print("-----------------------------------")<br>&nbsp;&nbsp;&nbsp;&nbsp;n = 1 #prints the grid<br>&nbsp;&nbsp;&nbsp;&nbsp;while n &lt; 65:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if grid[n-1] == p1char or grid[n-1] == p2char:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x = grid[n-1]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x = " "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (n-1)%8 == 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y = chr(int(((n-1)/8)+65))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(f"{y} |", end = " ")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(f"{x}", end = " ")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if n%8 != 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("|", end = " ")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n+=1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("|")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("-----------------------------------")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n+=1<br><br>&nbsp;&nbsp;&nbsp;&nbsp;#determines player turn and which token is the player's and which is the opponent's<br>&nbsp;&nbsp;&nbsp;&nbsp;if turn%2 == 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;playtoken = p2char<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;opptoken = p1char<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("\nIt is Player 2's turn.")<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;playtoken = p1char<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;opptoken = p2char<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("\nIt is Player 1's turn.")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;searchdict = {"N" : False, "S" : False, "E" : False, "W" : False, "NE" : False, "NW" : False, "SE" : False, "SW" : False}<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;#legalmoves=[]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;for square in grid: #checks for legal moves<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if square == p2char or square == p1char:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;squareindex = grid.index(square)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;searchdict["N"] = directionsearch(squareindex, -8)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;searchdict["S"] = directionsearch(squareindex, 8)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;searchdict["E"] = directionsearch(squareindex, 1)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;searchdict["W"] = directionsearch(squareindex, -1)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;searchdict["NE"] = directionsearch(squareindex, -7)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;searchdict["NW"] = directionsearch(squareindex, -9)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;searchdict["SE"] = directionsearch(squareindex, 9)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;searchdict["SW"] = directionsearch(squareindex, 7)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if any(searchdict.values()):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#legalmoves.append(square) #cannot use legal moves list in combination with the nomovecounter below<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;if not any(searchdict.values()):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nomovecounter += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Player has no legal moves, skipping turn.")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;#print(f"Legal moves: {legalmoves}")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;nomovecounter = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;#time.sleep(0.5) #use this to speed up testing<br><br>&nbsp;&nbsp;&nbsp;&nbsp;#input loop<br>&nbsp;&nbsp;&nbsp;&nbsp;while True:&nbsp;&nbsp;&nbsp;&nbsp;   <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#location = random.choice(grid) #use this to speed up testing, and comment out the line below<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;location = input("Enter the grid reference (e.g. F4) where you wish to place your token:").upper()<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if location not in grid or location == p1char or location == p2char:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("That's not a valid entry.\n")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#list index of the player's entry<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;squareindex = grid.index(location)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#print(location)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#print(squareindex)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;searchdict = {"N" : False, "S" : False, "E" : False, "W" : False, "NE" : False, "NW" : False, "SE" : False, "SW" : False}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#searches in each direction to check that the entry is valid<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;searchdict["N"] = directionsearch(squareindex, -8)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;searchdict["S"] = directionsearch(squareindex, 8)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;searchdict["E"] = directionsearch(squareindex, 1)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;searchdict["W"] = directionsearch(squareindex, -1)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;searchdict["NE"] = directionsearch(squareindex, -7)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;searchdict["NW"] = directionsearch(squareindex, -9)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;searchdict["SE"] = directionsearch(squareindex, 9)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;searchdict["SW"] = directionsearch(squareindex, 7)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if not any(searchdict.values()):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("This is not a valid location.\n")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;grid[squareindex] = playtoken #places player's token<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;#print(searchdict)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;for direction in searchdict.keys():<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if searchdict[direction] == True:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;directionflip(direction)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>p1count = grid.count(p1char)<br>p2count = grid.count(p2char)<br><br>print(f"Player 1 has {p1count} points and Player 2 has {p2count} points.\n")<br><br>if p1count > p2count:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Player 1 wins!")<br>if p2count > p1count:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Player 2 wins!")<br>if p1count == p2count:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("It's a draw!")<br>
+	</p>
 	
 	<script>
-	function Toggle() {
+	/* function Toggle() {
 		var x = document.getElementById("pycode");
 		if (x.style.display === "none") 
 			{x.style.display = "block";} 
-		else {x.style.display = "none"; }}
+		else {x.style.display = "none"; }} 
+		*/
 		
 	function Copy() {
 		const copyText = document.getElementById("pycode").innerText; 
 		navigator.clipboard.writeText(copyText);}
 	</script>
-
+</div>
+</main>
 </body>
 </html>

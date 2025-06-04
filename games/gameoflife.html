@@ -6,16 +6,16 @@
 	<link rel="icon" type="image/x-icon" href="./images/gameoflife.png">
     <title>Conway's Game of Life</title>
 	<style>
-		.container			{display: grid; grid-template-areas: 	"description description description description description description" 
-															"origin origin uploaded status status supplemental"
-															"gallery gallery gallery code code code"; 							
-															border: black solid 2px; border-radius: 10px 10px; background-color: LavenderBlush;}
+@media screen and (max-width: 849px)		
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery gallery gallery gallery" "code code code code code code";}} 								
+		@media screen and (min-width: 850px)
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery code code code";} 	}																												
 	</style>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
 </head>
 <body onload="brython()" class="codepage">
 	<header>
-		<div><a href="../index.html"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
+		<div><a href="../index.html#games"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
 		<div><h1>Conway's Game of Life</h1></div>
 	</header>
 	<main class="container">
@@ -47,104 +47,9 @@
 		<!-- <button onclick="Toggle()">Toggle Original Python Code Display</button> -->
 		<button onclick="Copy()">Copy the Python Code</button>
 	
-	<pre id="pycode">
-import random
-import time
-
-firstgrid = {}
-lastgrid = {}
-livechar = "#"
-deadchar = "."
-gen = 0
-
-def endstatecheck (grid1, grid2, state): #detects if the game is all still lifes or in a 2 period oscillator state
-	a = 1
-	same = True
-	while a &lt; 401 and len(grid2) != 0: #second condition not actually needed for 1st vs 2nd grid, but is needed for 2nd vs last
-		if grid1[a] != grid2[a]: 
-			same = False
-			break
-		a += 1        
-	if same == True and len(grid2) != 0:
-		print(f"The game has reached a {state} state. It lasted {gen} generations.")
-		return same
-	
-for i in range(1, 401): #creates the grid
-	x = random.randrange(1, 7) #game has a 1 in 6 chance of creating a live cell
-	if x == 1:
-		firstgrid[i] = livechar
-	else:
-		firstgrid[i] = deadchar
-
-while True: #main loop
-	gen += 1
-	n = 1
-	while n &lt; 400: #prints a visual representation of the grid
-		print(f"{firstgrid[n]} {firstgrid[n+1]} {firstgrid[n+2]} {firstgrid[n+3]} {firstgrid[n+4]} {firstgrid[n+5]} 
-		{firstgrid[n+6]} {firstgrid[n+7]} {firstgrid[n+8]} {firstgrid[n+9]} {firstgrid[n+10]} {firstgrid[n+11]} 
-		{firstgrid[n+12]} {firstgrid[n+13]} {firstgrid[n+14]} {firstgrid[n+15]} {firstgrid[n+16]} {firstgrid[n+17]} 
-		{firstgrid[n+18]} {firstgrid[n+19]}")
-		n += 20
-		
-	print("")
-		
-	if livechar not in firstgrid.values(): #Checks if there are any live cells left
-		print(f"Everything is dead! It lasted {gen} generations.")
-		break      
-		
-	secondgrid = {}
-	
-	for i in firstgrid.keys(): #applies Conway's rules and creates a second grid
-		livepals = 0
-		cellstatus = firstgrid[i]
-		if i+1 &lt; 401 and firstgrid[i+1] == livechar and i%20 != 0:              
-		#if east neighbour is alive, not above 400, and the current number is not divisible by 20
-			livepals += 1
-		if i-1 > 0 and firstgrid[i-1] == livechar and (i-1)%20 != 0:            
-		#if west neighbour is alive, not zero or lower, and the current number-1 is not divisible by 20
-			livepals += 1
-		if i+19 &lt; 401 and firstgrid[i+19] == livechar and (i-1)%20 != 0:        
-		#if southwest neighbour is alive, not above 400, and the current number-1 is not divisible by 20
-			livepals += 1
-		if i-19 > 0 and firstgrid[i-19] == livechar and i%20 != 0:              
-		#if northeast neighbour is alive, not zero or lower, and the current number is not divisible by 20
-			livepals += 1
-		if i+20 &lt; 401 and firstgrid[i+20] == livechar:                          
-		#if south neighbour is alive and not above 400.
-			livepals += 1
-		if i-20 > 0 and firstgrid[i-20] == livechar:                            
-		#if north neighbour is alive and not below 0.
-			livepals += 1
-		if i+21 &lt; 401 and firstgrid[i+21] == livechar and i%20 != 0:            
-		#if southeast neighbour is alive, not above 400 and current number is not divisible by 20.
-			livepals += 1
-		if i-21 > 0 and firstgrid[i-21] == livechar and (i-1)%20 != 0:          
-		#if northwest neighbour is alive, not below 0 and current number-1 is not divisible by 20.
-			livepals += 1
-		if cellstatus == livechar and (livepals &lt; 2 or livepals > 3):           
-		#living cell with less than 2 neighbours, or greater than 3 neighbours, dies
-			secondgrid[i] = deadchar
-		elif cellstatus == livechar and 2&lt;= livepals &lt;= 3 :                     
-		#living cell with 2-3 neighbours lives
-			secondgrid[i] = livechar
-		elif cellstatus == deadchar and livepals == 3 :                         
-		#dead cell with exactly 3 neighbours comes to life
-			secondgrid[i] = livechar
-		else:
-			secondgrid[i] = deadchar
-					  
-	x = endstatecheck (firstgrid, secondgrid, "static") #ends game if it has reached a static state
-	if x == True:
-		break
-	
-	y = endstatecheck (secondgrid, lastgrid, "2 period oscillator") #ends game if it has reached a 2 period oscillator state
-	if y == True:
-		break
-	
-	lastgrid = firstgrid.copy()
-	firstgrid = secondgrid.copy()
-	time.sleep(0.25) # stops it from running so fast!
-	</pre>
+	<p id="pycode">
+import random<br>import time<br><br>firstgrid = {}<br>lastgrid = {}<br>livechar = "#"<br>deadchar = "."<br>gen = 0<br><br>def endstatecheck (grid1, grid2, state): #detects if the game is all still lifes or in a 2 period oscillator state<br>&nbsp;&nbsp;&nbsp;&nbsp;a = 1<br>&nbsp;&nbsp;&nbsp;&nbsp;same = True<br>&nbsp;&nbsp;&nbsp;&nbsp;while a &lt; 401 and len(grid2) != 0: #second condition not actually needed for 1st vs 2nd grid, but is needed for 2nd vs last<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if grid1[a] != grid2[a]: <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;same = False<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a += 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;if same == True and len(grid2) != 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(f"The game has reached a {state} state. It lasted {gen} generations.")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return same<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>for i in range(1, 401): #creates the grid<br>&nbsp;&nbsp;&nbsp;&nbsp;x = random.randrange(1, 7) #game has a 1 in 6 chance of creating a live cell<br>&nbsp;&nbsp;&nbsp;&nbsp;if x == 1:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;firstgrid[i] = livechar<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;firstgrid[i] = deadchar<br><br>while True: #main loop<br>&nbsp;&nbsp;&nbsp;&nbsp;gen += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;n = 1<br>&nbsp;&nbsp;&nbsp;&nbsp;while n &lt; 400: #prints a visual representation of the grid<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(f"{firstgrid[n]} {firstgrid[n+1]} {firstgrid[n+2]} {firstgrid[n+3]} {firstgrid[n+4]} {firstgrid[n+5]} <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{firstgrid[n+6]} {firstgrid[n+7]} {firstgrid[n+8]} {firstgrid[n+9]} {firstgrid[n+10]} {firstgrid[n+11]} <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{firstgrid[n+12]} {firstgrid[n+13]} {firstgrid[n+14]} {firstgrid[n+15]} {firstgrid[n+16]} {firstgrid[n+17]} <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{firstgrid[n+18]} {firstgrid[n+19]}")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n += 20<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;print("")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;if livechar not in firstgrid.values(): #Checks if there are any live cells left<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(f"Everything is dead! It lasted {gen} generations.")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break&nbsp;&nbsp;&nbsp;&nbsp;  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;secondgrid = {}<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;for i in firstgrid.keys(): #applies Conway's rules and creates a second grid<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;livepals = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cellstatus = firstgrid[i]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if i+1 &lt; 401 and firstgrid[i+1] == livechar and i%20 != 0:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#if east neighbour is alive, not above 400, and the current number is not divisible by 20<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;livepals += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if i-1 > 0 and firstgrid[i-1] == livechar and (i-1)%20 != 0:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#if west neighbour is alive, not zero or lower, and the current number-1 is not divisible by 20<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;livepals += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if i+19 &lt; 401 and firstgrid[i+19] == livechar and (i-1)%20 != 0:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#if southwest neighbour is alive, not above 400, and the current number-1 is not divisible by 20<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;livepals += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if i-19 > 0 and firstgrid[i-19] == livechar and i%20 != 0:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#if northeast neighbour is alive, not zero or lower, and the current number is not divisible by 20<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;livepals += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if i+20 &lt; 401 and firstgrid[i+20] == livechar:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#if south neighbour is alive and not above 400.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;livepals += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if i-20 > 0 and firstgrid[i-20] == livechar:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#if north neighbour is alive and not below 0.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;livepals += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if i+21 &lt; 401 and firstgrid[i+21] == livechar and i%20 != 0:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#if southeast neighbour is alive, not above 400 and current number is not divisible by 20.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;livepals += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if i-21 > 0 and firstgrid[i-21] == livechar and (i-1)%20 != 0:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#if northwest neighbour is alive, not below 0 and current number-1 is not divisible by 20.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;livepals += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if cellstatus == livechar and (livepals &lt; 2 or livepals > 3):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#living cell with less than 2 neighbours, or greater than 3 neighbours, dies<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secondgrid[i] = deadchar<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif cellstatus == livechar and 2&lt;= livepals &lt;= 3 :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#living cell with 2-3 neighbours lives<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secondgrid[i] = livechar<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif cellstatus == deadchar and livepals == 3 :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#dead cell with exactly 3 neighbours comes to life<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secondgrid[i] = livechar<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secondgrid[i] = deadchar<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <br>&nbsp;&nbsp;&nbsp;&nbsp;x = endstatecheck (firstgrid, secondgrid, "static") #ends game if it has reached a static state<br>&nbsp;&nbsp;&nbsp;&nbsp;if x == True:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;y = endstatecheck (secondgrid, lastgrid, "2 period oscillator") #ends game if it has reached a 2 period oscillator state<br>&nbsp;&nbsp;&nbsp;&nbsp;if y == True:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;lastgrid = firstgrid.copy()<br>&nbsp;&nbsp;&nbsp;&nbsp;firstgrid = secondgrid.copy()<br>&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(0.25) # stops it from running so fast!
+	</p>
 	
 	<script>
 	/* function Toggle() {

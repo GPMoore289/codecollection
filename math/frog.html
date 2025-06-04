@@ -2,98 +2,58 @@
 <html>
 <head>
     <meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">			
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+	<link rel="icon" type="image/x-icon" href="./images/frogicon.png">	
     <title>Frog Jump Problem</title>
+	<style>
+		@media screen and (max-width: 1149px)		
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery gallery gallery gallery" "code code code code code code";}} 								
+		@media screen and (min-width: 1150px)
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery code code code";} 	}													
+	</style>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
 </head>
-<body onload="brython()">
-	<p><a href="../index.html">&#11013; Back</a></p>
-    <h1>Frog Jump Problem</h1>
-	<div class = "synopsis">
-	<p><strong>Original Creation:</strong> 6th April 2020</p>
-	<p><strong>Uploaded:</strong> 25th Feb 2025</p>
-	<p><strong>Status:</strong> Complete. Non-interactive. Original code was written without AI.</p>
-	<p><strong>Description:</strong> Inspired by a Matt Parker video. Imagine a frog on a riverbank with a line of 10 lilypads in front of it. The frog can jump any number of lilypads forward, but only forward. 
+<body onload="brython()" class="codepage">
+	<header>
+		<div><a href="../index.html#math"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
+		<div><h1>Frog Jump Problem</h1></div>
+	</header>
+	<main class="container">
+		<div class="description"><p><strong>Description:</strong> Inspired by a Matt Parker video. Imagine a frog on a riverbank with a line of 10 lilypads in front of it. The frog can jump any number of lilypads forward, but only forward. 
 	What is the average number of jumps it will take for the frog to reach the 10th lilypad? This can be solved through statistical calculation (it's about 3), 
-	but this was my first exercise in using brute force computation to solve a problem.</p>
-	</div>
-	
-	<div class="gallery">
+	but this was my first exercise in using brute force computation to solve a problem.
+		</p></div>
+		<div class="origin"><p><strong>Original Creation:</strong> 6th April 2020</p></div>
+		<div class="uploaded"><p><strong>Uploaded:</strong> 25th Feb 2025</p></div>
+		<div class="status"><p><strong>Status:</strong> Complete. Non-interactive. Original code was written without AI.</p></div>
+		<div class="supplemental"><p><strong>Supplemental</strong>: N/A</p></div>
+		<div class="gallery">
 		<div><figure>
 		<figcaption>Example output</figcaption>		
 		<img src="images/frog.PNG" alt="Example output" title="Example output">
 		</figure></div>
-	</div>	
+		</div>
+	<div class="code">		
+		<!-- <button onclick="Toggle()">Toggle Original Python Code Display</button> -->
+		<button onclick="Copy()">Copy the Python Code</button>
 	
-	<button onclick="Toggle()">Toggle Original Python Code Display</button>
-	<button onclick="Copy()">Copy the Python Code</button>
-
-	<pre id="pycode">
-import random
-
-j1 = 0
-j2 = 0
-j3 = 0
-j4 = 0
-j5 = 0
-j6 = 0
-j7 = 0
-j8 = 0
-j9 = 0
-j10 = 0
-x = 0
-while x &lt; 1000000:
-    lilypad = 0
-    jlen = 0
-    while lilypad &lt; 10:
-        jump = random.randint(1,(10-lilypad))
-        jlen += 1
-        lilypad += jump
-    x += 1
-    if jlen == 1:
-        j1 += 1
-    if jlen == 2:
-        j2 += 1
-    if jlen == 3:
-        j3 += 1
-    if jlen == 4:
-        j4 += 1
-    if jlen == 5:
-        j5 += 1
-    if jlen == 6:
-        j6 += 1
-    if jlen == 7:
-        j7 += 1
-    if jlen == 8:
-        j8 += 1
-    if jlen == 9:
-        j9 += 1
-    if jlen == 10:
-        j10 += 1
-    continue
-print("No. of 1 jumps: " + str(j1))
-print("No. of 2 jumps: " + str(j2))
-print("No. of 3 jumps: " + str(j3))
-print("No. of 4 jumps: " + str(j4))
-print("No. of 5 jumps: " + str(j5))
-print("No. of 6 jumps: " + str(j6))
-print("No. of 7 jumps: " + str(j7))
-print("No. of 8 jumps: " + str(j8))
-print("No. of 9 jumps: " + str(j9))
-print("No. of 10 jumps: " + str(j10))
-	</pre>
+	<p id="pycode">
+import random<br><br>j1 = 0<br>j2 = 0<br>j3 = 0<br>j4 = 0<br>j5 = 0<br>j6 = 0<br>j7 = 0<br>j8 = 0<br>j9 = 0<br>j10 = 0<br>x = 0<br>while x &lt; 1000000:<br>&nbsp;&nbsp;&nbsp;&nbsp;lilypad = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;jlen = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;while lilypad &lt; 10:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jump = random.randint(1,(10-lilypad))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jlen += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lilypad += jump<br>&nbsp;&nbsp;&nbsp;&nbsp;x += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;if jlen == 1:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j1 += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;if jlen == 2:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j2 += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;if jlen == 3:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j3 += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;if jlen == 4:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j4 += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;if jlen == 5:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j5 += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;if jlen == 6:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j6 += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;if jlen == 7:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j7 += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;if jlen == 8:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j8 += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;if jlen == 9:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j9 += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;if jlen == 10:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j10 += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;continue<br>print("No. of 1 jumps: " + str(j1))<br>print("No. of 2 jumps: " + str(j2))<br>print("No. of 3 jumps: " + str(j3))<br>print("No. of 4 jumps: " + str(j4))<br>print("No. of 5 jumps: " + str(j5))<br>print("No. of 6 jumps: " + str(j6))<br>print("No. of 7 jumps: " + str(j7))<br>print("No. of 8 jumps: " + str(j8))<br>print("No. of 9 jumps: " + str(j9))<br>print("No. of 10 jumps: " + str(j10))
+	</p>
 	
 	<script>
-	function Toggle() {
+	/* function Toggle() {
 		var x = document.getElementById("pycode");
 		if (x.style.display === "none") 
 			{x.style.display = "block";} 
-		else {x.style.display = "none"; }}
+		else {x.style.display = "none"; }} 
+		*/
 		
 	function Copy() {
 		const copyText = document.getElementById("pycode").innerText; 
 		navigator.clipboard.writeText(copyText);}
 	</script>
-
+</div>
+</main>
 </body>
 </html>

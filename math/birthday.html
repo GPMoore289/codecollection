@@ -2,123 +2,57 @@
 <html>
 <head>
     <meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">		
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+	<link rel="icon" type="image/x-icon" href="./images/birthday.png">	
     <title>Birthday Calculator</title>
+	<style>
+		@media screen and (max-width: 1149px)		
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery gallery gallery gallery" "code code code code code code";}} 								
+		@media screen and (min-width: 1150px)
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery code code code";} 	}													
+	</style>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
 </head>
-<body onload="brython()">
-	<p><a href="../index.html">&#11013; Back</a></p>
-    <h1>Birthday Calculator</h1>
-	<div class = "synopsis">
-	<p><strong>Original Creation:</strong> 17th December 2022</p>
-	<p><strong>Uploaded:</strong> 25th Feb 2025</p>
-	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
-	<p><strong>Description:</strong> An exercise in error-handling and considering edge-cases such as leap years, this calculates the day of the week you were born on, after inputting your birthday. 
-	Only works with dates after 1800.</p>
-	</div>
-	
-	<div class="gallery">
+<body onload="brython()" class="codepage">
+	<header>
+		<div><a href="../index.html#math"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
+		<div><h1>Birthday Calculator</h1></div>
+	</header>
+	<main class="container">
+		<div class="description"><p><strong>Description:</strong> An exercise in error-handling and considering edge-cases such as leap years, this calculates the day of the week you were born on, after inputting your birthday. 
+	Only works with dates after 1800.
+		</p></div>
+		<div class="origin"><p><strong>Original Creation:</strong> 17th December 2022</p></div>
+		<div class="uploaded"><p><strong>Uploaded:</strong> 25th Feb 2025</p></div>
+		<div class="status"><p><strong>Status:</strong> Complete. Original code was written without AI.</p></div>
+		<div class="supplemental"><p><strong>Supplemental</strong>: N/A</p></div>
+		<div class="gallery">
 		<div><figure>
 		<figcaption>Do you know what day you were born on?</figcaption>		
 		<img src="images/bday.PNG" alt="Do you know what day you were born on?" title="Do you know what day you were born on?">
-		</figure></div>
-	</div>	
+		</figure></div>		
+		</div>
+	<div class="code">		
+		<!-- <button onclick="Toggle()">Toggle Original Python Code Display</button> -->
+		<button onclick="Copy()">Copy the Python Code</button>
 	
-	<button onclick="Toggle()">Toggle Original Python Code Display</button>
-	<button onclick="Copy()">Copy the Python Code</button>
-
-	<pre id="pycode">
-while True:
-    bday = input("Please enter your birthday in the format DD/MM/YYYY:")
-    bdaylist = bday.split("/")
-    try:
-        for i in bdaylist:
-            i = int(i)
-    except ValueError:
-            continue
-    bdaylist = list(map(int, bdaylist))
-    if bdaylist[1] > 12 or bdaylist[1] &lt; 1 or bdaylist[0] &lt; 1:
-        print("That's not a real date.")
-        continue
-    if bdaylist[1] in (4, 6, 9, 11) and bdaylist[0] >30:
-        print("That's not a real date.")
-        continue
-    if bdaylist[1] in (1, 3, 5, 7, 8, 10, 12) and bdaylist[0] > 31:
-        print("That's not a real date.")
-        continue
-    if bdaylist[1] == 2:
-        if bdaylist[0] > 29:
-            print("That's not a real date.")
-            continue
-        elif bdaylist[2] % 4 != 0 and bdaylist[0] == 29:
-            print("That's not a real date.")
-            continue
-        elif bdaylist[2] % 4 == 0 and bdaylist[0] == 29:
-            if bdaylist[2] % 100 == 0 and bdaylist[2] % 400 != 0:
-                print("That's not a real date.")
-                continue
-    if bdaylist[2] &lt; 1800:
-        print("This calculator only handles dates from 1800 CE onwards.")
-        continue
-
-    week = ["Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "Monday", "Tuesday"]
-
-    regyears = bdaylist[2]-1800
-    lpyears = 0
-    for i in range(1800, (bdaylist[2])):
-        if i % 4 == 0:
-            if i % 400 == 0:
-                lpyears +=1
-            elif i % 100 !=0:
-                lpyears += 1
-
-    daynum = 0
-
-    if bdaylist[1] > 1:
-        daynum += 31
-    if bdaylist[1] > 2:
-        if bdaylist[2] % 4 == 0:
-            if bdaylist[2] % 400 == 0:
-                daynum +=29
-            elif bdaylist[2] % 100 !=0:
-                daynum += 29
-            else:
-                daynum += 28
-    if bdaylist[1] > 3:
-        daynum += 31
-    if bdaylist[1] > 4:
-        daynum += 30
-    if bdaylist[1] > 5:
-        daynum += 31
-    if bdaylist[1] > 6:
-        daynum += 30
-    if bdaylist[1] > 7:
-        daynum += 31
-    if bdaylist[1] > 8:
-        daynum += 31
-    if bdaylist[1] > 9:
-        daynum += 30
-    if bdaylist[1] > 10:
-        daynum += 31
-    if bdaylist[1] > 11:
-        daynum += 30
-
-    days = bdaylist[0] + daynum + 365*regyears + lpyears -1
-
-    print("You were born on a " + str(week[days % 7]) + "\n")
-	</pre>
+	<p id="pycode">
+while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;bday = input("Please enter your birthday in the format DD/MM/YYYY:")<br>&nbsp;&nbsp;&nbsp;&nbsp;bdaylist = bday.split("/")<br>&nbsp;&nbsp;&nbsp;&nbsp;try:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for i in bdaylist:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i = int(i)<br>&nbsp;&nbsp;&nbsp;&nbsp;except ValueError:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;bdaylist = list(map(int, bdaylist))<br>&nbsp;&nbsp;&nbsp;&nbsp;if bdaylist[1] > 12 or bdaylist[1] &lt; 1 or bdaylist[0] &lt; 1:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("That's not a real date.")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;if bdaylist[1] in (4, 6, 9, 11) and bdaylist[0] >30:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("That's not a real date.")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;if bdaylist[1] in (1, 3, 5, 7, 8, 10, 12) and bdaylist[0] > 31:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("That's not a real date.")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;if bdaylist[1] == 2:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if bdaylist[0] > 29:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("That's not a real date.")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif bdaylist[2] % 4 != 0 and bdaylist[0] == 29:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("That's not a real date.")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif bdaylist[2] % 4 == 0 and bdaylist[0] == 29:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if bdaylist[2] % 100 == 0 and bdaylist[2] % 400 != 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("That's not a real date.")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;if bdaylist[2] &lt; 1800:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("This calculator only handles dates from 1800 CE onwards.")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br><br>&nbsp;&nbsp;&nbsp;&nbsp;week = ["Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "Monday", "Tuesday"]<br><br>&nbsp;&nbsp;&nbsp;&nbsp;regyears = bdaylist[2]-1800<br>&nbsp;&nbsp;&nbsp;&nbsp;lpyears = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;for i in range(1800, (bdaylist[2])):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if i % 4 == 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if i % 400 == 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lpyears +=1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif i % 100 !=0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lpyears += 1<br><br>&nbsp;&nbsp;&nbsp;&nbsp;daynum = 0<br><br>&nbsp;&nbsp;&nbsp;&nbsp;if bdaylist[1] > 1:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daynum += 31<br>&nbsp;&nbsp;&nbsp;&nbsp;if bdaylist[1] > 2:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if bdaylist[2] % 4 == 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if bdaylist[2] % 400 == 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daynum +=29<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif bdaylist[2] % 100 !=0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daynum += 29<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daynum += 28<br>&nbsp;&nbsp;&nbsp;&nbsp;if bdaylist[1] > 3:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daynum += 31<br>&nbsp;&nbsp;&nbsp;&nbsp;if bdaylist[1] > 4:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daynum += 30<br>&nbsp;&nbsp;&nbsp;&nbsp;if bdaylist[1] > 5:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daynum += 31<br>&nbsp;&nbsp;&nbsp;&nbsp;if bdaylist[1] > 6:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daynum += 30<br>&nbsp;&nbsp;&nbsp;&nbsp;if bdaylist[1] > 7:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daynum += 31<br>&nbsp;&nbsp;&nbsp;&nbsp;if bdaylist[1] > 8:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daynum += 31<br>&nbsp;&nbsp;&nbsp;&nbsp;if bdaylist[1] > 9:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daynum += 30<br>&nbsp;&nbsp;&nbsp;&nbsp;if bdaylist[1] > 10:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daynum += 31<br>&nbsp;&nbsp;&nbsp;&nbsp;if bdaylist[1] > 11:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daynum += 30<br><br>&nbsp;&nbsp;&nbsp;&nbsp;days = bdaylist[0] + daynum + 365*regyears + lpyears -1<br><br>&nbsp;&nbsp;&nbsp;&nbsp;print("You were born on a " + str(week[days % 7]) + "\n")
+	</p>
 	
 	<script>
-	function Toggle() {
+	/* function Toggle() {
 		var x = document.getElementById("pycode");
 		if (x.style.display === "none") 
 			{x.style.display = "block";} 
-		else {x.style.display = "none"; }}
+		else {x.style.display = "none"; }} 
+		*/
 		
 	function Copy() {
 		const copyText = document.getElementById("pycode").innerText; 
 		navigator.clipboard.writeText(copyText);}
 	</script>
-
+</div>
+</main>
 </body>
 </html>

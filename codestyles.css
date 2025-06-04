@@ -1,4 +1,5 @@
 *					{font-family: Calibri;}
+.container 			{border: black solid 2px; border-radius: 10px 10px; background-color: LavenderBlush;}
 .codepage			{background-color: SteelBlue;}
 .origin				{grid-area: origin; text-align:center;}
 .uploaded			{grid-area: uploaded; border-left: 2px solid black; text-align:center;}
@@ -9,10 +10,11 @@
 .gallery			{display:flex; flex-direction:column; grid-area: gallery; border-right: solid black 1px; border-top: solid black 2px; background-color:BlanchedAlmond;}
 .code				{grid-area: code; border-top: solid black 2px; background-color:Black;}
 .code button		{margin-left: 10px; margin-top: 10px}
-.code pre			{padding-left: 10px; color:LimeGreen;}
+.code p			{padding-left: 10px; color:LimeGreen;}
 
 header				{display: grid; grid-template-columns: 1fr 3fr 1fr;}
 h1					{border: 2px solid PaleGoldenRod; background-color: PaleGoldenRod; text-align: center; margin: 5px; border-radius: 5px 5px;}
+h2, h3				{text-align: center}
 p					{font-size: 20px;}
 figcaption 			{text-align:center; padding: 5px; font-size: 18px;}
 figure				{border: 2px solid black; background-color:HoneyDew; border-radius: 10px 10px;}
