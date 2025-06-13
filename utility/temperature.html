@@ -1,72 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+	<link rel="icon" type="image/x-icon" href="./images/temperature.png">
     <title>Temperature Converter</title>
 	<style>
+@media screen and (max-width: 1199px)		
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery gallery gallery gallery" "code code code code code code";}} 								
+		@media screen and (min-width: 1200px)
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery code code code";} 	}																												
 	</style>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
 </head>
-<body onload="brython()">
-	<p><a href="../index.html">&#11013; Back</a></p>
-    <h1>Temperature Converter</h1>
-	<div class = "synopsis">
-	<p><strong>Original Creation:</strong> 11th September 2024</p>
-	<p><strong>Uploaded:</strong> 22nd March 2025</p>
-	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
-	<p><strong>Description:</strong> Easy program that converts Celsius to Fahrenheit or vice versa. 
-	</p>
-	</div>
-	
+<body onload="brython()" class="codepage">
+	<header>
+		<div><a href="../index.html#utility"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
+		<div><h1>Temperature Converter</h1></div>
+	</header>
+	<main class="container">
+		<div class="description"><p><strong>Description:</strong> Easy program that converts Celsius to Fahrenheit or vice versa. 
+		This was as I was starting the Introduction to Programming course and I wanted to make something tightly scripted and brush up on basic error handling.
+		</p></div>
+		<div class="origin"><p><strong>Original Creation:</strong> 11th September 2024</p></div>
+		<div class="uploaded"><p><strong>Uploaded:</strong> 22nd March 2025</p></div>
+		<div class="status"><p><strong>Status:</strong> Complete. Original code was written without AI.</p></div>
+		<div class="supplemental"><p><strong>Supplemental:</strong> N/A </p></div>
 	<div class="gallery">
 		<div><figure>
 		<figcaption>Temperature example</figcaption>		
 		<img src="images/temp.PNG" alt="Temperature example" title="Temperature example">
 		</figure></div>
-
 	</div>	
-		
-	<button onclick="Toggle()">Toggle Original Python Code Display</button>
-	<button onclick="Copy()">Copy the Python Code</button>
-
-	<pre id="pycode">
-while True:
-    entry = input("Please enter a temperature, ending with 'F' for Fahrenheit or 'C' for 'Celsius', or 'done' to exit:")
-    if entry.lower() == "done":
-        break
-    if (entry.lower().endswith("f") != True) and (entry.lower().endswith("c") != True):
-        print("Not a valid entry.\n")
-        continue
-    try:
-        float(entry[0:-1])
-    except:
-        print("Not a valid entry.\n")
-        continue
-        
-    if entry[-1].lower() == "f": 
-        fahrenheit = float(entry[0:-1])
-        output = round((fahrenheit - 32) * (5/9), 2)
-        print(f"{fahrenheit} *F is {output} *C\n")
-
-    elif entry[-1].lower() == "c": 
-        celsius = float(entry[0:-1])
-        output = round(((celsius * 1.8) + 32), 2)
-        print(f"{celsius} *C is {output} *F\n")
-
-	</pre>
+	<div class="code">		
+		<!-- <button onclick="Toggle()">Toggle Original Python Code Display</button> -->
+		<button onclick="Copy()">Copy the Python Code</button>
+	
+	<p id="pycode">
+while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;entry = input("Please enter a temperature, ending with 'F' for Fahrenheit or 'C' for 'Celsius', or 'done' to exit:")<br>&nbsp;&nbsp;&nbsp;&nbsp;if entry.lower() == "done":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br>&nbsp;&nbsp;&nbsp;&nbsp;if (entry.lower().endswith("f") != True) and (entry.lower().endswith("c") != True):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Not a valid entry.\n")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;try:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;float(entry[0:-1])<br>&nbsp;&nbsp;&nbsp;&nbsp;except:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Not a valid entry.\n")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;if entry[-1].lower() == "f": <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fahrenheit = float(entry[0:-1])<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;output = round((fahrenheit - 32) * (5/9), 2)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(f"{fahrenheit} *F is {output} *C\n")<br><br>&nbsp;&nbsp;&nbsp;&nbsp;elif entry[-1].lower() == "c": <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;celsius = float(entry[0:-1])<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;output = round(((celsius * 1.8) + 32), 2)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(f"{celsius} *C is {output} *F\n")
+	</p>
 	
 	<script>
-	function Toggle() {
+	/* function Toggle() {
 		var x = document.getElementById("pycode");
 		if (x.style.display === "none") 
 			{x.style.display = "block";} 
-		else {x.style.display = "none"; }}
+		else {x.style.display = "none"; }} 
+		*/
 		
 	function Copy() {
 		const copyText = document.getElementById("pycode").innerText; 
 		navigator.clipboard.writeText(copyText);}
 	</script>
-
+</div>
+</main>
 </body>
 </html>

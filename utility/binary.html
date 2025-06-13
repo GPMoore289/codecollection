@@ -1,27 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+	<link rel="icon" type="image/x-icon" href="./images/binary.png">
     <title>Binary Converters</title>
 	<style>
+@media screen and (max-width: 1199px)		
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery gallery gallery gallery" "code code code code code code";}} 								
+		@media screen and (min-width: 1200px)
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status status supplemental" "gallery gallery gallery code code code";} 	}																												
 	</style>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
 </head>
-<body onload="brython()">
-	<p><a href="../index.html">&#11013; Back</a></p>
-    <h1>Binary Converters</h1>
-	<div class = "synopsis">
-	<p><strong>Original Creation:</strong> 10th September 2024</p>
-	<p><strong>Uploaded:</strong> 22nd March 2025</p>
-	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
-	<p><strong>Description:</strong> Programs that helped me learn binary conversion. While there are plenty of other sources for this (websites, calculator, even Python modules),
+<body onload="brython()" class="codepage">
+	<header>
+		<div><a href="../index.html#utility"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
+		<div><h1>Binary Converters</h1></div>
+	</header>
+	<main class="container">
+		<div class="description"><p><strong>Description:</strong> Programs that helped me learn binary conversion. While there are plenty of other sources for this (websites, calculator, even Python modules),
 	I wanted to have a go at creating the logic for binary conversion myself.
 	There are four programs here: BIN to DEC, DEC to BIN, BIN to OCT and OCT to BIN.
-	</p>
-	</div>
-	
-	<div class="gallery">
+		</p></div>
+		<div class="origin"><p><strong>Original Creation:</strong> 10th September 2024</p></div>
+		<div class="uploaded"><p><strong>Uploaded:</strong> 22nd March 2025</p></div>
+		<div class="status"><p><strong>Status:</strong> Complete. Original code was written without AI.</p></div>
+		<div class="supplemental"><p><strong>Supplemental:</strong> N/A</p></div>
+		<div class="gallery">
 		<div><figure>
 		<figcaption>BIN to DEC</figcaption>		
 		<img src="images/bintodec.PNG" alt="BIN to DEC" title="BIN to DEC">
@@ -40,197 +46,29 @@
 		<div><figure>
 		<figcaption>OCT to BIN</figcaption>		
 		<img src="images/octtobin.PNG" alt="OCT to BIN" title="OCT to BIN">
-		</figure></div>			
-
-	</div>	
-		
-	<button onclick="Toggle()">Toggle Original Python Code Display</button>
-	<button onclick="Copy()">Copy the Python Code</button>
-
-	<pre id="pycode">
+		</figure></div>		
+		</div>	
+	<div class="code">		
+		<!-- <button onclick="Toggle()">Toggle Original Python Code Display</button> -->
+		<button onclick="Copy()">Copy the Python Code</button>
 	
-#BIN to DEC	
-allowed = ["0", "1", "."]
-
-while True:
-    entry = input("Please enter a binary number:")
-    invalid = False
-    for i in entry:
-        if i not in allowed:
-            invalid = True
-            break            
-    if invalid == True:        
-        print("Non-binary characters detected.")
-        continue
-    
-    sections = entry.split(".")
-    
-    integers = sections[0]
-    try:
-        sections[1]
-    except:
-        pass
-    else:
-        binarypoints = sections[1]
-        binanswer = 0
-        pos = 0
-        while pos &lt; len(binarypoints):
-            if binarypoints[pos] == "1":
-                binanswer += 2**((pos*-1)-1)
-            pos += 1
-    
-    intanswer = 0
-    pos = -1
-    
-    while pos*-1 &lt;= len(integers):
-        if integers[pos] == "1":
-            intanswer += 2**((pos*-1)-1)
-        pos -= 1
-        
-    try:
-        binanswer
-    except:
-        print(intanswer)
-    else:
-        print(intanswer + binanswer)
-		
-#DEC to BIN	
-	
-bp = 0
-while True:
-    entry = input("Please input a real number:")
-    try:
-        int(entry) # check entry can be converted to an integer
-    except:
-        try:
-            float(entry)
-        except:
-            print("Not a valid entry.")
-            continue
-        else:
-            while True:
-                bp = input("Please enter the number of binary points to be displayed:")
-                try:
-                    int(bp)
-                except:
-                    print("Must enter an integer.")
-                else:
-                    break
-    
-    entry = float(entry) #convert entry to a float
-    bp = int(bp)
-    n = 0
-    
-    while 2**n &lt;= entry: #gauge how large the entered number is in relation to binary
-        n+= 1
-        continue
-    
-    n -= 1 #set n so that 2**n is largest power of 2 that is still smaller than entry
-    answer = ""
-    remainder = entry
-    bpdisplay = (-1*bp) - 1
-    
-    while True:
-        if n == bpdisplay: #stop calculating at specified decimal (binary?) places
-            break
-        if n == -1 and remainder == 0: #stop calculating if entry is an integer
-            break
-        if n == -1 and remainder != 0: #add decimal (binary?) point if entry is not an integer
-            answer = answer + "."
-        if remainder >= 2**n: 
-            remainder = remainder - 2**n
-            answer = answer + "1"
-        else:
-            answer = answer + "0"
-        n -= 1
-        continue
-    
-    print(answer)	
-
-#BIN to OCT	
-
-allowed = ["0", "1"]
-
-while True:
-    entry = input("Please enter an integer number in binary:")
-    for i in entry:
-        if i not in allowed:
-            print("Not an integer binary number.\n")
-            continue
-
-    length = len(entry)
-    answer = ""
-    n = -1
-    append = 0
-    while n*-1 &lt;= length:
-        pseudon = -1*n
-        while pseudon > 3:
-            pseudon = pseudon - 3
-        #print(pseudon)
-        digit = int(entry[n])
-        if pseudon % 3 == 0:
-            append += 4*digit
-            answer = str(append) + answer
-            append = 0
-        elif pseudon % 2 == 0:
-            append += 2*digit
-        else:
-            append += 1*digit
-        if n*-1 == length and pseudon % 3 != 0:
-            answer = str(append) + answer
-        n -=1
-
-    print(f"{entry} in octal is {answer}")
-            
-#OCT to BIN
-
-allowed = ["0", "1", "2", "3", "4", "5", "6", "7"]
-
-while True:
-    entry = input("Please enter an octal integer:")
-    for i in entry:
-        if i not in allowed:
-            print("Not a valid entry.")
-            continue
-
-    length = len(entry)
-    n = -1
-    answer = ""
-    while n*-1 &lt;= length:
-        digit = entry[n]
-        if digit == "0":
-            answer = "000" + answer
-        elif digit == "1":
-            answer = "001" + answer
-        elif digit == "2":
-            answer = "010" + answer
-        elif digit == "3":
-            answer = "011" + answer
-        elif digit == "4":
-            answer = "100" + answer  
-        elif digit == "5":
-            answer = "101" + answer
-        elif digit == "6":
-            answer = "110" + answer
-        elif digit == "7":
-            answer = "111" + answer
-        n -= 1
-
-    print(f"{entry} in binary is {answer}")
-
-	</pre>
+	<p id="pycode">
+#BIN to DEC&nbsp;&nbsp;&nbsp;&nbsp;<br>allowed = ["0", "1", "."]<br><br>while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;entry = input("Please enter a binary number:")<br>&nbsp;&nbsp;&nbsp;&nbsp;invalid = False<br>&nbsp;&nbsp;&nbsp;&nbsp;for i in entry:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if i not in allowed:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;invalid = True<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;if invalid == True:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Non-binary characters detected.")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;sections = entry.split(".")<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;integers = sections[0]<br>&nbsp;&nbsp;&nbsp;&nbsp;try:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sections[1]<br>&nbsp;&nbsp;&nbsp;&nbsp;except:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pass<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;binarypoints = sections[1]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;binanswer = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pos = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while pos &lt; len(binarypoints):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if binarypoints[pos] == "1":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;binanswer += 2**((pos*-1)-1)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pos += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;intanswer = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;pos = -1<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;while pos*-1 &lt;= len(integers):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if integers[pos] == "1":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intanswer += 2**((pos*-1)-1)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pos -= 1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;try:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;binanswer<br>&nbsp;&nbsp;&nbsp;&nbsp;except:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(intanswer)<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(intanswer + binanswer)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>#DEC to BIN&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>bp = 0<br>while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;entry = input("Please input a real number:")<br>&nbsp;&nbsp;&nbsp;&nbsp;try:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int(entry) # check entry can be converted to an integer<br>&nbsp;&nbsp;&nbsp;&nbsp;except:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;float(entry)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;except:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Not a valid entry.")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bp = input("Please enter the number of binary points to be displayed:")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int(bp)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;except:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Must enter an integer.")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;entry = float(entry) #convert entry to a float<br>&nbsp;&nbsp;&nbsp;&nbsp;bp = int(bp)<br>&nbsp;&nbsp;&nbsp;&nbsp;n = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;while 2**n &lt;= entry: #gauge how large the entered number is in relation to binary<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n+= 1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;n -= 1 #set n so that 2**n is largest power of 2 that is still smaller than entry<br>&nbsp;&nbsp;&nbsp;&nbsp;answer = ""<br>&nbsp;&nbsp;&nbsp;&nbsp;remainder = entry<br>&nbsp;&nbsp;&nbsp;&nbsp;bpdisplay = (-1*bp) - 1<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if n == bpdisplay: #stop calculating at specified decimal (binary?) places<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if n == -1 and remainder == 0: #stop calculating if entry is an integer<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if n == -1 and remainder != 0: #add decimal (binary?) point if entry is not an integer<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;answer = answer + "."<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if remainder >= 2**n: <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remainder = remainder - 2**n<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;answer = answer + "1"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;answer = answer + "0"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n -= 1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;print(answer)&nbsp;&nbsp;&nbsp;&nbsp;<br><br>#BIN to OCT&nbsp;&nbsp;&nbsp;&nbsp;<br><br>allowed = ["0", "1"]<br><br>while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;entry = input("Please enter an integer number in binary:")<br>&nbsp;&nbsp;&nbsp;&nbsp;for i in entry:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if i not in allowed:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Not an integer binary number.\n")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br><br>&nbsp;&nbsp;&nbsp;&nbsp;length = len(entry)<br>&nbsp;&nbsp;&nbsp;&nbsp;answer = ""<br>&nbsp;&nbsp;&nbsp;&nbsp;n = -1<br>&nbsp;&nbsp;&nbsp;&nbsp;append = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;while n*-1 &lt;= length:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pseudon = -1*n<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while pseudon > 3:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pseudon = pseudon - 3<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#print(pseudon)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;digit = int(entry[n])<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if pseudon % 3 == 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;append += 4*digit<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;answer = str(append) + answer<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;append = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif pseudon % 2 == 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;append += 2*digit<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;append += 1*digit<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if n*-1 == length and pseudon % 3 != 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;answer = str(append) + answer<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n -=1<br><br>&nbsp;&nbsp;&nbsp;&nbsp;print(f"{entry} in octal is {answer}")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>#OCT to BIN<br><br>allowed = ["0", "1", "2", "3", "4", "5", "6", "7"]<br><br>while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;entry = input("Please enter an octal integer:")<br>&nbsp;&nbsp;&nbsp;&nbsp;for i in entry:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if i not in allowed:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Not a valid entry.")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br><br>&nbsp;&nbsp;&nbsp;&nbsp;length = len(entry)<br>&nbsp;&nbsp;&nbsp;&nbsp;n = -1<br>&nbsp;&nbsp;&nbsp;&nbsp;answer = ""<br>&nbsp;&nbsp;&nbsp;&nbsp;while n*-1 &lt;= length:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;digit = entry[n]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if digit == "0":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;answer = "000" + answer<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif digit == "1":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;answer = "001" + answer<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif digit == "2":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;answer = "010" + answer<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif digit == "3":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;answer = "011" + answer<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif digit == "4":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;answer = "100" + answer  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif digit == "5":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;answer = "101" + answer<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif digit == "6":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;answer = "110" + answer<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif digit == "7":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;answer = "111" + answer<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n -= 1<br><br>&nbsp;&nbsp;&nbsp;&nbsp;print(f"{entry} in binary is {answer}")
+	</p>
 	
 	<script>
-	function Toggle() {
+	/* function Toggle() {
 		var x = document.getElementById("pycode");
 		if (x.style.display === "none") 
 			{x.style.display = "block";} 
-		else {x.style.display = "none"; }}
+		else {x.style.display = "none"; }} 
+		*/
 		
 	function Copy() {
 		const copyText = document.getElementById("pycode").innerText; 
 		navigator.clipboard.writeText(copyText);}
 	</script>
-
+</div>
+</main>
 </body>
 </html>
