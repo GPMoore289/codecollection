@@ -1,24 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">			
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+	<link rel="icon" type="image/x-icon" href="./images/ff9.png">
     <title>Final Fantasy IX Skipping & Running</title>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+	<style>
+@media screen and (max-width: 1199px)		
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery gallery gallery gallery" "code code code code code code";}} 								
+		@media screen and (min-width: 1200px)
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery code code code";} 	}																												
+	</style>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
 </head>
-<body onload="brython()">
-	<p><a href="../index.html">&#11013; Back</a></p>
-    <h1>Final Fantasy IX Skipping & Running</h1>
-	<div class = "synopsis">
-	<p><strong>Original Creation:</strong> 11th December 2023</p>
-	<p><strong>Uploaded:</strong> 4th March 2025</p>
-	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
-	<p><strong>Description:</strong> On a replay of Final Fantasy IX, I decided it was finally time to get two awards I'd never succeeded at before: 
+<body onload="brython()" class="codepage">
+	<header>
+		<div><a href="../index.html#solvers"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
+		<div><h1>Final Fantasy IX Skipping & Running</h1></div>
+	</header>
+	<main class="container">
+		<div class="description"><p><strong>Description:</strong> On a replay of Final Fantasy IX, I decided it was finally time to get two awards I'd never succeeded at before: 
 	King of Jump Rope and Athlete Queen. Problem is that both of these are very punishing on your thumbs and I'd rather not get carpal tunnel syndrome.
 	Python to the rescue! This was an exercise in getting Python to interface with another program and actually manipulate it, rather than just producing
-	an output in the IDLE shell, plus for these challenges, button presses had to be timed quite accurately.</p>
-	</div>
-	
+	an output in the IDLE shell, plus for these challenges, button presses had to be timed quite accurately.
+		</p></div>
+		<div class="origin"><p><strong>Original Creation:</strong> 11th December 2023</p></div>
+		<div class="uploaded"><p><strong>Uploaded:</strong> 4th March 2025</p></div>
+		<div class="status"><p><strong>Status:</strong> Complete. Original code was written without AI.</p></div>
+		<div class="supplemental"><p><strong>Supplemental:</strong> N/A </p></div>
 	<div class="gallery">
 		<div><figure>
 		<figcaption>Jump rope challenge. Source: <a href="finalfantasy.fandom.com">finalfantasy.fandom.com</a></figcaption>		
@@ -30,133 +39,27 @@
 		<img src="images/ff9race.webp" alt="Hippaul race challenge" title="Hippaul race challenge">
 		</figure></div>	
 	</div>	
+	<div class="code">		
+		<!-- <button onclick="Toggle()">Toggle Original Python Code Display</button> -->
+		<button onclick="Copy()">Copy the Python Code</button>
 	
-	<button onclick="Toggle()">Toggle Original Python Code Display</button>
-	<button onclick="Copy()">Copy the Python Code</button>
-
-	<pre id="pycode">
-#SKIPPING
-
-import keyboard
-import time
-
-time.sleep(4)
-
-#ask girls to start
-print("Asking")
-keyboard.press("+")
-time.sleep(0.1)
-keyboard.release("+")
-
-time.sleep(2)
-print("Confirming")
-#confirm
-
-keyboard.press("+")
-time.sleep(0.1)
-keyboard.release("+")
-
-time.sleep(2)
-
-#start jumping
-print("Starting")
-keyboard.press("+")
-time.sleep(0.1)
-keyboard.release("+")
-count = 1
-time.sleep(0.9)
-
-while count &lt; 20:
-        keyboard.press("+")
-        time.sleep(0.1)
-        keyboard.release("+")
-        time.sleep(56/100)
-        count += 1
-while count >= 20 and count &lt; 50:
-        keyboard.press("+")
-        time.sleep(0.1)
-        keyboard.release("+")
-        time.sleep(43/100)
-        count += 1
-while count >= 50 and count &lt; 100:
-        keyboard.press("+")
-        time.sleep(0.1)
-        keyboard.release("+")
-        time.sleep(365/1000)
-        count += 1
-while count >= 100 and count &lt; 200:
-        keyboard.press("+")
-        time.sleep(0.1)
-        keyboard.release("+")
-        time.sleep(333/1000)
-        count += 1
-while count >= 200 and count &lt; 300:
-        keyboard.press("+")
-        time.sleep(0.1)
-        keyboard.release("+")
-        time.sleep(283/1000)
-        count += 1
-while count >= 300:
-        keyboard.press("+")
-        time.sleep(0.1)
-        keyboard.release("+")
-        time.sleep(2993/10000)
-        count += 1
-
-#RUNNING		
-		
-import keyboard
-import time
-
-time.sleep(3)
-
-print("Asking")
-keyboard.press("*")
-time.sleep(0.1)
-keyboard.release("*")
-
-time.sleep(2)
-print("Confirming")
-
-keyboard.press("*")
-time.sleep(0.1)
-keyboard.release("*")
-
-time.sleep(2)
-
-print("Starting")
-keyboard.press("*")
-time.sleep(0.1)
-keyboard.release("*")
-
-time.sleep(2)
-
-print("Go")
-keyboard.press("*")
-time.sleep(0.1)
-keyboard.release("*")
-
-while True:
-        keyboard.press("+")
-        time.sleep(0.05)
-        keyboard.release("+")
-        keyboard.press("-")
-        time.sleep(0.05)
-        keyboard.release("-")
-        
-	</pre>
+	<p id="pycode">
+#SKIPPING<br><br>import keyboard<br>import time<br><br>time.sleep(4)<br><br>#ask girls to start<br>print("Asking")<br>keyboard.press("+")<br>time.sleep(0.1)<br>keyboard.release("+")<br><br>time.sleep(2)<br>print("Confirming")<br>#confirm<br><br>keyboard.press("+")<br>time.sleep(0.1)<br>keyboard.release("+")<br><br>time.sleep(2)<br><br>#start jumping<br>print("Starting")<br>keyboard.press("+")<br>time.sleep(0.1)<br>keyboard.release("+")<br>count = 1<br>time.sleep(0.9)<br><br>while count &lt; 20:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keyboard.press("+")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(0.1)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keyboard.release("+")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(56/100)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count += 1<br>while count >= 20 and count &lt; 50:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keyboard.press("+")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(0.1)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keyboard.release("+")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(43/100)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count += 1<br>while count >= 50 and count &lt; 100:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keyboard.press("+")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(0.1)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keyboard.release("+")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(365/1000)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count += 1<br>while count >= 100 and count &lt; 200:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keyboard.press("+")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(0.1)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keyboard.release("+")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(333/1000)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count += 1<br>while count >= 200 and count &lt; 300:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keyboard.press("+")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(0.1)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keyboard.release("+")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(283/1000)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count += 1<br>while count >= 300:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keyboard.press("+")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(0.1)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keyboard.release("+")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(2993/10000)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count += 1<br><br>#RUNNING&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>import keyboard<br>import time<br><br>time.sleep(3)<br><br>print("Asking")<br>keyboard.press("*")<br>time.sleep(0.1)<br>keyboard.release("*")<br><br>time.sleep(2)<br>print("Confirming")<br><br>keyboard.press("*")<br>time.sleep(0.1)<br>keyboard.release("*")<br><br>time.sleep(2)<br><br>print("Starting")<br>keyboard.press("*")<br>time.sleep(0.1)<br>keyboard.release("*")<br><br>time.sleep(2)<br><br>print("Go")<br>keyboard.press("*")<br>time.sleep(0.1)<br>keyboard.release("*")<br><br>while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keyboard.press("+")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(0.05)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keyboard.release("+")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keyboard.press("-")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(0.05)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keyboard.release("-")
+	</p>
 	
 	<script>
-	function Toggle() {
+	/* function Toggle() {
 		var x = document.getElementById("pycode");
 		if (x.style.display === "none") 
 			{x.style.display = "block";} 
-		else {x.style.display = "none"; }}
+		else {x.style.display = "none"; }} 
+		*/
 		
 	function Copy() {
 		const copyText = document.getElementById("pycode").innerText; 
 		navigator.clipboard.writeText(copyText);}
 	</script>
-
+</div>
+</main>
 </body>
 </html>

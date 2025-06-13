@@ -1,19 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">			
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+	<link rel="icon" type="image/x-icon" href="./images/infinitode.png">
     <title>Infinitode Bounty Solver</title>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+	<style>
+@media screen and (max-width: 1199px)		
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery gallery gallery gallery" "code code code code code code";}} 								
+		@media screen and (min-width: 1200px)
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery code code code";} 	}																												
+	</style>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
 </head>
-<body onload="brython()">
-	<p><a href="../index.html">&#11013; Back</a></p>
-    <h1>Infinitode Bounty Solver</h1>
-	<div class = "synopsis">
-	<p><strong>Original Creation:</strong> 26th September 2021</p>
-	<p><strong>Uploaded:</strong> 4th March 2025</p>
-	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
-	<p><strong>Description:</strong> So, this one is difficult to explain. There is a tower defense mobile game named Infinitode that I played for a while.
+<body onload="brython()" class="codepage">
+	<header>
+		<div><a href="../index.html#solvers"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
+		<div><h1>Infinitode Bounty Solver</h1></div>
+	</header>
+	<main class="container">
+		<div class="description"><p><strong>Description:</strong> So, this one is difficult to explain. There is a tower defense mobile game named Infinitode that I played for a while.
 	There is an interesting mechanic regarding one of the towers: the Bounty tower. At the end of each round, the Bounty gives the player +2% of their current money pool 
 	(on amounts up to $3000). You can buy up to 5 of them. Surely you want to get as many as possible as early as possible to capitalize on compound interest, right? 
 	But if you buy them as soon as you can afford them... then you won't have any money from which to gain interest. Plus each Bounty costs more than the previous one.
@@ -22,9 +28,12 @@
 	<p>I simulated expected income on each level, the rising cost of the Bounties, and their return on your pool of money. Then by editing the code, 
 	I tried several strategies (shown below), the ultimate aim being to get all 5 towers and $3000 money in the pool at the <em>lowest level possible</em>. 
 	As you can see, the best result of the ones I tested occurred when I bought the first two Bounties quickly, then waited until I had larger pools of money
-	before buying the 3rd, 4th and 5th towers.</p>
-	</div>
-	
+	before buying the 3rd, 4th and 5th towers.
+		</p></div>
+		<div class="origin"><p><strong>Original Creation:</strong> 26th September 2021</p></div>
+		<div class="uploaded"><p><strong>Uploaded:</strong> 4th March 2025</p></div>
+		<div class="status"><p><strong>Status:</strong> Complete. Original code was written without AI.</p></div>
+		<div class="supplemental"><p><strong>Supplemental:</strong> N/A </p></div>
 	<div class="gallery">
 		<div><figure>
 		<figcaption>Simulation running</figcaption>		
@@ -36,61 +45,28 @@
 		<img src="images/bountyresults.PNG" alt="Stategy results" title="Stategy results">
 		</figure></div>	
 	</div>	
+	<div class="code">		
+		<!-- <button onclick="Toggle()">Toggle Original Python Code Display</button> -->
+		<button onclick="Copy()">Copy the Python Code</button>
 	
-	<button onclick="Toggle()">Toggle Original Python Code Display</button>
-	<button onclick="Copy()">Copy the Python Code</button>
-
-	<pre id="pycode">
-import random
-level = 1
-money = 0
-bounty = 0
-bcost = 180
-
-while True:
-    seed = random.randint(0, 100)
-    print("Level: " + str(level))
-    print("Money: " + str(money))
-    print("Bounty: " + str(bounty))
-    print("Bounty Cost: " + str(bcost))
-    print("Seed: " + str(seed))
-    print(" ")
-    if money >= 3000 and bounty >= 5: #and level &lt; 52:
-        break
-   # if money >= 3000 and bounty >= 5 and level >= 52:
-    #    level = 1
-     #   money = 0
-     #   bounty = 0
-     #   bcost = 180
-     #   continue
-    else:
-        money += 50
-        if money &lt; 3000:
-            a = bounty*(money*0.02)
-            money += round(a, 0)
-        elif money >= 3000:
-            money += bounty*60
-        if money >= 2.7*bcost and bounty &lt; 5:
-            money -= bcost
-            bounty += 1
-            b = bcost*1.72
-            bcost = round(b, 0)
-        level += 1
-    continue
-
-	</pre>
+	<p id="pycode">
+import random<br>level = 1<br>money = 0<br>bounty = 0<br>bcost = 180<br><br>while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;seed = random.randint(0, 100)<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Level: " + str(level))<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Money: " + str(money))<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Bounty: " + str(bounty))<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Bounty Cost: " + str(bcost))<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Seed: " + str(seed))<br>&nbsp;&nbsp;&nbsp;&nbsp;print(" ")<br>&nbsp;&nbsp;&nbsp;&nbsp;if money >= 3000 and bounty >= 5: #and level < 52:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br>   # if money >= 3000 and bounty >= 5 and level >= 52:<br>&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;&nbsp;&nbsp;&nbsp;level = 1<br>&nbsp;&nbsp;&nbsp;&nbsp; #   money = 0<br>&nbsp;&nbsp;&nbsp;&nbsp; #   bounty = 0<br>&nbsp;&nbsp;&nbsp;&nbsp; #   bcost = 180<br>&nbsp;&nbsp;&nbsp;&nbsp; #   continue<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;money += 50<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if money < 3000:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a = bounty*(money*0.02)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;money += round(a, 0)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif money >= 3000:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;money += bounty*60<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if money >= 2.7*bcost and bounty < 5:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;money -= bcost<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bounty += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b = bcost*1.72<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bcost = round(b, 0)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;continue<br><br>&nbsp;&nbsp;&nbsp;&nbsp;
+	</p>
 	
 	<script>
-	function Toggle() {
+	/* function Toggle() {
 		var x = document.getElementById("pycode");
 		if (x.style.display === "none") 
 			{x.style.display = "block";} 
-		else {x.style.display = "none"; }}
+		else {x.style.display = "none"; }} 
+		*/
 		
 	function Copy() {
 		const copyText = document.getElementById("pycode").innerText; 
 		navigator.clipboard.writeText(copyText);}
 	</script>
-
+</div>
+</main>
 </body>
 </html>
+

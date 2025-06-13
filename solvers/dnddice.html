@@ -1,22 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">			
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+	<link rel="icon" type="image/x-icon" href="./images/dnddice.png">
     <title>D&D Dice Roller</title>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+	<style>
+@media screen and (max-width: 1199px)		
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery gallery gallery gallery" "code code code code code code";}} 								
+		@media screen and (min-width: 1200px)
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery code code code";} 	}																												
+	</style>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
 </head>
-<body onload="brython()">
-	<p><a href="../index.html">&#11013; Back</a></p>
-    <h1>D&D Dice Roller</h1>
-	<div class = "synopsis">
-	<p><strong>Original Creation:</strong> 27th February 2024</p>
-	<p><strong>Uploaded:</strong> 4th March 2025</p>
-	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
-	<p><strong>Description:</strong> A conversation arose during a D&D game: is attacking with 1d6+3 normally better than attacking with 1d8+3 at disadvantage?
-	Let's see what Python says. Hopefully this doesn't count as metagaming or min-maxing!</p>
-	</div>
-	
+<body onload="brython()" class="codepage">
+	<header>
+		<div><a href="../index.html#solvers"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
+		<div><h1>D&D Dice Roller</h1></div>
+	</header>
+	<main class="container">
+		<div class="description"><p><strong>Description:</strong> A conversation arose during a D&D game: is attacking with 1d6+3 normally better than attacking with 1d8+3 at disadvantage?
+	Let's see what Python says. Hopefully this doesn't count as metagaming or min-maxing!
+		</p></div>
+		<div class="origin"><p><strong>Original Creation:</strong> 27th February 2024</p></div>
+		<div class="uploaded"><p><strong>Uploaded:</strong> 4th March 2025</p></div>
+		<div class="status"><p><strong>Status:</strong> Complete. Original code was written without AI.</p></div>
+		<div class="supplemental"><p><strong>Supplemental:</strong> N/A </p></div>
 	<div class="gallery">
 		<div><figure>
 		<figcaption>D&D Dice</figcaption>		
@@ -28,66 +37,27 @@
 		<img src="images/dndresults.PNG" alt="Results" title="Results">
 		</figure></div>	
 	</div>	
+	<div class="code">		
+		<!-- <button onclick="Toggle()">Toggle Original Python Code Display</button> -->
+		<button onclick="Copy()">Copy the Python Code</button>
 	
-	<button onclick="Toggle()">Toggle Original Python Code Display</button>
-	<button onclick="Copy()">Copy the Python Code</button>
-
-	<pre id="pycode">
-import random
-
-armorclass = 10
-runs = 1000000
-count = 0
-damagedie = 6
-hitmod = 6
-dammod = 3
-#For vantage. 0 = normal, 1 = advantage, -1 = disadvantage
-vantage = 1
-totaldam = 0
-
-def roll():
-    attackroll1 = random.randint(1, 20)
-    attackroll2 = random.randint(1, 20)
-    if vantage == 0:
-        return attackroll1
-    if vantage == 1:
-        return max(attackroll1, attackroll2)
-    if vantage == -1:
-        return min(attackroll1, attackroll2)
-    
-while runs > 0:
-    runs -= 1
-    rollresult = roll()
-    if rollresult == 20:
-        hitmiss = "HIT"
-    elif rollresult == 1:
-        hitmiss = "MISS"
-    elif rollresult + hitmod >= armorclass:
-        hitmiss = "HIT"
-    else:
-        hitmiss = "MISS"        
-        
-    if hitmiss == "HIT":
-        damage = random.randint(1, damagedie) + dammod
-    if hitmiss == "MISS":
-        damage = 0
-    totaldam += damage
-    count += 1
-    
-print("Average damage: " + str(totaldam/count))
-	</pre>
+	<p id="pycode">
+import random<br><br>armorclass = 10<br>runs = 1000000<br>count = 0<br>damagedie = 6<br>hitmod = 6<br>dammod = 3<br>#For vantage. 0 = normal, 1 = advantage, -1 = disadvantage<br>vantage = 1<br>totaldam = 0<br><br>def roll():<br>&nbsp;&nbsp;&nbsp;&nbsp;attackroll1 = random.randint(1, 20)<br>&nbsp;&nbsp;&nbsp;&nbsp;attackroll2 = random.randint(1, 20)<br>&nbsp;&nbsp;&nbsp;&nbsp;if vantage == 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return attackroll1<br>&nbsp;&nbsp;&nbsp;&nbsp;if vantage == 1:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return max(attackroll1, attackroll2)<br>&nbsp;&nbsp;&nbsp;&nbsp;if vantage == -1:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return min(attackroll1, attackroll2)<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>while runs > 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;runs -= 1<br>&nbsp;&nbsp;&nbsp;&nbsp;rollresult = roll()<br>&nbsp;&nbsp;&nbsp;&nbsp;if rollresult == 20:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hitmiss = "HIT"<br>&nbsp;&nbsp;&nbsp;&nbsp;elif rollresult == 1:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hitmiss = "MISS"<br>&nbsp;&nbsp;&nbsp;&nbsp;elif rollresult + hitmod >= armorclass:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hitmiss = "HIT"<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hitmiss = "MISS"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;if hitmiss == "HIT":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;damage = random.randint(1, damagedie) + dammod<br>&nbsp;&nbsp;&nbsp;&nbsp;if hitmiss == "MISS":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;damage = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;totaldam += damage<br>&nbsp;&nbsp;&nbsp;&nbsp;count += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>print("Average damage: " + str(totaldam/count))
+	</p>
 	
 	<script>
-	function Toggle() {
+	/* function Toggle() {
 		var x = document.getElementById("pycode");
 		if (x.style.display === "none") 
 			{x.style.display = "block";} 
-		else {x.style.display = "none"; }}
+		else {x.style.display = "none"; }} 
+		*/
 		
 	function Copy() {
 		const copyText = document.getElementById("pycode").innerText; 
 		navigator.clipboard.writeText(copyText);}
 	</script>
-
+</div>
+</main>
 </body>
 </html>

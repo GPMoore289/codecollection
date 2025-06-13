@@ -1,27 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">			
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+	<link rel="icon" type="image/x-icon" href="./images/ff9.png">
     <title>Water Sort Puz Solver</title>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+	<style>
+@media screen and (max-width: 1199px)		
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin origin uploaded status supplemental supplemental" "gallery gallery gallery gallery gallery gallery" "code code code code code code";}} 								
+		@media screen and (min-width: 1200px)
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin origin uploaded status supplemental supplemental" "gallery gallery gallery code code code";} 	}																												
+	</style>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
 </head>
-<body onload="brython()">
-	<p><a href="../index.html">&#11013; Back</a></p>
-    <h1>Water Sort Puz Solver</h1>
-	<div class = "synopsis">
-	<p><strong>Original Creation:</strong> First attempted: 28th October 2020, Final version: 19th November 2023</p>
-	<p><strong>Uploaded:</strong> 25th Feb 2025</p>
-	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
-	<p><strong>Description:</strong> We've probably all seen variants of a mobile game which has coloured liquids in bottles, and the aim to to move all liquids of the same colour 
+<body onload="brython()" class="codepage">
+	<header>
+		<div><a href="../index.html#solvers"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
+		<div><h1>Water Sort Puz Solver</h1></div>
+	</header>
+	<main class="container">
+		<div class="description"><p><strong>Description:</strong> We've probably all seen variants of a mobile game which has coloured liquids in bottles, and the aim to to move all liquids of the same colour 
 	into the same container. I downloaded one (specifically called Water Sort Puz - Color Game) to pass the time on bus journeys, but it eventually started lacking mental stimulation for me. 
 	But devising code that could a) brute force a solution and b) identify the layout based purely on an image, now that was something that would keep the grey matter whirring! 
 	I attempted this on a similar game back in 2020, but my programming ability was not up to skill at that time.
 	So far, this is the only project I've made that incorporates image processing, but it's a fun one. This also uses an almost Inception-level of nested lists to keep track
 	of what moves have been performed. This does not guarantee the minimum number of moves to the problem but it does produce a viable one. I guess the last stage would be 
-	to make the software actually click the bottles to solve it, but that's a project for another time.</p>
-	</div>
-	
+	to make the software actually click the bottles to solve it, but that's a project for another time.
+		</p></div>
+		<div class="origin"><p><strong>Original Creation:</strong> First attempted: 28th October 2020, Final version: 19th November 2023</p></div>
+		<div class="uploaded"><p><strong>Uploaded:</strong> 25th Feb 2025</p></div>
+		<div class="status"><p><strong>Status:</strong> Complete. Original code was written without AI.</p></div>
+		<div class="supplemental"><p><strong>Supplemental:</strong> Image: <a href="images/waterpuz.png">Full sized image used for the problem</a> </p></div>
 	<div class="gallery">
 		<div><figure>
 		<figcaption>Image used for the problem</figcaption>		
@@ -36,227 +45,29 @@
 		<div><figure>
 		<figcaption>Solution</figcaption>		
 		<img src="images/solution.PNG" alt="Solution" title="Solution">
-		</figure></div>		
-	</div>
-
-<p>Image: <a href="images/waterpuz.png">Full sized image used for the problem</a></p>	
+		</figure></div>	
+	</div>	
+	<div class="code">		
+		<!-- <button onclick="Toggle()">Toggle Original Python Code Display</button> -->
+		<button onclick="Copy()">Copy the Python Code</button>
 	
-	<button onclick="Toggle()">Toggle Original Python Code Display</button>
-	<button onclick="Copy()">Copy the Python Code</button>
-
-	<pre id="pycode">
-import time
-from PIL import Image
-
-####################################################
-
-def pixelrgb (imagepath, x, y):
-    image = Image.open(imagepath).convert("RGB")
-    r, g, b = image.getpixel((x, y))
-    a = (r, g, b)
-    return a
-
-####################################################
-
-def bottlestack(xcoordlist, xupperrange, bottlelistshift, ycoordlist):
-
-    for x in range(0, xupperrange):
-        xval = xcoordlist[x]
-        bottle = allbottles[x+bottlelistshift]
-        for y in range(0, 4):
-            yval = ycoordlist[y]
-            pixelcol = pixelrgb(image, xval, yval)
-            if pixelcol == (114, 42, 146):
-                bottle.append("Purple")
-            if pixelcol == (82, 156, 220):
-                bottle.append("Aqua")
-            if pixelcol == (234, 94, 123):
-                bottle.append("Pink")
-            if pixelcol == (58, 46, 196):
-                bottle.append("Blue")
-            if pixelcol == (195, 40, 31):
-                bottle.append("Red")
-            if pixelcol == (255, 100, 0):
-                bottle.append("Orange")
-            if pixelcol == (97, 98, 99):
-                bottle.append("Grey")
-            if pixelcol == (98, 214, 125):
-                bottle.append("Green")
-            if pixelcol == (120, 150, 15):
-                bottle.append("Olive")
-                
-####################################################
-
-def solvedcheck():
-    listcorrect = 0
-    for i in allbottles:
-        if len(i) not in zeroorfour:
-            break
-        if len(set(i)) not in zeroorone:
-            break
-        else:
-            listcorrect += 1
-    if listcorrect == 11:
-        return True
-       
-####################################################
-    
-def get_var_name(variable):
-    globals_dict = globals()
-
-    return [var_name for var_name in globals_dict if globals_dict[var_name] is variable]
-
-####################################################
-
-def viablemoves():
-
-    options = [] # create an empty list that will store all viable moves for this level    
-
-    for i in range(0, len(allbottles)): #do for all bottles
-
-        originlist = allbottles[i] #select current bottle
-        originlen = len(originlist) #check length of current bottle
-        
-        if originlen == 0: #if the current bottle is empty, ignore
-            continue
-        
-        colour = originlist[-1] #look at the topmost (rightmost) colour in the bottle
-        numbermoved = 1
-        
-        if originlen >= 2: #determine the number that will be moved, if they are the same colour as the top one
-            if originlist[-2] == colour:
-                numbermoved = 2
-                if originlen >= 3:
-                    if originlist[-3] == colour:
-                        numbermoved =3
-                        if originlen == 4:
-                            if originlist[-4] == colour:
-                                continue
-
-        for i in range(0, len(allbottles)): #for all bottles
-                        
-            targetlist = allbottles[i] # select each bottle in order
-            
-            if targetlist == originlist: #ignore if it's the same as the first bottle
-                continue
-            
-            targetlen = len(targetlist) #check length of the current bottle
-            
-            if targetlen == 4: #ignores full target bottles
-                continue
-            
-            if (numbermoved + targetlen) > 4: #if number of colours to be moved plus the size of the current bottle exceeds four, ignore
-                continue
-            
-            if len(targetlist) == 0 or (len(targetlist) >=1 and targetlist[-1] == originlist[-1]): #if the targetbottle is empty, or the target bottle has at least one colour, and the top colour is the same as the colour to be moved
-                options.append([get_var_name(originlist)[0], get_var_name(targetlist)[0], numbermoved]) #list this as a potential move, in list form
-        
-    moveoptions.append(options)
-
-####################################################
-
-bottle1 = []
-bottle2 = []
-bottle3 = []
-bottle4 = []
-bottle5 = []
-bottle6 = []
-bottle7 = []
-bottle8 = []
-bottle9 = []
-bottle10 = []
-bottle11 = []
-allbottles = [bottle1, bottle2, bottle3, bottle4, bottle5, bottle6, bottle7, bottle8, bottle9, bottle10, bottle11]
-
-image = "waterpuz.png"
-
-xcoords1 = [90, 270, 450, 630, 810, 990]
-ycoords1 = [900, 800, 700, 600]
-xcoords2 = [180, 360, 540]
-ycoords2 = [1540, 1440, 1340, 1240]
-
-bottlestack(xcoords1, 6, 0, ycoords1)
-bottlestack(xcoords2, 3, 6, ycoords2)
-
-for i in range(0, 11):
-    print(allbottles[i])
-
-moveoptions = []
-movelist = []
-zeroorone = [0, 1]
-zeroorfour = [0, 4]
-    
-while True:
-    # time.sleep(0.5)
-    if solvedcheck() == True:
-        break
-    
-    viablemoves()
-    
-    # print(len(moveoptions))  
-    
-    while True:
-        levelmoves = len(moveoptions[-1]) #number of move options for current level
-        if levelmoves == 0:
-            print("no available moves")
-            del moveoptions[-1] # deletes list for current level
-            del moveoptions[-1][0] #deletes first entry in the (now) current level           
-            lastoriginbottle = eval(movelist[-1][0])
-            lasttargetbottle = eval(movelist[-1][1])
-            movebacknumber = movelist[-1][2]
-            colourtomoveback = lasttargetbottle[-1]
-            lastoriginbottle.append(colourtomoveback)
-            del lasttargetbottle[-1]
-            if movebacknumber >=2:
-                lastoriginbottle.append(colourtomoveback)
-                del lasttargetbottle[-1]
-                if movebacknumber == 3:
-                    lastoriginbottle.append(colourtomoveback)
-                    del lasttargetbottle[-1]
-            del movelist[-1]
-        else:
-            break
-        
-    while True: 
-        movetotry = moveoptions[-1][0] #bottle pair to attempt                
-        originbottle = eval(movetotry[0]) #first bottle
-        targetbottle = eval(movetotry[1]) #second bottle
-        numbermoved = movetotry[2] #needed for section outside of this loop
-        if len(targetbottle) == 0 and len(set(originbottle)) == 1: #this is to stop it moving back and forth between two empty bottles
-            print("deleting superfluous move")
-            del moveoptions[-1][0]
-        else:
-            break
-    
-    movelist.append(movetotry)
-    targetbottle.append(originbottle[-1])
-    
-    del originbottle[-1]
-    if numbermoved >=2:
-        targetbottle.append(originbottle[-1])
-        del originbottle[-1]
-        if numbermoved == 3:
-            targetbottle.append(originbottle[-1])
-            del originbottle[-1]
-
-print("")
-print("Solved!")
-for i in range(0, len(movelist)):
-    print("Step " + str(i+1) + ": Move " + str(movelist[i][0]) + " to " + str(movelist[i][1]))
-            
-	</pre>
+	<p id="pycode">
+import time<br>from PIL import Image<br><br>####################################################<br><br>def pixelrgb (imagepath, x, y):<br>&nbsp;&nbsp;&nbsp;&nbsp;image = Image.open(imagepath).convert("RGB")<br>&nbsp;&nbsp;&nbsp;&nbsp;r, g, b = image.getpixel((x, y))<br>&nbsp;&nbsp;&nbsp;&nbsp;a = (r, g, b)<br>&nbsp;&nbsp;&nbsp;&nbsp;return a<br><br>####################################################<br><br>def bottlestack(xcoordlist, xupperrange, bottlelistshift, ycoordlist):<br><br>&nbsp;&nbsp;&nbsp;&nbsp;for x in range(0, xupperrange):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xval = xcoordlist[x]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bottle = allbottles[x+bottlelistshift]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for y in range(0, 4):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;yval = ycoordlist[y]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pixelcol = pixelrgb(image, xval, yval)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if pixelcol == (114, 42, 146):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bottle.append("Purple")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if pixelcol == (82, 156, 220):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bottle.append("Aqua")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if pixelcol == (234, 94, 123):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bottle.append("Pink")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if pixelcol == (58, 46, 196):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bottle.append("Blue")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if pixelcol == (195, 40, 31):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bottle.append("Red")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if pixelcol == (255, 100, 0):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bottle.append("Orange")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if pixelcol == (97, 98, 99):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bottle.append("Grey")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if pixelcol == (98, 214, 125):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bottle.append("Green")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if pixelcol == (120, 150, 15):<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bottle.append("Olive")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>####################################################<br><br>def solvedcheck():<br>&nbsp;&nbsp;&nbsp;&nbsp;listcorrect = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;for i in allbottles:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if len(i) not in zeroorfour:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if len(set(i)) not in zeroorone:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;listcorrect += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;if listcorrect == 11:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return True<br>&nbsp;&nbsp;&nbsp;&nbsp;   <br>####################################################<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>def get_var_name(variable):<br>&nbsp;&nbsp;&nbsp;&nbsp;globals_dict = globals()<br><br>&nbsp;&nbsp;&nbsp;&nbsp;return [var_name for var_name in globals_dict if globals_dict[var_name] is variable]<br><br>####################################################<br><br>def viablemoves():<br><br>&nbsp;&nbsp;&nbsp;&nbsp;options = [] # create an empty list that will store all viable moves for this level&nbsp;&nbsp;&nbsp;&nbsp;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;for i in range(0, len(allbottles)): #do for all bottles<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;originlist = allbottles[i] #select current bottle<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;originlen = len(originlist) #check length of current bottle<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if originlen == 0: #if the current bottle is empty, ignore<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;colour = originlist[-1] #look at the topmost (rightmost) colour in the bottle<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;numbermoved = 1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if originlen >= 2: #determine the number that will be moved, if they are the same colour as the top one<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if originlist[-2] == colour:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;numbermoved = 2<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if originlen >= 3:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if originlist[-3] == colour:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;numbermoved =3<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if originlen == 4:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if originlist[-4] == colour:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for i in range(0, len(allbottles)): #for all bottles<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;targetlist = allbottles[i] # select each bottle in order<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if targetlist == originlist: #ignore if it's the same as the first bottle<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;targetlen = len(targetlist) #check length of the current bottle<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if targetlen == 4: #ignores full target bottles<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (numbermoved + targetlen) > 4: #if number of colours to be moved plus the size of the current bottle exceeds four, ignore<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if len(targetlist) == 0 or (len(targetlist) >=1 and targetlist[-1] == originlist[-1]): #if the targetbottle is empty, or the target bottle has at least one colour, and the top colour is the same as the colour to be moved<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;options.append([get_var_name(originlist)[0], get_var_name(targetlist)[0], numbermoved]) #list this as a potential move, in list form<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;moveoptions.append(options)<br><br>####################################################<br><br>bottle1 = []<br>bottle2 = []<br>bottle3 = []<br>bottle4 = []<br>bottle5 = []<br>bottle6 = []<br>bottle7 = []<br>bottle8 = []<br>bottle9 = []<br>bottle10 = []<br>bottle11 = []<br>allbottles = [bottle1, bottle2, bottle3, bottle4, bottle5, bottle6, bottle7, bottle8, bottle9, bottle10, bottle11]<br><br>image = "waterpuz.png"<br><br>xcoords1 = [90, 270, 450, 630, 810, 990]<br>ycoords1 = [900, 800, 700, 600]<br>xcoords2 = [180, 360, 540]<br>ycoords2 = [1540, 1440, 1340, 1240]<br><br>bottlestack(xcoords1, 6, 0, ycoords1)<br>bottlestack(xcoords2, 3, 6, ycoords2)<br><br>for i in range(0, 11):<br>&nbsp;&nbsp;&nbsp;&nbsp;print(allbottles[i])<br><br>moveoptions = []<br>movelist = []<br>zeroorone = [0, 1]<br>zeroorfour = [0, 4]<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;# time.sleep(0.5)<br>&nbsp;&nbsp;&nbsp;&nbsp;if solvedcheck() == True:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;viablemoves()<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;# print(len(moveoptions))  <br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;levelmoves = len(moveoptions[-1]) #number of move options for current level<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if levelmoves == 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("no available moves")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;del moveoptions[-1] # deletes list for current level<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;del moveoptions[-1][0] #deletes first entry in the (now) current level&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lastoriginbottle = eval(movelist[-1][0])<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lasttargetbottle = eval(movelist[-1][1])<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;movebacknumber = movelist[-1][2]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;colourtomoveback = lasttargetbottle[-1]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lastoriginbottle.append(colourtomoveback)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;del lasttargetbottle[-1]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if movebacknumber >=2:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lastoriginbottle.append(colourtomoveback)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;del lasttargetbottle[-1]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if movebacknumber == 3:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lastoriginbottle.append(colourtomoveback)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;del lasttargetbottle[-1]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;del movelist[-1]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;while True: <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;movetotry = moveoptions[-1][0] #bottle pair to attempt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;originbottle = eval(movetotry[0]) #first bottle<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;targetbottle = eval(movetotry[1]) #second bottle<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;numbermoved = movetotry[2] #needed for section outside of this loop<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if len(targetbottle) == 0 and len(set(originbottle)) == 1: #this is to stop it moving back and forth between two empty bottles<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("deleting superfluous move")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;del moveoptions[-1][0]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;movelist.append(movetotry)<br>&nbsp;&nbsp;&nbsp;&nbsp;targetbottle.append(originbottle[-1])<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;del originbottle[-1]<br>&nbsp;&nbsp;&nbsp;&nbsp;if numbermoved >=2:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;targetbottle.append(originbottle[-1])<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;del originbottle[-1]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if numbermoved == 3:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;targetbottle.append(originbottle[-1])<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;del originbottle[-1]<br><br>print("")<br>print("Solved!")<br>for i in range(0, len(movelist)):<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Step " + str(i+1) + ": Move " + str(movelist[i][0]) + " to " + str(movelist[i][1]))
+	</p>
 	
 	<script>
-	function Toggle() {
+	/* function Toggle() {
 		var x = document.getElementById("pycode");
 		if (x.style.display === "none") 
 			{x.style.display = "block";} 
-		else {x.style.display = "none"; }}
+		else {x.style.display = "none"; }} 
+		*/
 		
 	function Copy() {
 		const copyText = document.getElementById("pycode").innerText; 
 		navigator.clipboard.writeText(copyText);}
 	</script>
-
+</div>
+</main>
 </body>
 </html>

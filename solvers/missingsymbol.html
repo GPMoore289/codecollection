@@ -1,103 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">			
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+	<link rel="icon" type="image/x-icon" href="./images/missingsymbol.png">
     <title>Missing Symbol Solver</title>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+	<style>
+@media screen and (max-width: 1199px)		
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin origin uploaded status status supplemental" "gallery gallery gallery gallery gallery gallery" "code code code code code code";}} 								
+		@media screen and (min-width: 1200px)
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin origin uploaded status status supplemental" "gallery gallery gallery code code code";} 	}																												
+	</style>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
 </head>
-<body onload="brython()">
-	<p><a href="../index.html">&#11013; Back</a></p>
-    <h1>Missing Symbol Solver</h1>
-	<div class = "synopsis">
-	<p><strong>Original Creation:</strong> 21st January 2023</p>
-	<p><strong>Uploaded:</strong> 4th March 2025</p>
-	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
-	<p><strong>Description:</strong> This is an interesting illustration on how a computer solving a mathematical problem inefficiently 
+<body onload="brython()" class="codepage">
+	<header>
+		<div><a href="../index.html#solvers"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
+		<div><h1>Missing Symbol Solver</h1></div>
+	</header>
+	<main class="container">
+		<div class="description"><p><strong>Description:</strong> This is an interesting illustration on how a computer solving a mathematical problem inefficiently 
 	can still be many orders of magnitude faster than a human. The question is - what mathematical operators must you insert into the 
 	equation 9 _ 2 _ 2 _ 8 = 16 in order for it to be correct? While a trivial problem for a computer to solve, it did introduce me 
 	to the <strong>eval</strong> function, which effectively converts strings into non-strings. My decision to randomize the insertion 
 	of each symbol rather than just cycle through them all systematically was not an informed one, but it still gets the result 
-	quickly.</p>
-	</div>
-	
+	quickly.
+		</p></div>
+		<div class="origin"><p><strong>Original Creation:</strong> 21st January 2023</p></div>
+		<div class="uploaded"><p><strong>Uploaded:</strong> 4th March 2025</p></div>
+		<div class="status"><p><strong>Status:</strong> Complete. Original code was written without AI.</p></div>
+		<div class="supplemental"><p><strong>Supplemental:</strong> N/A </p></div>
 	<div class="gallery">
 		<div><figure>
 		<figcaption>Program running and finding the solution</figcaption>		
 		<img src="images/missingresults.PNG" alt="Program running and finding the solution" title="Program running and finding the solution">
-		</figure></div>
-
+		</figure></div>	
 	</div>	
+	<div class="code">		
+		<!-- <button onclick="Toggle()">Toggle Original Python Code Display</button> -->
+		<button onclick="Copy()">Copy the Python Code</button>
 	
-	<button onclick="Toggle()">Toggle Original Python Code Display</button>
-	<button onclick="Copy()">Copy the Python Code</button>
-
-	<pre id="pycode">
-import random
-import time
-
-def add(v1, v2):
-    return v1 + v2
-
-def sub(v1, v2):
-    return v1 - v2
-
-def mult(v1, v2):
-    return v1 * v2
-
-def div(v1, v2):
-    return v1/v2
-
-##while True:
-##    oplist1 = [add(8,2), sub(8,2), mult(8,2), div(8,2)]
-##
-##    x = random.choice(oplist1)
-##
-##    oplist2 = [add(x,6), sub(x,6), mult(x,6), div(x,6)]
-##
-##    y = random.choice(oplist2)
-##
-##    oplist3 = [add(y,2), sub(y,2), mult(y,2), div(y,2)]
-##
-##    z = random.choice(oplist3)
-##
-##    print(x)
-##    print(y)
-##    print(z)
-##    print("")
-##
-##    if z == "16" or z == "16.0":
-##        break
-
-while True:
-    ops = ["+", "-", "*", "/"]
-    oporder = ["9", "x", "2", "x", "2", "x", "8"]
-    v=0
-    while v &lt; 3:
-        oporder[oporder.index("x")] = random.choice(ops)
-        v += 1
-    x = " ".join(oporder)
-    print(x)
-    z = eval(x)
-    print(z)
-    print("")
-    if z == 16 or z == 16.0:
-        break
-    else:
-        continue
-	</pre>
+	<p id="pycode">
+import random<br>import time<br><br>def add(v1, v2):<br>&nbsp;&nbsp;&nbsp;&nbsp;return v1 + v2<br><br>def sub(v1, v2):<br>&nbsp;&nbsp;&nbsp;&nbsp;return v1 - v2<br><br>def mult(v1, v2):<br>&nbsp;&nbsp;&nbsp;&nbsp;return v1 * v2<br><br>def div(v1, v2):<br>&nbsp;&nbsp;&nbsp;&nbsp;return v1/v2<br><br>##while True:<br>##&nbsp;&nbsp;&nbsp;&nbsp;oplist1 = [add(8,2), sub(8,2), mult(8,2), div(8,2)]<br>##<br>##&nbsp;&nbsp;&nbsp;&nbsp;x = random.choice(oplist1)<br>##<br>##&nbsp;&nbsp;&nbsp;&nbsp;oplist2 = [add(x,6), sub(x,6), mult(x,6), div(x,6)]<br>##<br>##&nbsp;&nbsp;&nbsp;&nbsp;y = random.choice(oplist2)<br>##<br>##&nbsp;&nbsp;&nbsp;&nbsp;oplist3 = [add(y,2), sub(y,2), mult(y,2), div(y,2)]<br>##<br>##&nbsp;&nbsp;&nbsp;&nbsp;z = random.choice(oplist3)<br>##<br>##&nbsp;&nbsp;&nbsp;&nbsp;print(x)<br>##&nbsp;&nbsp;&nbsp;&nbsp;print(y)<br>##&nbsp;&nbsp;&nbsp;&nbsp;print(z)<br>##&nbsp;&nbsp;&nbsp;&nbsp;print("")<br>##<br>##&nbsp;&nbsp;&nbsp;&nbsp;if z == "16" or z == "16.0":<br>##&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br><br>while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;ops = ["+", "-", "*", "/"]<br>&nbsp;&nbsp;&nbsp;&nbsp;oporder = ["9", "x", "2", "x", "2", "x", "8"]<br>&nbsp;&nbsp;&nbsp;&nbsp;v=0<br>&nbsp;&nbsp;&nbsp;&nbsp;while v &lt; 3:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;oporder[oporder.index("x")] = random.choice(ops)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;x = " ".join(oporder)<br>&nbsp;&nbsp;&nbsp;&nbsp;print(x)<br>&nbsp;&nbsp;&nbsp;&nbsp;z = eval(x)<br>&nbsp;&nbsp;&nbsp;&nbsp;print(z)<br>&nbsp;&nbsp;&nbsp;&nbsp;print("")<br>&nbsp;&nbsp;&nbsp;&nbsp;if z == 16 or z == 16.0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue
+	</p>
 	
 	<script>
-	function Toggle() {
+	/* function Toggle() {
 		var x = document.getElementById("pycode");
 		if (x.style.display === "none") 
 			{x.style.display = "block";} 
-		else {x.style.display = "none"; }}
+		else {x.style.display = "none"; }} 
+		*/
 		
 	function Copy() {
 		const copyText = document.getElementById("pycode").innerText; 
 		navigator.clipboard.writeText(copyText);}
 	</script>
-
+</div>
+</main>
 </body>
 </html>
