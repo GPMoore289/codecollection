@@ -1,77 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" media="screen" href="../index.html">		
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+	<link rel="icon" type="image/x-icon" href="./images/age-gender.png">
     <title>Age & Gender</title>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+	<style>
+@media screen and (max-width: 1199px)		
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin origin uploaded status supplemental supplemental" "gallery gallery gallery gallery gallery gallery" "code code code code code code";}} 								
+		@media screen and (min-width: 1200px)
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery code code code";} 	}																												
+	</style>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
 </head>
-<body onload="brython()">
-	<p><a href="../index.html">&#11013; Back</a></p>
-    <h1>Age & Gender</h1>
-	<div class = "synopsis">
-	<p><strong>Original Creation:</strong> 27th November 2024</p>
-	<p><strong>Uploaded:</strong> 25th Mar 2025</p>
-	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
-	<p><strong>Description:</strong> A straightforward program that reads data from a csv file and produces average ages for each gender.</p>
-	</div>
-	
+<body onload="brython()" class="codepage">
+	<header>
+		<div><a href="../index.html#basic"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
+		<div><h1>Age & Gender</h1></div>
+	</header>
+	<main class="container">
+		<div class="description"><p><strong>Description:</strong> A straightforward program that reads data from a csv file and produces average ages for each gender.
+		</p></div>
+		<div class="origin"><p><strong>Original Creation:</strong> 27th November 2024</p></div>
+		<div class="uploaded"><p><strong>Uploaded:</strong> 25th Mar 2025</p></div>
+		<div class="status"><p><strong>Status:</strong> Complete. Original code was written without AI.</p></div>
+		<div class="supplemental"><p><strong>Supplemental:</strong> CSV: <a href="./ages.csv">CSV data file.</a> </p></div>
 	<div class="gallery">
 		<div><figure>
 		<figcaption>Standard output</figcaption>		
 		<img src="images/gender.PNG" alt="Standard output" title="Standard output">
 		</figure></div>
 	</div>	
+	<div class="code">		
+		<!-- <button onclick="Toggle()">Toggle Original Python Code Display</button> -->
+		<button onclick="Copy()">Copy the Python Code</button>
 	
-	<p>CSV: <a href="./ages.csv">CSV data file used for this program</a></p>
-	
-	<button onclick="Toggle()">Toggle Original Python Code Display</button>
-	<button onclick="Copy()">Copy the Python Code</button>
-
-	<pre id="pycode">
-import csv
-import statistics
-
-def genderprint(genderlist, gender):
-    average = round(statistics.mean(genderlist), 1)
-    size = len(genderlist)
-    print(f"The average age of {gender} was {average}, based on a sample size of {size}.")
-
-data = []
-with open("ages.csv", "r") as file:
-    csvread = csv.reader(file)
-    for row in csvread:
-        data.append(row)
-
-male = []
-female = []
-non-binary = []
-
-for item in data:
-    if item[2] == "Male":
-        male.append(int(item[3]))
-    elif item[2] == "Female":
-        female.append(int(item[3]))
-    elif item[2] == "Non-binary":
-        non-binary.append(int(item[3]))
-
-genderprint(male, "males")
-genderprint(female, "females")
-genderprint(non-binary, "non-binary people")
-
-	</pre>
+	<p id="pycode">
+import csv<br>import statistics<br><br>def genderprint(genderlist, gender):<br>&nbsp;&nbsp;&nbsp;&nbsp;average = round(statistics.mean(genderlist), 1)<br>&nbsp;&nbsp;&nbsp;&nbsp;size = len(genderlist)<br>&nbsp;&nbsp;&nbsp;&nbsp;print(f"The average age of {gender} was {average}, based on a sample size of {size}.")<br><br>data = []<br>with open("ages.csv", "r") as file:<br>&nbsp;&nbsp;&nbsp;&nbsp;csvread = csv.reader(file)<br>&nbsp;&nbsp;&nbsp;&nbsp;for row in csvread:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data.append(row)<br><br>male = []<br>female = []<br>non-binary = []<br><br>for item in data:<br>&nbsp;&nbsp;&nbsp;&nbsp;if item[2] == "Male":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;male.append(int(item[3]))<br>&nbsp;&nbsp;&nbsp;&nbsp;elif item[2] == "Female":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;female.append(int(item[3]))<br>&nbsp;&nbsp;&nbsp;&nbsp;elif item[2] == "Non-binary":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;non-binary.append(int(item[3]))<br><br>genderprint(male, "males")<br>genderprint(female, "females")<br>genderprint(non-binary, "non-binary people")
+	</p>
 	
 	<script>
-	function Toggle() {
+	/* function Toggle() {
 		var x = document.getElementById("pycode");
 		if (x.style.display === "none") 
 			{x.style.display = "block";} 
-		else {x.style.display = "none"; }}
+		else {x.style.display = "none"; }} 
+		*/
 		
 	function Copy() {
 		const copyText = document.getElementById("pycode").innerText; 
 		navigator.clipboard.writeText(copyText);}
 	</script>
-
+</div>
+</main>
 </body>
 </html>
