@@ -1,0 +1,26 @@
+Graham Moore, 000957294, 29th March 2025
+
+To get the system report script to run every time a new terminal window is opened:
+
+1. Type "vi ~/.bashrc" into the terminal window.
+2. At the end of the document, add the line "bash /path/to/script/scriptname.sh" with the appropriate path name and file name in place.
+3. Save and exit the editor.
+4. If you get a permissions error opening a new terminal, you may need to give yourself executable permissions by entering "chmod +x /path/to/script/scriptname.sh" into the terminal.
+
+Now, every time a new terminal window is opened, the script will run. To get a new terminal window to open upon login (and therefore also run the script):
+
+1. Create a .desktop file in the user's autostart directory by entering "vi ~/.config/autostart/terminal.desktop" in the terminal window
+2. Edit the file to contain the following lines:
+
+[Desktop Entry]
+Type=Application
+Exec=gnome-terminal
+Hidden=false
+X-GNOME-Autostart-enabled=true
+Name=Terminal
+
+3. Save and exit the editor.
+
+Now, upon logging out and logging back in, the terminal window will open, and combined with the first set of instructions, will also run the script.
+
+I have included a video of the script working, and have also uploaded it to https://www.youtube.com/watch?v=FOB985Q4A4M

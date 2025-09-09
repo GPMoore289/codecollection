@@ -1,75 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" media="screen" href="../index.html">		
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+	<link rel="icon" type="image/x-icon" href="./images/favouritefilms.png">
     <title>Favourite Films</title>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+	<style>
+@media screen and (max-width: 1199px)		
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin origin uploaded uploaded status supplemental" "gallery gallery gallery gallery gallery gallery" "code code code code code code";}} 								
+		@media screen and (min-width: 1200px)
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin origin uploaded uploaded status supplemental" "gallery gallery gallery code code code";} 	}																												
+	</style>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
 </head>
-<body onload="brython()">
-	<p><a href="../index.html">&#11013; Back</a></p>
-    <h1>Favourite Films</h1>
-	<div class = "synopsis">
-	<p><strong>Original Creation:</strong> 20th November 2024</p>
-	<p><strong>Uploaded:</strong> 18th Mar 2025</p>
-	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
-	<p><strong>Description:</strong> This program is very simple compared to ones I'd done up to this point. It's simple list manipulation, but the focus here was actually
-	thinking about how to enter commands to perform different functions.</p>
-	</div>
-	
+<body onload="brython()" class="codepage">
+	<header>
+		<div><a href="../index.html#basic"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
+		<div><h1>Favourite Films</h1></div>
+	</header>
+	<main class="container">
+		<div class="description"><p><strong>Description:</strong> This program is very simple compared to ones I'd done up to this point. It's simple list manipulation, but the focus here was actually
+	thinking about how to enter commands to perform different functions.
+		</p></div>
+		<div class="origin"><p><strong>Original Creation:</strong> 20th Nov 2024</p></div>
+		<div class="uploaded"><p><strong>Uploaded:</strong> 18th Mar 2025</p></div>
+		<div class="status"><p><strong>Status:</strong> Complete. Original code was written without AI.</p></div>
+		<div class="supplemental"><p><strong>Supplemental:</strong> N/A </p></div>
 	<div class="gallery">
 		<div><figure>
 		<figcaption>Favourite Films</figcaption>		
 		<img src="images/favfilms.PNG" alt="Favourite Films" title="Favourite Films">
 		</figure></div>
 	</div>	
+	<div class="code">		
+		<!-- <button onclick="Toggle()">Toggle Original Python Code Display</button> -->
+		<button onclick="Copy()">Copy the Python Code</button>
 	
-	<button onclick="Toggle()">Toggle Original Python Code Display</button>
-	<button onclick="Copy()">Copy the Python Code</button>
-
-	<pre id="pycode">
-movies = ['Labyrinth', 'Aliens', 'Gremlins 2', 'Hot Fuzz', 'Total Recall', 'Everything Everywhere All at Once', 'Waltz With Bashir', 'Deadpool', 'X-Men 2']
-commandlist = ['add', 'remove', 'print']
-
-while True:
-    command = input("Enter 'add', 'remove' or 'print':").lower()
-    if command not in commandlist:
-        print("Not a valid entry.")
-        continue
-    if command != "print":
-        film = input("Enter name of film:")
-
-    if command == 'add':
-        if film in movies:
-            print("Film is already in list.")
-            continue
-        else:
-            movies.append(film)
-    if command == 'remove':
-        if film not in movies:
-            print("Film is not in list.")
-            continue
-        else:
-            movies.remove(film)
-    if command == 'print':
-        movies.sort()
-        for movie in movies:
-            print(movie)
-
-
-	</pre>
+	<p id="pycode">
+movies = ['Labyrinth', 'Aliens', 'Gremlins 2', 'Hot Fuzz', 'Total Recall', 'Everything Everywhere All at Once', 'Waltz With Bashir', 'Deadpool', 'X-Men 2']<br>commandlist = ['add', 'remove', 'print']<br><br>while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;command = input("Enter 'add', 'remove' or 'print':").lower()<br>&nbsp;&nbsp;&nbsp;&nbsp;if command not in commandlist:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Not a valid entry.")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;if command != "print":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;film = input("Enter name of film:")<br><br>&nbsp;&nbsp;&nbsp;&nbsp;if command == 'add':<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if film in movies:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Film is already in list.")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;movies.append(film)<br>&nbsp;&nbsp;&nbsp;&nbsp;if command == 'remove':<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if film not in movies:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Film is not in list.")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;movies.remove(film)<br>&nbsp;&nbsp;&nbsp;&nbsp;if command == 'print':<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;movies.sort()<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for movie in movies:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(movie)
+	</p>
 	
 	<script>
-	function Toggle() {
+	/* function Toggle() {
 		var x = document.getElementById("pycode");
 		if (x.style.display === "none") 
 			{x.style.display = "block";} 
-		else {x.style.display = "none"; }}
+		else {x.style.display = "none"; }} 
+		*/
 		
 	function Copy() {
 		const copyText = document.getElementById("pycode").innerText; 
 		navigator.clipboard.writeText(copyText);}
 	</script>
-
+</div>
+</main>
 </body>
 </html>

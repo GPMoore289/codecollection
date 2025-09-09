@@ -1,126 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" media="screen" href="../index.html">		
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+	<link rel="icon" type="image/x-icon" href="./images/inventoryicon.png">
     <title>Inventory Manager</title>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+	<style>
+@media screen and (max-width: 1199px)		
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin origin uploaded status status supplemental" "gallery gallery gallery gallery gallery gallery" "code code code code code code";}} 								
+		@media screen and (min-width: 1200px)
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin origin uploaded status status supplemental" "gallery gallery gallery code code code";} 	}																												
+	</style>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
 </head>
-<body onload="brython()">
-	<p><a href="../index.html">&#11013; Back</a></p>
-    <h1>Inventory Manager</h1>
-	<div class = "synopsis">
-	<p><strong>Original Creation:</strong> 5th December 2024</p>
-	<p><strong>Uploaded:</strong> 25th Mar 2025</p>
-	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
-	<p><strong>Description:</strong> Basic programming challenge emphasizing use of menus and correct code structure. 
-	Make a program that allows item names, quantities and prices to be entered into a list,	then displayed again on demand.	</p>
-	</div>
-	
+<body onload="brython()" class="codepage">
+	<header>
+		<div><a href="../index.html#basic"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
+		<div><h1>Inventory Manager</h1></div>
+	</header>
+	<main class="container">
+		<div class="description"><p><strong>Description:</strong> Basic programming challenge emphasizing use of menus and correct code structure. 
+	Make a program that allows item names, quantities and prices to be entered into a list,	then displayed again on demand. 
+	This was also an exercise in assembling code in a more professional manner: including descriptions for all of the defined functions and their parameters, 
+	and then assembling modular functions into a single "main" function.
+		</p></div>
+		<div class="origin"><p><strong>Original Creation:</strong> 5th Dec 2024</p></div>
+		<div class="uploaded"><p><strong>Uploaded:</strong> 25th Mar 2025</p></div>
+		<div class="status"><p><strong>Status:</strong> Complete. Original code was written without AI.</p></div>
+		<div class="supplemental"><p><strong>Supplemental:</strong> N/A </p></div>
 	<div class="gallery">
 		<div><figure>
-		<figcaption>Basic program output</figcaption>		
-		<img src="images/inventory.PNG" alt="Basic program output" title="Basic program output">
+		<figcaption>Fizzy wizzy, let's get buzzy</figcaption>		
+		<img src="images/fizzbuzz.PNG" alt="Fizzy wizzy, let's get buzzy" title="Fizzy wizzy, let's get buzzy">
 		</figure></div>
 	</div>	
+	<div class="code">		
+		<!-- <button onclick="Toggle()">Toggle Original Python Code Display</button> -->
+		<button onclick="Copy()">Copy the Python Code</button>
 	
-	<button onclick="Toggle()">Toggle Original Python Code Display</button>
-	<button onclick="Copy()">Copy the Python Code</button>
-
-	<pre id="pycode">
-inventory = [] #List that stores items
-
-#Allows user to select one of two options. No arguments/parameters. Returns a string of a valid option, either "1", "2" or "3".
-def optioncheck(): 
-    while True:
-        selectoptions = ["1", "2", "3"]
-        option = input("Please select a number: (1) Add item to inventory. (2) Display inventory. (3) Quit.")
-        if option not in selectoptions:
-            print("Please enter a valid option: 1, 2 or 3.")
-            continue
-        return option
-
-#Allows user to enter name of product. No arguments/parameters. Returns the name as a string with no limitations on characters or length.
-def itemnamecheck(): 
-    name = input("Please enter the item name:")
-    return name
-
-#Allows user to enter amount of product. No arguments/parameters. Returns the quantity as a positive integer.
-def itemquantcheck():
-    while True:
-        quant = input("Please enter item quantity:")
-        try:
-            int(quant)
-        except:
-            print("Item quantity must be an integer.")
-            continue
-        quant = int(quant)
-        if quant &lt; 0:
-            print("Quantity must be zero or more.")
-            continue
-        return quant
-
-#Allows user to enter price of product. No arguments/parameters. Returns the price as a positive float.
-def itempricecheck():
-    while True:
-        price = input("Please enter item price, number only:")
-        try:
-            float(price)
-        except:
-            print("Item quantity must be a float.")
-            continue
-        price = float(price)
-        if price &lt; 0:
-            print("Price must be zero or more.")
-            continue
-        return price
-
-#Prints content from the inventory. Takes the inventory list as a parameter. Does not return any value.
-def inventorydisplay(inventory):
-    for item in inventory:
-        print("\n" + str(item[0]))
-        if item[1] >= 10:
-            print("In stock")
-        elif 3 &lt;= item[1] &lt;= 9:
-            print("Almost gone")
-        else:
-            print("Reorder now")
-        print(item[2])
-
-#Assembles functions into a program. Takes no parameters and returns no value.
-def main():
-    while True:
-        option = optioncheck()
-        
-        if option == "1":
-            itemname = itemnamecheck()
-            itemquant = itemquantcheck()
-            itemprice = itempricecheck()
-            inventory.append([itemname, itemquant, itemprice])
-            
-        if option == "2":
-            inventorydisplay(inventory)
-
-        if option == "3":
-            break
-
-main()
-
-            
-
-	</pre>
+	<p id="pycode">
+inventory = [] #List that stores items<br><br>#Allows user to select one of two options. No arguments/parameters. Returns a string of a valid option, either "1", "2" or "3".<br>def optioncheck(): <br>&nbsp;&nbsp;&nbsp;&nbsp;while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;selectoptions = ["1", "2", "3"]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;option = input("Please select a number: (1) Add item to inventory. (2) Display inventory. (3) Quit.")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if option not in selectoptions:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Please enter a valid option: 1, 2 or 3.")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return option<br><br>#Allows user to enter name of product. No arguments/parameters. Returns the name as a string with no limitations on characters or length.<br>def itemnamecheck(): <br>&nbsp;&nbsp;&nbsp;&nbsp;name = input("Please enter the item name:")<br>&nbsp;&nbsp;&nbsp;&nbsp;return name<br><br>#Allows user to enter amount of product. No arguments/parameters. Returns the quantity as a positive integer.<br>def itemquantcheck():<br>&nbsp;&nbsp;&nbsp;&nbsp;while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;quant = input("Please enter item quantity:")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int(quant)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;except:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Item quantity must be an integer.")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;quant = int(quant)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if quant &lt; 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Quantity must be zero or more.")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return quant<br><br>#Allows user to enter price of product. No arguments/parameters. Returns the price as a positive float.<br>def itempricecheck():<br>&nbsp;&nbsp;&nbsp;&nbsp;while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;price = input("Please enter item price, number only:")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;float(price)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;except:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Item quantity must be a float.")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;price = float(price)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if price &lt; 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Price must be zero or more.")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return price<br><br>#Prints content from the inventory. Takes the inventory list as a parameter. Does not return any value.<br>def inventorydisplay(inventory):<br>&nbsp;&nbsp;&nbsp;&nbsp;for item in inventory:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("\n" + str(item[0]))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if item[1] >= 10:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("In stock")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif 3 &lt;= item[1] &lt;= 9:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Almost gone")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Reorder now")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(item[2])<br><br>#Assembles functions into a program. Takes no parameters and returns no value.<br>def main():<br>&nbsp;&nbsp;&nbsp;&nbsp;while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;option = optioncheck()<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if option == "1":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;itemname = itemnamecheck()<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;itemquant = itemquantcheck()<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;itemprice = itempricecheck()<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inventory.append([itemname, itemquant, itemprice])<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if option == "2":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inventorydisplay(inventory)<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if option == "3":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br><br>main()
+	</p>
 	
 	<script>
-	function Toggle() {
+	/* function Toggle() {
 		var x = document.getElementById("pycode");
 		if (x.style.display === "none") 
 			{x.style.display = "block";} 
-		else {x.style.display = "none"; }}
+		else {x.style.display = "none"; }} 
+		*/
 		
 	function Copy() {
 		const copyText = document.getElementById("pycode").innerText; 
 		navigator.clipboard.writeText(copyText);}
 	</script>
-
+</div>
+</main>
 </body>
 </html>

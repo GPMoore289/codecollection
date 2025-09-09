@@ -1,83 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" media="screen" href="../index.html">		
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+	<link rel="icon" type="image/x-icon" href="./images/filter.png">
     <title>Word Filter</title>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+	<style>
+@media screen and (max-width: 1199px)		
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin origin uploaded status status supplemental" "gallery gallery gallery gallery gallery gallery" "code code code code code code";}} 								
+		@media screen and (min-width: 1200px)
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin origin uploaded status status supplemental" "gallery gallery gallery code code code";} 	}																												
+	</style>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
 </head>
-<body onload="brython()">
-	<p><a href="../index.html">&#11013; Back</a></p>
-    <h1>Word Filter</h1>
-	<div class = "synopsis">
-	<p><strong>Original Creation:</strong> 21st November 2024</p>
-	<p><strong>Uploaded:</strong> 20th Mar 2025</p>
-	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
-	<p><strong>Description:</strong>Simple project: you start with a list of words that you can add extra words to. Once done, type an integer, and the word list will be filtered
+<body onload="brython()" class="codepage">
+	<header>
+		<div><a href="../index.html#basic"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
+		<div><h1>Word Filter</h1></div>
+	</header>
+	<main class="container">
+		<div class="description"><p><strong>Description:</strong> Simple project: you start with a list of words that you can add extra words to. Once done, type an integer, and the word list will be filtered
 	to only include words of that length or shorter. While mostly straightforward, this did alert me of the dangers of removing items from a list that is currently being iterated, 
-	and it's generally way safer to make a copy list first.</p>
-	</div>
-	
+	and it's generally way safer to make a copy list first.
+		</p></div>
+		<div class="origin"><p><strong>Original Creation:</strong> 21st Nov 2024</p></div>
+		<div class="uploaded"><p><strong>Uploaded:</strong> 19th Mar 2025</p></div>
+		<div class="status"><p><strong>Status:</strong> Complete. Original code was written without AI.</p></div>
+		<div class="supplemental"><p><strong>Supplemental:</strong> N/A </p></div>
 	<div class="gallery">
 		<div><figure>
 		<figcaption>Entries, full list and filtered list</figcaption>		
 		<img src="images/wordfilter.PNG" alt="Entries, full list and filtered list" title="Entries, full list and filtered list">
 		</figure></div>
 	</div>	
+	<div class="code">		
+		<!-- <button onclick="Toggle()">Toggle Original Python Code Display</button> -->
+		<button onclick="Copy()">Copy the Python Code</button>
 	
-	<button onclick="Toggle()">Toggle Original Python Code Display</button>
-	<button onclick="Copy()">Copy the Python Code</button>
-
-	<pre id="pycode">
-wordlist = ["apple", "banana", "avocado", "peach", "coconut", "persimmon", "plum", "orange", "melon", "guava", "cherry"]
-
-while True:
-    word = input("Please enter a word, or type 'done':").lower()
-
-    if word == "done":
-        break
-    else:
-        wordlist.append(word)
-
-while True:
-    length = input("Please enter the word character limit:")
-
-    try:
-        int(length)
-    except:
-        print("Please enter an integer.")
-        continue
-    else:
-        break
-
-length = int(length)
-
-removelist = []
-for word in wordlist:
-    print(word)
-    if len(word) > length:
-        removelist.append(word)
-
-for word in removelist:
-    wordlist.remove(word)
-
-print("")
-for word in wordlist:
-    print(word)
-
-	</pre>
+	<p id="pycode">
+wordlist = ["apple", "banana", "avocado", "peach", "coconut", "persimmon", "plum", "orange", "melon", "guava", "cherry"]<br><br>while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;word = input("Please enter a word, or type 'done':").lower()<br><br>&nbsp;&nbsp;&nbsp;&nbsp;if word == "done":<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wordlist.append(word)<br><br>while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;length = input("Please enter the word character limit:")<br><br>&nbsp;&nbsp;&nbsp;&nbsp;try:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int(length)<br>&nbsp;&nbsp;&nbsp;&nbsp;except:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Please enter an integer.")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br><br>length = int(length)<br><br>removelist = []<br>for word in wordlist:<br>&nbsp;&nbsp;&nbsp;&nbsp;print(word)<br>&nbsp;&nbsp;&nbsp;&nbsp;if len(word) > length:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;removelist.append(word)<br><br>for word in removelist:<br>&nbsp;&nbsp;&nbsp;&nbsp;wordlist.remove(word)<br><br>print("")<br>for word in wordlist:<br>&nbsp;&nbsp;&nbsp;&nbsp;print(word)
+	</p>
 	
 	<script>
-	function Toggle() {
+	/* function Toggle() {
 		var x = document.getElementById("pycode");
 		if (x.style.display === "none") 
 			{x.style.display = "block";} 
-		else {x.style.display = "none"; }}
+		else {x.style.display = "none"; }} 
+		*/
 		
 	function Copy() {
 		const copyText = document.getElementById("pycode").innerText; 
 		navigator.clipboard.writeText(copyText);}
 	</script>
-
+</div>
+</main>
 </body>
 </html>
+

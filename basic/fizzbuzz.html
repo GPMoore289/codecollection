@@ -1,69 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" media="screen" href="../index.html">		
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+	<link rel="icon" type="image/x-icon" href="./images/fizzbuzzicon.png">
     <title>FizzBuzz</title>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+	<style>
+@media screen and (max-width: 1199px)		
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin origin uploaded status status supplemental" "gallery gallery gallery gallery gallery gallery" "code code code code code code";}} 								
+		@media screen and (min-width: 1200px)
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin origin uploaded status status supplemental" "gallery gallery gallery code code code";} 	}																												
+	</style>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
 </head>
-<body onload="brython()">
-	<p><a href="../index.html">&#11013; Back</a></p>
-    <h1>FizzBuzz</h1>
-	<div class = "synopsis">
-	<p><strong>Original Creation:</strong> 9th October 2024</p>
-	<p><strong>Uploaded:</strong> 20th Mar 2025</p>
-	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
-	<p><strong>Description:</strong> Every programmer has to attempt this at some point. This will mimic two players playing FizzBuzz: 
+<body onload="brython()" class="codepage">
+	<header>
+		<div><a href="../index.html#basic"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
+		<div><h1>FizzBuzz</h1></div>
+	</header>
+	<main class="container">
+		<div class="description"><p><strong>Description:</strong> Every programmer has to attempt this at some point. This will mimic two players playing FizzBuzz: 
 	you alternate between players counting from 1 to 100, unless the number is divisible by 3 or 5, in which case, they say "Fizz" or "Buzz" respectively,
-	unless the number is divisible by 15, in which case, they say "FizzBuzz". Nothing too challenging other than considering optimal arrangements of your if/elif/else statements.</p>
-	</div>
-	
+	unless the number is divisible by 15, in which case, they say "FizzBuzz". Nothing too challenging other than considering optimal arrangements of your if/elif/else statements.
+		</p></div>
+		<div class="origin"><p><strong>Original Creation:</strong> 9th Oct 2024</p></div>
+		<div class="uploaded"><p><strong>Uploaded:</strong> 20th Mar 2025</p></div>
+		<div class="status"><p><strong>Status:</strong> Complete. Original code was written without AI.</p></div>
+		<div class="supplemental"><p><strong>Supplemental:</strong> N/A </p></div>
 	<div class="gallery">
 		<div><figure>
 		<figcaption>Fizzy wizzy, let's get buzzy</figcaption>		
 		<img src="images/fizzbuzz.PNG" alt="Fizzy wizzy, let's get buzzy" title="Fizzy wizzy, let's get buzzy">
 		</figure></div>
 	</div>	
+	<div class="code">		
+		<!-- <button onclick="Toggle()">Toggle Original Python Code Display</button> -->
+		<button onclick="Copy()">Copy the Python Code</button>
 	
-	<button onclick="Toggle()">Toggle Original Python Code Display</button>
-	<button onclick="Copy()">Copy the Python Code</button>
-
-	<pre id="pycode">
-n=0
-player = ""
-word = ""
-divis1 = 3
-divis2 = 5
-while n &lt;= 100:
-    n+=1
-    if n%2 == 0:
-        player = 2
-    else:
-        player = 1
-    
-    if n%divis2 == 0 and n%divis1 == 0:
-        word = "FizzBuzz"
-    elif n%divis1 == 0:
-        word = "Fizz"
-    elif n%divis2 == 0:
-        word = "Buzz"
-    else:
-        word = n
-
-    print(f"Player {player} says {word}")
-	</pre>
+	<p id="pycode">
+n=0<br>player = ""<br>word = ""<br>divis1 = 3<br>divis2 = 5<br>while n &lt;= 100:<br>&nbsp;&nbsp;&nbsp;&nbsp;n+=1<br>&nbsp;&nbsp;&nbsp;&nbsp;if n%2 == 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;player = 2<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;player = 1<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;if n%divis2 == 0 and n%divis1 == 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;word = "FizzBuzz"<br>&nbsp;&nbsp;&nbsp;&nbsp;elif n%divis1 == 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;word = "Fizz"<br>&nbsp;&nbsp;&nbsp;&nbsp;elif n%divis2 == 0:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;word = "Buzz"<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;word = n<br><br>&nbsp;&nbsp;&nbsp;&nbsp;print(f"Player {player} says {word}")
+	</p>
 	
 	<script>
-	function Toggle() {
+	/* function Toggle() {
 		var x = document.getElementById("pycode");
 		if (x.style.display === "none") 
 			{x.style.display = "block";} 
-		else {x.style.display = "none"; }}
+		else {x.style.display = "none"; }} 
+		*/
 		
 	function Copy() {
 		const copyText = document.getElementById("pycode").innerText; 
 		navigator.clipboard.writeText(copyText);}
 	</script>
-
+</div>
+</main>
 </body>
 </html>

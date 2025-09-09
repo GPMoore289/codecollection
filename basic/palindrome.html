@@ -1,71 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" media="screen" href="../index.html">		
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+	<link rel="icon" type="image/x-icon" href="./images/palindrome.png">
     <title>Palindrome Finder</title>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+	<style>
+@media screen and (max-width: 1199px)		
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin origin uploaded status status supplemental" "gallery gallery gallery gallery gallery gallery" "code code code code code code";}} 								
+		@media screen and (min-width: 1200px)
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin origin uploaded status status supplemental" "gallery gallery gallery code code code";} 	}																												
+	</style>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
 </head>
-<body onload="brython()">
-	<p><a href="../index.html">&#11013; Back</a></p>
-    <h1>Palindrome Finder</h1>
-	<div class = "synopsis">
-	<p><strong>Original Creation:</strong> 3rd October 2024</p>
-	<p><strong>Uploaded:</strong> 19th Mar 2025</p>
-	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
-	<p><strong>Description:</strong> Enter a sentence, program will detect if it is a palindrome or not. For such short code, the backwards string scanning calculation is not
-	immediately intuitive, but what works, works.</p>
-	</div>
-	
+<body onload="brython()" class="codepage">
+	<header>
+		<div><a href="../index.html#basic"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
+		<div><h1>Palindrome Finder</h1></div>
+	</header>
+	<main class="container">
+		<div class="description"><p><strong>Description:</strong> Enter a sentence, program will detect if it is a palindrome or not. For such short code, the backwards string scanning calculation is not
+	immediately intuitive, but what works, works.
+		</p></div>
+		<div class="origin"><p><strong>Original Creation:</strong> 3rd Oct 2024</p></div>
+		<div class="uploaded"><p><strong>Uploaded:</strong> 19th Mar 2025</p></div>
+		<div class="status"><p><strong>Status:</strong> Complete. Original code was written without AI.</p></div>
+		<div class="supplemental"><p><strong>Supplemental:</strong> N/A </p></div>
 	<div class="gallery">
 		<div><figure>
 		<figcaption>Examples of non-palindrome and palindrome</figcaption>		
 		<img src="images/palindrome.PNG" alt="Examples of non-palindrome and palindrome" title="Examples of non-palindrome and palindrome">
 		</figure></div>
 	</div>	
+	<div class="code">		
+		<!-- <button onclick="Toggle()">Toggle Original Python Code Display</button> -->
+		<button onclick="Copy()">Copy the Python Code</button>
 	
-	<button onclick="Toggle()">Toggle Original Python Code Display</button>
-	<button onclick="Copy()">Copy the Python Code</button>
-
-	<pre id="pycode">
-while True:
-    actualentry = input("Enter a word or sentence:")
-
-    entry = actualentry.lower()
-    entry = entry.replace(".", "")
-    entry = entry.replace(",", "")
-    entry = entry.replace(" ", "")
-    entry = entry.replace("'", "")
-    
-    palindrome = True
-    length = len(entry)
-    n = 0
-    
-    while n &lt; length:
-        if entry[n] == entry[-1*n -1]:
-            n += 1
-            continue
-        if entry[n] != entry[-1*n -1]:
-            palindrome = False
-            break
-
-    if palindrome == True:
-        print (f"{actualentry} is a palindrome.\n")
-    else:
-        print (f"{actualentry} is not a palindrome.\n")     
-	</pre>
+	<p id="pycode">
+while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;actualentry = input("Enter a word or sentence:")<br><br>&nbsp;&nbsp;&nbsp;&nbsp;entry = actualentry.lower()<br>&nbsp;&nbsp;&nbsp;&nbsp;entry = entry.replace(".", "")<br>&nbsp;&nbsp;&nbsp;&nbsp;entry = entry.replace(",", "")<br>&nbsp;&nbsp;&nbsp;&nbsp;entry = entry.replace(" ", "")<br>&nbsp;&nbsp;&nbsp;&nbsp;entry = entry.replace("'", "")<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;palindrome = True<br>&nbsp;&nbsp;&nbsp;&nbsp;length = len(entry)<br>&nbsp;&nbsp;&nbsp;&nbsp;n = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;while n &lt; length:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if entry[n] == entry[-1*n -1]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if entry[n] != entry[-1*n -1]:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;palindrome = False<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break<br><br>&nbsp;&nbsp;&nbsp;&nbsp;if palindrome == True:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print (f"{actualentry} is a palindrome.\n")<br>&nbsp;&nbsp;&nbsp;&nbsp;else:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print (f"{actualentry} is not a palindrome.\n")
+	</p>
 	
 	<script>
-	function Toggle() {
+	/* function Toggle() {
 		var x = document.getElementById("pycode");
 		if (x.style.display === "none") 
 			{x.style.display = "block";} 
-		else {x.style.display = "none"; }}
+		else {x.style.display = "none"; }} 
+		*/
 		
 	function Copy() {
 		const copyText = document.getElementById("pycode").innerText; 
 		navigator.clipboard.writeText(copyText);}
 	</script>
-
+</div>
+</main>
 </body>
 </html>

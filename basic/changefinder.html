@@ -1,85 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" media="screen" href="../index.html">		
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+	<link rel="icon" type="image/x-icon" href="./images/changefinder.png">
     <title>Change Finder</title>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+	<style>
+@media screen and (max-width: 1199px)		
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin origin uploaded status supplemental supplemental" "gallery gallery gallery gallery gallery gallery" "code code code code code code";}} 								
+		@media screen and (min-width: 1200px)
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery code code code";} 	}																												
+	</style>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
 </head>
-<body onload="brython()">
-	<p><a href="../index.html">&#11013; Back</a></p>
-    <h1>Change Finder</h1>
-	<div class = "synopsis">
-	<p><strong>Original Creation:</strong> 2nd October 2024</p>
-	<p><strong>Uploaded:</strong> 20th Mar 2025</p>
-	<p><strong>Status:</strong> Complete. Original code was written without AI.</p>
-	<p><strong>Description:</strong> Enter an amount of money, and the program will calculate the smallest number of <strong>coins</strong> needed to create that amount of money.
+<body onload="brython()" class="codepage">
+	<header>
+		<div><a href="../index.html#basic"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
+		<div><h1>Change Finder</h1></div>
+	</header>
+	<main class="container">
+		<div class="description"><p><strong>Description:</strong> Enter an amount of money, and the program will calculate the smallest number of <strong>coins</strong> needed to create that amount of money.
 	While Canada stopped minting pennies in 2013, they are technically still legal currency as of 2025, though a shop won't give you them in change.	
-	The calculation here was straightforward: continuously remove the highest denomination possible, though the <strong>round</strong> function was necessary to remove floating point errors.</p>
-	</div>
-	
+	The calculation here was straightforward: continuously remove the highest denomination possible, though the <strong>round</strong> function was necessary to remove floating point errors.
+		</p></div>
+		<div class="origin"><p><strong>Original Creation:</strong> 2nd Oct 2024</p></div>
+		<div class="uploaded"><p><strong>Uploaded:</strong> 20th Mar 2025</p></div>
+		<div class="status"><p><strong>Status:</strong> Complete. Original code was written without AI.</p></div>
+		<div class="supplemental"><p><strong>Supplemental:</strong> N/A </p></div>
 	<div class="gallery">
 		<div><figure>
 		<figcaption>And we could all use a little chaaaaange...</figcaption>		
 		<img src="images/change.png" alt="And we could all use a little chaaaaange..." title="And we could all use a little chaaaaange...">
 		</figure></div>
 	</div>	
+	<div class="code">		
+		<!-- <button onclick="Toggle()">Toggle Original Python Code Display</button> -->
+		<button onclick="Copy()">Copy the Python Code</button>
 	
-	<button onclick="Toggle()">Toggle Original Python Code Display</button>
-	<button onclick="Copy()">Copy the Python Code</button>
-
-	<pre id="pycode">
-while True:
-    changeentry = input("Enter amount of change:")
-
-    try:
-        float(changeentry)
-    except:
-        print("Enter a float or integer")
-        continue
-
-    change = float(changeentry)
-    toonies = 0
-    loonies = 0
-    quarters = 0
-    dimes = 0
-    nickels = 0
-    pennies = 0
-
-    while change >= 2.00:
-       change = round(change - 2.00, 2)
-       toonies += 1
-    while change >= 1.00:
-       change = round(change - 1.00, 2)
-       loonies += 1       
-    while change >= 0.25:
-       change = round(change - 0.25, 2)
-       quarters += 1
-    while change >= 0.10:
-       change = round(change - 0.10, 2)
-       dimes += 1
-    while change >= 0.05:
-      change = round(change - 0.05, 2)
-      nickels += 1
-    while change >= 0.01:
-      change = round(change - 0.01, 2)
-      pennies += 1
-
-    print(f"You can make {changeentry} with {toonies} toonies, {loonies} loonies, {quarters} quarters, {dimes} dimes, {nickels} nickels and {pennies} pennies.")
-
-	</pre>
+	<p id="pycode">
+while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;changeentry = input("Enter amount of change:")<br><br>&nbsp;&nbsp;&nbsp;&nbsp;try:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;float(changeentry)<br>&nbsp;&nbsp;&nbsp;&nbsp;except:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Enter a float or integer")<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br><br>&nbsp;&nbsp;&nbsp;&nbsp;change = float(changeentry)<br>&nbsp;&nbsp;&nbsp;&nbsp;toonies = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;loonies = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;quarters = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;dimes = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;nickels = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;pennies = 0<br><br>&nbsp;&nbsp;&nbsp;&nbsp;while change >= 2.00:<br>&nbsp;&nbsp;&nbsp;&nbsp;   change = round(change - 2.00, 2)<br>&nbsp;&nbsp;&nbsp;&nbsp;   toonies += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;while change >= 1.00:<br>&nbsp;&nbsp;&nbsp;&nbsp;   change = round(change - 1.00, 2)<br>&nbsp;&nbsp;&nbsp;&nbsp;   loonies += 1&nbsp;&nbsp;&nbsp;&nbsp;   <br>&nbsp;&nbsp;&nbsp;&nbsp;while change >= 0.25:<br>&nbsp;&nbsp;&nbsp;&nbsp;   change = round(change - 0.25, 2)<br>&nbsp;&nbsp;&nbsp;&nbsp;   quarters += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;while change >= 0.10:<br>&nbsp;&nbsp;&nbsp;&nbsp;   change = round(change - 0.10, 2)<br>&nbsp;&nbsp;&nbsp;&nbsp;   dimes += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;while change >= 0.05:<br>&nbsp;&nbsp;&nbsp;&nbsp;  change = round(change - 0.05, 2)<br>&nbsp;&nbsp;&nbsp;&nbsp;  nickels += 1<br>&nbsp;&nbsp;&nbsp;&nbsp;while change >= 0.01:<br>&nbsp;&nbsp;&nbsp;&nbsp;  change = round(change - 0.01, 2)<br>&nbsp;&nbsp;&nbsp;&nbsp;  pennies += 1<br><br>&nbsp;&nbsp;&nbsp;&nbsp;print(f"You can make {changeentry} with {toonies} toonies, {loonies} loonies, {quarters} quarters, {dimes} dimes, {nickels} nickels and {pennies} pennies.")
+	</p>
 	
 	<script>
-	function Toggle() {
+	/* function Toggle() {
 		var x = document.getElementById("pycode");
 		if (x.style.display === "none") 
 			{x.style.display = "block";} 
-		else {x.style.display = "none"; }}
+		else {x.style.display = "none"; }} 
+		*/
 		
 	function Copy() {
 		const copyText = document.getElementById("pycode").innerText; 
 		navigator.clipboard.writeText(copyText);}
 	</script>
-
+</div>
+</main>
 </body>
 </html>

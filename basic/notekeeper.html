@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+	<link rel="icon" type="image/x-icon" href="./images/notes.png">
+    <title>Note Keeper</title>
+	<style>
+@media screen and (max-width: 1199px)		
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery gallery gallery gallery" "code code code code code code";}} 								
+		@media screen and (min-width: 1200px)
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery code code code";} 	}																												
+	</style>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+</head>
+<body onload="brython()" class="codepage">
+	<header>
+		<div><a href="../index.html#basic"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
+		<div><h1>Note Keeper</h1></div>
+	</header>
+	<main class="container">
+		<div class="description"><p><strong>Description:</strong> The focus here was being able to pass arguments from the command line into the script and have them be interpreted correctly.
+		While not called for in the specification, I wanted the script to be able to handle any number of delete requests and handle them appropriately, hence the loop.
+		</p></div>
+		<div class="origin"><p><strong>Original Creation:</strong> 29th Mar 2025</p></div>
+		<div class="uploaded"><p><strong>Uploaded:</strong> 14th Jun 2025</p></div>
+		<div class="status"><p><strong>Status:</strong> Complete. Original code was written without AI.</p></div>
+		<div class="supplemental"><p><strong>Supplemental:</strong> Text: <a href="./grahamsthoughts.txt">List used for script</a> </p></div>
+	<div class="gallery">
+		<div><figure>
+		<figcaption>List used for script</figcaption>		
+		<img src="images/thoughts.PNG" alt="Graham's thoughts" title="Graham's thoughts">
+		</figure></div>
+	</div>	
+	<div class="code">		
+		<!-- <button onclick="Toggle()">Toggle Original Python Code Display</button> -->
+		<button onclick="Copy()">Copy the Bash Code</button>
+	
+	<p id="pycode">
+#!/bin/bash<br># Created by Graham Moore, 000957294, 29th March 2025. This script and the text file contents are entirely my own work.<br><br>allargs="$*" #this interprets all of the arguments as a single phrase and allows it to be added to the data file as such. This eliminates the need for quotes when providing arguments<br>datafile="./grahamsthoughts.txt" #Remember, NO SPACES!<br>deleteflag="False" <br><br>if [ $# -eq 0 ] #If the number of arguments is exactly zero...<br>then<br>&nbsp;&nbsp;&nbsp;&nbsp;cat -n ${datafile} #...then just read the data file. needs -n to print line numbers<br>else<br>&nbsp;&nbsp;&nbsp;&nbsp;for arg in "$@" # allows multiple delete arguments to be submitted at once, and iterated through.<br>&nbsp;&nbsp;&nbsp;&nbsp;do<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#echo "first output: ${arg}" #for testing<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if [[ "${arg}" == "-h" ]] #using -eq is only good for numbers. Need to use == for string comparisons<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;then<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo -e "\nIf script is run with no arguments, all contents will be displayed."<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo "If script is run with argument '-h', help will be displayed."<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo "If script is run with argument '-d linenumber', that line will be deleted."<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo -e "Otherwise, all arguments will be added to the notes list.\n"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif [[ "${arg}" == "-d" ]]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;then<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#echo "delete arg detected" #for testing<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;deleteflag="True"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   &nbsp;&nbsp;&nbsp;&nbsp;#I tried using the shift command to get to the next argument, but it didn't work as I expected.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#This is a less elegant, but conceptually easier solution that seems to work, as long as the arguments are entered correctly.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif [[ "${deleteflag}" == "True" ]]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;then<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#echo "second output: ${arg}" #for testing<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lineno="${arg}d" # concatenates the current argument (line number) with the suffix d, which is needed for the next command<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#echo "third output: ${lineno}" #for testing<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sed -i ${lineno} ${datafile} #stream editor. Edits (deletes) lineno from datafile<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;deleteflag="False"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else #if there are any other arguments (i.e. thoughts, notes) they will be added to this file<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo ${allargs} >> ${datafile} #appends the output of the echo statement (the argument) to the end of grahamsthoughts.txt<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fi<br>&nbsp;&nbsp;&nbsp;&nbsp;done<br>fi<br>
+	</p>
+	
+	<script>
+	/* function Toggle() {
+		var x = document.getElementById("pycode");
+		if (x.style.display === "none") 
+			{x.style.display = "block";} 
+		else {x.style.display = "none"; }} 
+		*/
+		
+	function Copy() {
+		const copyText = document.getElementById("pycode").innerText; 
+		navigator.clipboard.writeText(copyText);}
+	</script>
+</div>
+</main>
+</body>
+</html>

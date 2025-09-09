@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" media="screen" href="../codestyles.css">
+	<link rel="icon" type="image/x-icon" href="./images/report.png">
+    <title>System Report Generator</title>
+	<style>
+@media screen and (max-width: 1199px)		
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery gallery gallery gallery" "code code code code code code";}} 								
+		@media screen and (min-width: 1200px)
+		{.container				{display: grid; grid-template-areas: "description description description description description description" "origin uploaded status status supplemental supplemental" "gallery gallery gallery code code code";} 	}																												
+	</style>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.9.5/brython.min.js"></script>
+</head>
+<body onload="brython()" class="codepage">
+	<header>
+		<div><a href="../index.html#basic"><img src="./images/back.png" alt="Back Arrow" title="Back Arrow"></a></div>
+		<div><h1>System Report Generator</h1></div>
+	</header>
+	<main class="container">
+		<div class="description"><p><strong>Description:</strong> Being a Unix admin means knowing how well the system is running. 
+		We were tasked with writing a script which would generate information such as how long the system has been running, number of tasks running, etc.
+		Most of these come directly from bash commands, but getting the CPU information into a neat sentence was a little trickier.
+		</p></div>
+		<div class="origin"><p><strong>Original Creation:</strong> 29th Mar 2025</p></div>
+		<div class="uploaded"><p><strong>Uploaded:</strong> 14th Jun 2025</p></div>
+		<div class="status"><p><strong>Status:</strong> Complete. Original code was written without AI.</p></div>
+		<div class="supplemental"><p><strong>Supplemental:</strong> Text: <a href="./script run instructions.txt">script run instructions</a> </p></div>
+	<div class="gallery">
+		<div><figure>
+		<figcaption>System report example</figcaption>		
+		<img src="images/systemreport.PNG" alt="System report example" title="System report example">
+		</figure></div>
+	</div>	
+	<div class="code">		
+		<!-- <button onclick="Toggle()">Toggle Original Python Code Display</button> -->
+		<button onclick="Copy()">Copy the Bash Code</button>
+	
+	<p id="pycode">
+#!/bin/bash<br>#Graham Moore, 000957294, 29th March 2025<br><br>#I'm aware the first two commands will work without the echo statement, but I wanted them to always print on a new line<br>echo -e "\n$(uptime)"<br>echo -e "\n$(df -h)"<br>echo -e "\nThere are $(rpm -qa | wc -l) system packages installed."<br>echo -e "\nSystem host name: $(hostname)"<br>echo -e "\nYour CPU is a(n) $(lscpu | grep "Model name" | cut -d : -f 2 | awk '$1=$1') running at $(lscpu | grep "CPU MHz" | cut -d : -f 2 | awk '$1=$1') MHz."<br>#I got the idea for using the awk command from a forum post on StackExchange, asked by annahri in 2020. This was needed to remove the extra spaces after the colon.<br>echo -e "\n$(top -b -n 1| grep "Tasks")\n" #need -b for batch mode so it can be pipelined in plain text. Need -n 1 so that it stops after the first cycle.<br>
+	</p>
+	
+	<script>
+	/* function Toggle() {
+		var x = document.getElementById("pycode");
+		if (x.style.display === "none") 
+			{x.style.display = "block";} 
+		else {x.style.display = "none"; }} 
+		*/
+		
+	function Copy() {
+		const copyText = document.getElementById("pycode").innerText; 
+		navigator.clipboard.writeText(copyText);}
+	</script>
+</div>
+</main>
+</body>
+</html>
