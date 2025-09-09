@@ -32,7 +32,7 @@
 	</head>
 	<body>
 		<header>
-			<img src="./images/linkedin.png" alt="LinkedIn Logo" title="LinkedIn Logo">
+			<a href="https://www.linkedin.com/in/graham-moore-016370123/"><img src="./images/linkedin.png" alt="LinkedIn Logo" title="LinkedIn Logo"></a>
 			<h1>Graham Moore's Code Collection</h1>
 		</header>
 		<nav class="navflexbox">
@@ -41,7 +41,7 @@
 			<a href="#utility">Utility Projects</a>
 			<a href="#solvers">Game Solvers</a>
 			<a href="#basic">Basic Programming Projects</a>		
-			<a>Trading</a>
+			<a href="#trading">Trading Programs</a>	
 		</nav>
 		<main>
 		<h3>This is a collection of my various coding projects since 2020. I generally write all code without use of AI, but have recently started to incorporate it into my work.</h3>
@@ -217,6 +217,11 @@
 					<p><strong>Missing Symbol Solver</strong>: Find the missing mathematical symbols to make an equation work.</p></a>
 				</div>	
 				<div class="icongallery">
+					<a href="./solvers/sudoku.html"><img src="./images/sudoku.png" alt="Sudoku Solver" title="Sudoku Solver">
+					<div class="flexbox"><img src="./images/python.png" alt="Python logo" title="Python Logo"><img src="./images/star.png" alt="Star" title="Star"><img src="./images/incomplete.png" alt="Incomplete" title="Incomplete"></div>	
+					<p><strong>Sudoku Solver</strong>: Solve multiple Sudoku puzzles during your lunch break.</p></a>
+				</div>					
+				<div class="icongallery">
 					<a href="./solvers/tmscraper.html"><img src="./images/tmscraper.png" alt="Terraforming Mars Web Scraper" title="Terraforming Mars Web Scraper">
 					<div class="flexbox"><img src="./images/python.png" alt="Python logo" title="Python Logo"><img src="./images/star.png" alt="Star" title="Star"></div>	
 					<p><strong>Terraforming Mars Web Scraper</strong>: Collects my game data from an online board game website.</p></a>
@@ -228,12 +233,13 @@
 				</div>					
 			</div>
 		</div>
-		<div class="sectiondiv"  id="basic">
+		<div class="sectiondiv" id="basic">
 			<div>
 				<h2>Basic Programming Projects</h2>
-				<h3>These were created from September to December of 2024, as part of the Programming Fundamentals course at Mohawk College. 
-				I already had a good grip of Python by this point, so solving these problems were often trivial in most cases. However, the course did introduce me to the use of AI in programming, 
-				and placed an emphasis on correct code-writing discipline, as well as identifying errors in code.</h3>
+				<h3>These were created as part of the Programming Fundamentals, and Fundamentals of Unix courses at Mohawk College. 
+				I already had a good grip of Python by this point, so solving these problems were often trivial in most cases.<br> However, the course did introduce me to the use of AI in programming, 
+				and placed an emphasis on correct code-writing discipline, as well as identifying errors in code.<br> 
+				I was completely new to Unix, so the bash scripts are rather simplistic, but did net me some bonus marks.</h3>
 			</div>
 			<div class="flexbox">
 				<div class="icongallery">
@@ -267,6 +273,11 @@
 					<p><strong>Inventory Manager</strong>: Add items, prices and quantities to a list.</p></a>
 				</div>
 				<div class="icongallery">
+					<a href="./basic/notekeeper.html"><img src="./images/notes.png" alt="Note Keeper" title="Note Keeper">
+					<div class="flexbox"><img src="./images/linux.png" alt="Linux Icon" title="Linux Icon"></div>	
+					<p><strong>Note Keeper</strong>: Store and retrieve notes from a stored file.</p></a>
+				</div>				
+				<div class="icongallery">
 					<a href="./basic/palindrome.html"><img src="./images/palindrome.png" alt="Palindrome Finder" title="Palindrome Finder">
 					<div class="flexbox"><img src="./images/python.png" alt="Python logo" title="Python Logo"></div>	
 					<p><strong>Palindrome Finder</strong>: Detects if a sentence is a palindrome.</p></a>
@@ -282,17 +293,42 @@
 					<p><strong>Sentence Deconstructor</strong>: Summarizes all characters used in a sentence.</p></a>
 				</div>
 				<div class="icongallery">
+					<a href="./basic/systemreport.html"><img src="./images/report.png" alt="System Report" title="System Report">
+					<div class="flexbox"><img src="./images/linux.png" alt="Linux Icon" title="Linux Icon"></div>	
+					<p><strong>System Report</strong>: Generates a brief system report inside a Unix system.</p></a>
+				</div>
+				<div class="icongallery">
 					<a href="./basic/filter.html"><img src="./images/filter.png" alt="Word List Filter" title="Word List Filter">
 					<div class="flexbox"><img src="./images/python.png" alt="Python logo" title="Python Logo"></div>	
 					<p><strong>Word List Filter</strong>: Add words to a list, then remove elements based on word length.</p></a>
 				</div>
 			</div>				
 		</div>		
-		<div class="sectiondiv">		
-		<h2>Trading</h2>
-		<h3>I practised day trading for several months and incorporated Python into the data analysis. 
-		The scripts here are niche and not easily accessible to the average reader, but I have included them for record purposes.</h3>
-		</div>		
+		<div class="sectiondiv" id="trading">
+			<div>
+				<h2>Trading Programs</h2>
+				<h3>I practised day trading for several months and incorporated Python into the data analysis, as well as writing Expert Advisors (automated trading programs) in a language based on C++.<br> 
+				The scripts here are niche and not easily accessible to the average reader, but I have included them for record purposes.<br>
+				Using any of these programs to assist with day trading is done so at the user's own risk.</h3>
+			</div>
+			<div class="flexbox">
+				<div class="icongallery">
+					<a href="./trading/convertedea.html"><img src="./images/metatrader.png" alt="Converted Expert Advisor" title="Converted Expert Advisor">
+					<div class="flexbox"><img src="./images/c++.png" alt="C++ logo" title="C++ Logo"></div>	
+					<p><strong>Converted Expert Advisor</strong>: An Expert Advisor that I converted from one language to another.</p></a>
+				</div>
+				<div class="icongallery">
+					<a href="./trading/forexfactory.html"><img src="./images/forexfactory.png" alt="Forex Factory Web Scraper" title="Forex Factory Web Scraper">
+					<div class="flexbox"><img src="./images/python.png" alt="Python logo" title="Python Logo"></div>	
+					<p><strong>Forex Factory Web Scraper</strong>: Collects trading events from a forex information website.</p></a>
+				</div>
+				<div class="icongallery">
+					<a href="./trading/originalea.html"><img src="./images/trader.png" alt="Original Expert Advisor" title="Original Expert Advisor">
+					<div class="flexbox"><img src="./images/c++.png" alt="C++ logo" title="C++ Logo"><img src="./images/incomplete.png" alt="Incomplete" title="Incomplete"></div>		
+					<p><strong>Original Expert Advisor</strong>: An (unsuccessful) Expert Advisor I wrote from scratch.</p></a>
+				</div>
+			</div>
+		</div>						
 		</main>
 		<footer>
 			<p>Created by Graham Moore, 000957294, 2025. All icons used are available via free license on <a href="www.iconfinder.com">iconfinder.com.</a></p>
